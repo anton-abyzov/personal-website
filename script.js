@@ -1081,7 +1081,7 @@ function openFutsalGallery() {
         '/assets/images/achievements/master_of_sports.jpg'
     ];
     const captions = [
-        'Euro Tournament Winner - France 2008',
+        'Euro Tournament Winner - France 2009',
         'Euro Tournament Celebration',
         'Master of Sport - Belarus'
     ];
