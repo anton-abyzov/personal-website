@@ -946,10 +946,14 @@ function openPianoModal() {
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content piano-modal-content';
     
-    const closeBtn = document.createElement('span');
+    const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
+    closeBtn.type = 'button';
     closeBtn.innerHTML = '&times;';
-    closeBtn.onclick = () => closePianoModal(modal);
+    closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        closePianoModal(modal);
+    };
     
     const content = `
         <div class="piano-modal-header">
@@ -1005,7 +1009,8 @@ function openPianoModal() {
         </div>
     `;
     
-    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modalContent.innerHTML = content;
+    modalContent.appendChild(closeBtn);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
     
