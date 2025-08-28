@@ -1073,6 +1073,78 @@ function openFutsalGallery() {
     document.body.style.overflow = 'hidden';
 }
 
+// Professional Photo Stack
+function initPhotoStack() {
+    const photoCards = document.querySelectorAll('.photo-card');
+    const indicators = document.querySelectorAll('.photo-indicator');
+    let currentPhoto = 0;
+    let autoRotateInterval;
+    
+    function showPhoto(index) {
+        photoCards.forEach((card, i) => {
+            card.classList.remove('active', 'photo-card-2', 'photo-card-3');
+            indicators[i].classList.remove('active');
+        });
+        
+        const nextIndex = (index + 1) % photoCards.length;
+        const nextNextIndex = (index + 2) % photoCards.length;
+        
+        photoCards[index].classList.add('active');
+        photoCards[nextIndex].classList.add('photo-card-2');
+        photoCards[nextNextIndex].classList.add('photo-card-3');
+        indicators[index].classList.add('active');
+        
+        currentPhoto = index;
+    }
+    
+    function nextPhoto() {
+        showPhoto((currentPhoto + 1) % photoCards.length);
+    }
+    
+    function startAutoRotate() {
+        autoRotateInterval = setInterval(nextPhoto, 4000);
+    }
+    
+    function stopAutoRotate() {
+        clearInterval(autoRotateInterval);
+    }
+    
+    // Click handlers
+    photoCards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            stopAutoRotate();
+            showPhoto(index);
+            startAutoRotate();
+        });
+    });
+    
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            stopAutoRotate();
+            showPhoto(index);
+            startAutoRotate();
+        });
+    });
+    
+    // Hover pause
+    const photoStack = document.querySelector('.photo-stack-container');
+    if (photoStack) {
+        photoStack.addEventListener('mouseenter', stopAutoRotate);
+        photoStack.addEventListener('mouseleave', startAutoRotate);
+    }
+    
+    // Initialize
+    showPhoto(0);
+    startAutoRotate();
+}
+
+// Initialize photo stack when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhotoStack);
+} else {
+    initPhotoStack();
+}
+
 // Make sure functions are available globally
 window.openSoccerGallery = openSoccerGallery;
 window.openCrossFitGallery = openCrossFitGallery;
