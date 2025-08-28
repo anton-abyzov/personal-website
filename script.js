@@ -986,7 +986,7 @@ function openPianoModal() {
             </div>
             <div class="piano-performance-item">
                 <div class="piano-performance-info">
-                    <h4>Por Una Cabeza & Jazz Fusion</h4>
+                    <h4>Jazz Fusion, Por Una Cabeza & more</h4>
                     <p>Passionate tango classic with contemporary jazz arrangements and improvisations</p>
                 </div>
                 <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Por Una Cabeza & Jazz Fusion')">
