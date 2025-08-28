@@ -503,32 +503,59 @@ body {
 }
 
 .timeline-date {
-    position: absolute;
-    top: 0;
-    font-weight: 600;
+    font-size: 0.85rem;
     color: var(--secondary-color);
-}
-
-.timeline-item:nth-child(odd) .timeline-date {
-    left: 52%;
-}
-
-.timeline-item:nth-child(even) .timeline-date {
-    right: 52%;
+    margin-bottom: 12px;
+    font-weight: 600;
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
 .timeline-content {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 30px;
-    border-radius: 15px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    padding: 25px 30px;
+    border-radius: 20px;
     width: 45%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: var(--transition);
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+.company-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.via-company {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
     transition: var(--transition);
 }
 
+.via-company:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
 .timeline-content:hover {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 102, 255, 0.2);
+    border-color: rgba(0, 212, 255, 0.3);
 }
 
 .timeline-content h3 {
@@ -550,7 +577,8 @@ body {
 .tech-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    margin-top: 15px;
 }
 
 .tech-tags span {
@@ -589,6 +617,11 @@ body {
 .achievement-card:hover {
     transform: translateY(-10px);
     box-shadow: var(--shadow-xl);
+}
+
+.achievement-card {
+    padding: 30px;
+    text-align: center;
 }
 
 .achievement-image {

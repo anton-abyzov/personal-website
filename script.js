@@ -163,103 +163,181 @@ function toggleFullExperience(e) {
                 date: 'May 2022 - Apr 2023',
                 company: '🦷 DentalCorp',
                 title: 'Solutions Architect / Data Platform Lead',
+                viaCompany: null,
                 description: 'Architected unified data platform integrating 1,500+ dental clinics across Canada.',
                 details: [
-                    'Designed and implemented unified data lake using Snowflake for 1,500+ clinics',
-                    'Built real-time ETL pipelines with Apache NiFi processing 5M+ patient records',
-                    'Implemented FHIR-compliant healthcare data standards for interoperability',
-                    'Created comprehensive data governance framework ensuring PIPEDA compliance',
-                    'Reduced data processing time by 70% through optimization and parallelization',
-                    'Built predictive analytics models for patient retention and treatment outcomes',
-                    'Established API gateway handling 10M+ requests daily with sub-100ms latency',
-                    'Led team of 12 engineers through Agile transformation and DevOps adoption'
+                    'Designed HIPAA-compliant data platform integrating 9 Practice Management Systems',
+                    'Built real-time ETL pipelines with Apache NiFi processing 5M+ patient records daily',
+                    'Implemented Master Data Management (MDM) using Informatica for patient deduplication',
+                    'Created HL7 FHIR compliant APIs for healthcare data exchange with insurance providers',
+                    'Designed multi-tenant architecture supporting 1,500+ clinics with data isolation',
+                    'Built analytics platform using Snowflake, dbt for centralized reporting',
+                    'Developed predictive models reducing appointment no-shows by 25%',
+                    'Created automated billing reconciliation system saving $2M+ annually'
                 ],
                 tech: ['Snowflake', 'Apache NiFi', 'Kafka', '.NET Core', 'AWS']
             },
             {
                 date: 'Jan 2020 - Jun 2022',
                 company: '⚽ Sportradar',
-                title: 'Senior Platform Engineer (via Softgreat)',
-                description: 'Built real-time sports data platform processing 1M+ events/second.',
+                title: 'Senior Platform Engineer / Live Data Architect',
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                description: 'Architected real-time sports data platform processing live feeds from 100K+ sporting events.',
                 details: [
-                    'Architected high-throughput sports data platform processing 1M+ events/second',
-                    'Implemented Apache Pulsar message streaming handling 50TB daily data volume',
-                    'Designed microservices architecture with 200+ services on Kubernetes',
-                    'Built real-time odds calculation engine with 99.999% accuracy',
-                    'Developed WebSocket infrastructure serving 100K+ concurrent connections',
-                    'Created distributed caching layer reducing database load by 85%',
-                    'Implemented chaos engineering practices achieving 99.99% availability',
-                    'Optimized Cassandra clusters for time-series data with sub-millisecond queries'
+                    'Built ultra-low latency platform processing 1M+ events/second with sub-100ms latency',
+                    'Designed high-frequency trading system for live betting odds calculation',
+                    'Implemented Apache Pulsar for guaranteed message delivery in distributed system',
+                    'Created real-time data pipelines using Apache Beam, Dataflow for stream processing',
+                    'Built WebSocket infrastructure supporting 500K+ concurrent connections',
+                    'Architected auto-scaling infrastructure handling 10x traffic spikes during major events',
+                    'Reduced data latency from 5s to 100ms through architecture optimization',
+                    'Built ML models for match-fixing detection analyzing betting patterns'
                 ],
-                tech: ['Apache Pulsar', 'Kubernetes', '.NET Core', 'Go', 'Cassandra']
+                tech: ['Apache Pulsar', 'Kafka', 'Kubernetes', '.NET Core', 'Go', 'Cassandra']
             },
             {
                 date: 'Apr 2018 - Mar 2020',
                 company: '🏭 Grenzebach Group',
-                title: 'IIoT Platform Architect (via Softgreat)',
-                description: 'Led 50+ engineers building Industrial IoT platform for smart factories.',
+                title: 'IIoT Platform Architect / Technical Lead',
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                description: 'Led 50+ engineers across 3 continents building Industrial IoT platform for smart factory automation.',
                 details: [
-                    'Architected Industrial IoT platform connecting 10,000+ factory devices',
-                    'Implemented OPC UA protocol integration for real-time machine data collection',
-                    'Built predictive maintenance ML models reducing downtime by 40%',
-                    'Designed time-series database solution using InfluxDB for sensor data',
-                    'Created digital twin framework for factory floor simulation and optimization',
-                    'Established edge computing infrastructure processing data at 200+ locations',
-                    'Implemented TensorFlow-based computer vision for quality control inspection',
-                    'Led 50+ engineers across 5 countries in platform development and deployment'
+                    'Architected IIoT platform collecting telemetry from 10,000+ industrial sensors using OPC UA',
+                    'Built edge computing solution using Azure IoT Edge for real-time anomaly detection',
+                    'Implemented predictive maintenance ML models reducing equipment downtime by 35%',
+                    'Designed time-series data architecture using InfluxDB, TimescaleDB for sensor data',
+                    'Created digital twin simulations using Unity3D and Azure Digital Twins',
+                    'Integrated with Siemens S7, Allen-Bradley PLCs for production line control',
+                    'Built SCADA system replacement using modern web technologies',
+                    'Led distributed teams across Germany, USA, China with Agile/SAFe methodology'
                 ],
                 tech: ['Azure IoT', 'OPC UA', 'InfluxDB', '.NET Core', 'TensorFlow']
             },
             {
-                date: 'Jan 2016 - Mar 2018',
-                company: '🚀 Softgreat (Founder)',
-                title: 'Founder & CEO',
-                description: 'Built software consultancy from $0 to $7.3M revenue with 66 employees.',
+                date: 'May 2017 - May 2018',
+                company: '🛍️ Luxnow',
+                title: 'Platform Engineer / Full-Stack Developer',
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                description: 'Built luxury goods rental marketplace from MVP to $1M+ revenue.',
                 details: [
-                    'Founded and scaled software development company from 0 to 66 employees',
-                    'Generated $7.3M in revenue over 6 years with 40% YoY growth',
-                    'Secured contracts with Fortune 500 companies including Swiss Re, T-Systems',
-                    'Established offices in 3 countries with distributed teams',
-                    'Achieved Top 10 Most Efficient Belarusian Companies ranking',
-                    'Built flagship products serving 100K+ users globally',
-                    'Implemented ISO 9001 quality management system',
-                    'Achieved 95% client retention rate with NPS score of 72'
+                    'Developed multi-vendor marketplace platform using Django, PostgreSQL supporting 500+ vendors',
+                    'Implemented Stripe Connect for split payments processing $100K+ monthly',
+                    'Built recommendation engine using collaborative filtering increasing conversion by 30%',
+                    'Created real-time inventory management system with reservation logic',
+                    'Designed responsive web application using React, Redux with SSR',
+                    'Implemented full-text search using Elasticsearch across 50K+ products',
+                    'Built image processing pipeline using AWS Lambda for automatic resizing',
+                    'Developed fraud detection system reducing chargebacks by 80%'
                 ],
-                tech: ['Business Strategy', 'Team Building', '.NET', 'React', 'AWS']
+                tech: ['Python', 'Django', 'React', 'PostgreSQL', 'Elasticsearch', 'AWS']
             },
             {
-                date: 'Sep 2015 - Dec 2019',
-                company: '🏢 Swiss Re',
-                title: 'Lead Platform Architect (via Softgreat)',
-                description: 'Modernized insurance platform processing $2B+ annual premiums.',
+                date: 'May 2016 - May 2017',
+                company: '📚 eSyncTraining',
+                title: 'Senior Software Architect',
+                viaCompany: null,
+                description: 'Architected enterprise learning management platform serving 500K+ students globally.',
                 details: [
-                    'Led digital transformation of legacy insurance systems',
-                    'Architected microservices platform processing $2B+ annual premiums',
-                    'Implemented event-sourcing architecture for audit compliance',
-                    'Built ML models for risk assessment and fraud detection',
-                    'Reduced claim processing time from days to hours through automation',
-                    'Designed disaster recovery system with 99.99% availability',
-                    'Migrated 30+ legacy applications to cloud-native architecture',
-                    'Achieved 60% reduction in infrastructure costs through optimization'
+                    'Migrated monolithic ASP.NET application to microservices using .NET Core 1.0/1.1',
+                    'Implemented SCORM 2004 and xAPI compliance for course content delivery',
+                    'Built LTI 1.3 integration connecting with Canvas, Blackboard, Moodle',
+                    'Designed multi-tenant architecture with database-per-tenant isolation',
+                    'Created real-time collaboration features using SignalR for virtual classrooms',
+                    'Implemented SAML 2.0, OAuth 2.0 for enterprise SSO with 50+ universities',
+                    'Built video streaming infrastructure using AWS CloudFront, Elemental',
+                    'First production deployment of .NET Core in EdTech industry'
                 ],
-                tech: ['Azure', 'Service Fabric', 'Event Sourcing', 'ML.NET', 'CosmosDB']
+                tech: ['.NET Core', 'IdentityServer 4', 'Angular 4', 'SQL Server', 'AWS']
             },
             {
-                date: 'Jan 2014 - Aug 2015',
-                company: '📡 T-Systems',
-                title: 'Senior Software Engineer (via Softgreat)',
-                description: 'Developed telecommunications platform serving 5M+ customers.',
+                date: 'Aug 2014 - May 2016',
+                company: '💊 SocialWellth',
+                title: 'Senior Software Engineer / Technical Lead',
+                viaCompany: null,
+                description: 'Built digital health platform integrating wearable devices for chronic disease management.',
                 details: [
-                    'Built high-performance billing system processing 100M+ transactions daily',
-                    'Implemented real-time fraud detection saving $10M+ annually',
-                    'Developed customer portal serving 5M+ users with 99.9% uptime',
-                    'Created distributed caching layer improving response times by 80%',
-                    'Built API gateway handling 50K requests/second',
-                    'Implemented comprehensive monitoring and alerting system',
-                    'Led migration from monolith to microservices architecture',
-                    'Mentored team of 8 junior developers'
+                    'Developed platform integrating Garmin, Fitbit, Apple HealthKit APIs processing 10M+ data points daily',
+                    'Built HIPAA-compliant architecture with end-to-end encryption and audit logging',
+                    'Implemented real-time alerting system for abnormal health readings',
+                    'Created predictive models for diabetes management improving outcomes by 22%',
+                    'Designed RESTful APIs consumed by iOS/Android mobile applications',
+                    'Built event-driven architecture using RabbitMQ for asynchronous processing',
+                    'Implemented OAuth 2.0 for secure third-party device authorization',
+                    'Created data pipeline using Apache Spark for health analytics'
                 ],
-                tech: ['Java', 'Spring Boot', 'Oracle', 'Redis', 'RabbitMQ']
+                tech: ['.NET Framework', 'ASP.NET MVC', 'RabbitMQ', 'SQL Server', 'MongoDB', 'AWS']
+            },
+            {
+                date: 'Mar 2013 - Jul 2014',
+                company: '📊 Agiboo',
+                title: 'Senior Software Engineer',
+                viaCompany: { name: 'Ciklum', url: 'https://www.ciklum.com/' },
+                description: 'Developed commodity trading and risk management (CTRM) platform for agricultural commodities.',
+                details: [
+                    'Built high-frequency trading engine processing 100K+ transactions daily',
+                    'Implemented risk calculation models for commodity derivatives (futures, options)',
+                    'Created position management system with P&L calculation and VAR analysis',
+                    'Developed integration with ICE, CME for real-time market data feeds',
+                    'Built contract lifecycle management from negotiation to settlement',
+                    'Designed OLAP cubes using SQL Server Analysis Services for trade analytics',
+                    'Implemented complex pricing models for exotic derivatives',
+                    'Created regulatory reporting for EMIR, MiFID compliance'
+                ],
+                tech: ['.NET Framework', 'WCF', 'ASP.NET MVC', 'SQL Server', 'Crystal Reports']
+            },
+            {
+                date: 'Jun 2011 - Feb 2013',
+                company: '🏗️ Richbrains',
+                title: 'Head of Department / Development Manager',
+                viaCompany: null,
+                description: 'Led innovation department developing cutting-edge digital products, growing team from 3 to 12 developers.',
+                details: [
+                    'Built 30-minute grocery delivery system (pre-Instacart era) processing 5,000+ daily orders',
+                    'Developed Uber-like taxi application for 15K+ drivers with real-time routing',
+                    'Created London Business School student portal with course management features',
+                    'Built telemedicine platform for remote consultations with video streaming',
+                    'Introduced Agile/Scrum methodology improving delivery predictability by 40%',
+                    'Established CI/CD pipeline using TeamCity, Octopus Deploy',
+                    'Implemented code review process reducing production defects by 60%',
+                    'Mentored junior developers with 80% promotion rate to senior roles'
+                ],
+                tech: ['.NET Framework', 'ASP.NET MVC', 'MongoDB', 'SQL Server', 'SignalR']
+            },
+            {
+                date: 'May 2009 - Jun 2011',
+                company: '📸 Intetics',
+                title: 'Senior Software Engineer',
+                viaCompany: null,
+                description: 'Core contributor to AdoramaPix photo printing platform, driving revenue growth from $50M to $150M+.',
+                details: [
+                    'Built distributed photo rendering system processing 100K+ photo books monthly',
+                    'Implemented personalization engine with collaborative filtering for recommendations',
+                    'Developed high-performance image processing pipeline using GDI+ and ImageMagick',
+                    'Created shopping cart with complex pricing rules and promotional engine',
+                    'Built integration with FedEx, UPS APIs for shipping calculation',
+                    'Optimized database queries reducing page load time from 5s to 500ms',
+                    'Implemented distributed caching using AppFabric Cache',
+                    'Designed CDN strategy using Akamai for global content delivery'
+                ],
+                tech: ['.NET Framework', 'ASP.NET', 'WCF', 'SQL Server', 'jQuery', 'AWS S3']
+            },
+            {
+                date: 'Jun 2006 - May 2009',
+                company: '⚙️ Itransition',
+                title: 'Software Engineer → Lead Software Engineer',
+                viaCompany: null,
+                description: 'Rapid career progression from junior to lead engineer in 18 months, delivering enterprise solutions for Fortune 500 clients.',
+                details: [
+                    'Led team of 8 developers building Dynamics NAV customizations for manufacturing client',
+                    'Developed comprehensive HRIS processing payroll for 10,000+ employees',
+                    'Built SharePoint-based DMS with workflow automation using Windows Workflow Foundation',
+                    'Created BI solution using SQL Server Reporting Services for CFO dashboards',
+                    'Progressed from ASP.NET 2.0 WebForms to early adopter of ASP.NET MVC',
+                    'Implemented Service-Oriented Architecture using WCF',
+                    'Built integration adapters for SAP, Oracle EBS using BizTalk Server',
+                    'Achieved 95% client satisfaction score across all projects'
+                ],
+                tech: ['.NET Framework', 'ASP.NET', 'WCF', 'SQL Server', 'SharePoint', 'BizTalk']
             }
         ];
         
@@ -271,17 +349,26 @@ function toggleFullExperience(e) {
                 item.setAttribute('data-aos', 'fade-up');
                 item.setAttribute('data-aos-delay', (index + 3) * 100);
                 
+                const viaCompanyHtml = exp.viaCompany ? `
+                    <div class="company-meta">
+                        <a href="${exp.viaCompany.url}" target="_blank" class="via-company">
+                            <i class="fas fa-building"></i> via ${exp.viaCompany.name}
+                        </a>
+                    </div>
+                ` : '';
+                
                 item.innerHTML = `
-                    <div class="timeline-date">${exp.date}</div>
                     <div class="timeline-content">
+                        <div class="timeline-date">${exp.date}</div>
                         <h3>${exp.company}</h3>
                         <h4>${exp.title}</h4>
+                        ${viaCompanyHtml}
                         <p>${exp.description}</p>
                         <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
                         <div class="experience-details">
                             <h5>Key Achievements:</h5>
                             <ul>
-                                ${exp.details.map(detail => `<li>${detail}</li>`).join('')}
+                                ${exp.details ? exp.details.map(detail => `<li>${detail}</li>`).join('') : ''}
                             </ul>
                         </div>
                         <div class="tech-tags">

@@ -130,6 +130,36 @@
             align-items: center;
             height: 80px;
         }
+        .achievement-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+        }
+        .achievement-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .achievement-card p {
+            flex-grow: 1;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        .achievement-link, .achievement-link-spacer {
+            margin-top: auto;
+            display: inline-block;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .achievement-link:hover {
+            transform: translateX(5px);
+        }
+        .achievement-link-spacer {
+            height: 24px;
+            visibility: hidden;
+        }
         .music-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 20px;
@@ -270,8 +300,8 @@
             <h2 class="section-title" data-aos="fade-up">Professional Experience</h2>
             <div class="timeline">
                 <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-date">Apr 2024 - Present</div>
                     <div class="timeline-content">
+                        <div class="timeline-date">Apr 2024 - Present</div>
                         <h3>🏥 Olympus Corporation</h3>
                         <h4>Platform Technology Lead / AI & Big Data Architect</h4>
                         <p>Leading 25+ engineers architecting clinical data platform and AI/ML infrastructure for global medical device analytics.</p>
@@ -303,8 +333,8 @@
                 </div>
                 
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="timeline-date">Jan 2023 - Present</div>
                     <div class="timeline-content">
+                        <div class="timeline-date">Jan 2023 - Present</div>
                         <h3>💡 EasyChamp</h3>
                         <h4>Founder & CTO</h4>
                         <p>Building AI-powered sports competition management platform with cutting-edge computer vision and cloud-native architecture.</p>
@@ -334,10 +364,15 @@
                 </div>
                 
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="timeline-date">Jan 2023 - May 2024</div>
                     <div class="timeline-content">
+                        <div class="timeline-date">Jan 2023 - May 2024</div>
                         <h3>🚢 Carnival Corporation</h3>
-                        <h4>Principal Platform Architect (via KForce)</h4>
+                        <h4>Principal Platform Architect</h4>
+                        <div class="company-meta">
+                            <a href="https://www.kforce.com/" target="_blank" class="via-company">
+                                <i class="fas fa-building"></i> via KForce
+                            </a>
+                        </div>
                         <p>Led platform modernization serving 20M+ passengers annually, migrating 5PB data warehouse to cloud.</p>
                         <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
                         <div class="experience-details">
@@ -380,6 +415,7 @@
                     </div>
                     <h3>Forbes Technology Council</h3>
                     <p>Invitation-only membership for senior technology executives</p>
+                    <div class="achievement-link-spacer"></div>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="achievement-icon">
@@ -387,7 +423,7 @@
                     </div>
                     <h3>AI Innovation with Hugging Face</h3>
                     <p>Participated in AI hackathon with Clement Delangue (CEO) - our innovative solution received notable recognition</p>
-                    <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" class="publication-link">View Photo →</a>
+                    <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" class="achievement-link">View Photo →</a>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="achievement-icon">
@@ -395,7 +431,7 @@
                     </div>
                     <h3>Business Excellence Award 2020</h3>
                     <p>Recognized for innovation and digital transformation</p>
-                    <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" class="publication-link">View Award →</a>
+                    <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" class="achievement-link">View Award →</a>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="achievement-icon">
@@ -403,6 +439,7 @@
                     </div>
                     <h3>Claude Code Development Pioneer</h3>
                     <p>Built complete AI solution in 1 day using Claude Code, achieving top placement in competition</p>
+                    <div class="achievement-link-spacer"></div>
                 </div>
             </div>
         </div>
