@@ -31,32 +31,41 @@ This option provides:
    - Select the FREE plan
 
 3. **Configure DNS Records in Cloudflare**
+   
+   **IMPORTANT: Use these exact A records to point to GitHub Pages:**
    ```
    Type: A
    Name: @
    Content: 185.199.108.153
-   Proxy: ON (Orange cloud)
+   Proxy: OFF (Grey cloud - IMPORTANT!)
+   TTL: Auto
    
    Type: A
    Name: @
    Content: 185.199.109.153
-   Proxy: ON (Orange cloud)
+   Proxy: OFF (Grey cloud - IMPORTANT!)
+   TTL: Auto
    
    Type: A
    Name: @
    Content: 185.199.110.153
-   Proxy: ON (Orange cloud)
+   Proxy: OFF (Grey cloud - IMPORTANT!)
+   TTL: Auto
    
    Type: A
    Name: @
    Content: 185.199.111.153
-   Proxy: ON (Orange cloud)
+   Proxy: OFF (Grey cloud - IMPORTANT!)
+   TTL: Auto
    
    Type: CNAME
    Name: www
    Content: anton-abyzov.github.io
-   Proxy: ON (Orange cloud)
+   Proxy: OFF (Grey cloud - IMPORTANT!)
+   TTL: Auto
    ```
+   
+   **Note**: Keep Proxy OFF (grey cloud) for GitHub Pages to work correctly. GitHub will provide SSL.
 
 4. **Update Nameservers**
    - Cloudflare will provide you with 2 nameservers like:

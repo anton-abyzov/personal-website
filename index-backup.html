@@ -37,56 +37,6 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
-    <style>
-        .experience-details {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(0, 102, 255, 0.05);
-            border-radius: 10px;
-            border-left: 3px solid var(--secondary-color);
-            display: none;
-        }
-        .experience-details.expanded {
-            display: block;
-        }
-        .expand-btn {
-            background: transparent;
-            color: var(--secondary-color);
-            border: 1px solid var(--secondary-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        .expand-btn:hover {
-            background: var(--secondary-color);
-            color: var(--dark-bg);
-        }
-        .publication-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .cert-badge {
-            display: inline-block;
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--secondary-color);
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            margin: 3px;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-        }
-        .music-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -176,17 +126,6 @@
                         <li>Claude Code Expert & Spec-Driven Development Pioneer</li>
                         <li>US Green Card (EB-1A) - Extraordinary Ability in Science/Technology</li>
                     </ul>
-                    <h3 style="margin-top: 30px;">Professional Certifications</h3>
-                    <div>
-                        <span class="cert-badge">Azure Solutions Architect Expert</span>
-                        <span class="cert-badge">AWS Solutions Architect</span>
-                        <span class="cert-badge">Google Cloud Professional</span>
-                        <span class="cert-badge">Certified Kubernetes Administrator</span>
-                        <span class="cert-badge">HashiCorp Terraform Associate</span>
-                        <span class="cert-badge">.NET Developer</span>
-                        <span class="cert-badge">MongoDB Certified</span>
-                        <span class="cert-badge">Databricks Data Engineer</span>
-                    </div>
                 </div>
                 <div class="skills-grid" data-aos="fade-up" data-aos-delay="200">
                     <div class="skill-card">
@@ -225,20 +164,6 @@
                         <h3>🏥 Olympus Corporation</h3>
                         <h4>Platform Technology Lead / AI & Big Data Architect</h4>
                         <p>Leading 25+ engineers architecting clinical data platform and AI/ML infrastructure for global medical device analytics.</p>
-                        <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
-                        <div class="experience-details">
-                            <h5>Key Achievements:</h5>
-                            <ul>
-                                <li>Architected enterprise data platform processing 10TB+ daily medical device telemetry</li>
-                                <li>Implemented Microsoft Purview for healthcare data governance ensuring HIPAA/GDPR compliance</li>
-                                <li>Built ML pipelines using Azure ML, MLflow for ODIN Caddie AI platform (95% polyp detection accuracy)</li>
-                                <li>Designed Kafka event-driven architecture processing 100M+ events daily</li>
-                                <li>Established comprehensive monitoring with Datadog APM and Site24x7 achieving 99.99% uptime</li>
-                                <li>Implemented 5000+ unit tests, 500+ integration tests, 100+ E2E tests with Playwright</li>
-                                <li>Created disaster recovery strategy with 15-minute RTO using Azure Site Recovery</li>
-                                <li>Reduced infrastructure costs by 45% through cloud migration and optimization</li>
-                            </ul>
-                        </div>
                         <div class="tech-tags">
                             <span>Azure</span>
                             <span>Microsoft Fabric</span>
@@ -247,31 +172,15 @@
                             <span>Kubernetes</span>
                             <span>Kafka</span>
                             <span>Datadog</span>
-                            <span>Site24x7</span>
                         </div>
                     </div>
                 </div>
-                
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
                     <div class="timeline-date">Jan 2023 - Present</div>
                     <div class="timeline-content">
                         <h3>💡 EasyChamp</h3>
                         <h4>Founder & CTO</h4>
                         <p>Building AI-powered sports competition management platform with cutting-edge computer vision and cloud-native architecture.</p>
-                        <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
-                        <div class="experience-details">
-                            <h5>Key Achievements:</h5>
-                            <ul>
-                                <li>Developed YOLOv11-based player tracking system with 92% accuracy for real-time analysis</li>
-                                <li>Built GPT-4 powered coaching assistant using LangChain for tactical recommendations</li>
-                                <li>Implemented vector database (Pinecone) for semantic search across 100K+ training videos</li>
-                                <li>Designed ML pipeline using Google Vertex AI for automated model training</li>
-                                <li>Architected multi-cloud infrastructure: Azure AKS, AWS EKS, GCP GKE</li>
-                                <li>Created mobile apps using React Native with 99.9% crash-free rate</li>
-                                <li>Published 3 scholarly articles on sports technology and platform architecture</li>
-                                <li>Won multiple hackathons and secured angel investment</li>
-                            </ul>
-                        </div>
                         <div class="tech-tags">
                             <span>YOLOv11</span>
                             <span>GPT-4</span>
@@ -282,27 +191,12 @@
                         </div>
                     </div>
                 </div>
-                
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
                     <div class="timeline-date">Jan 2023 - May 2024</div>
                     <div class="timeline-content">
                         <h3>🚢 Carnival Corporation</h3>
                         <h4>Principal Platform Architect (via KForce)</h4>
                         <p>Led platform modernization serving 20M+ passengers annually, migrating 5PB data warehouse to cloud.</p>
-                        <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
-                        <div class="experience-details">
-                            <h5>Key Achievements:</h5>
-                            <ul>
-                                <li>Architected unified guest platform consolidating 9 legacy systems</li>
-                                <li>Led migration of 5PB data warehouse from Oracle to Azure Synapse</li>
-                                <li>Designed real-time CDC pipeline processing 50M+ events daily</li>
-                                <li>Built contactless payment system processing $500M+ annually</li>
-                                <li>Migrated 200+ applications to Kubernetes with zero downtime</li>
-                                <li>Reduced infrastructure costs by 40% through FinOps practices</li>
-                                <li>Built comprehensive monitoring achieving 99.95% uptime</li>
-                                <li>Implemented ML-based recommendation engine for personalized experiences</li>
-                            </ul>
-                        </div>
                         <div class="tech-tags">
                             <span>Azure Synapse</span>
                             <span>Kafka</span>
@@ -326,7 +220,7 @@
             <div class="achievements-grid">
                 <div class="achievement-card" data-aos="fade-up">
                     <div class="achievement-image">
-                        <img src="assets/images/forbes-header.png" alt="Forbes Technology Council">
+                        <img src="assets/images/forbes-placeholder.jpg" alt="Forbes Technology Council">
                     </div>
                     <h3>Forbes Technology Council</h3>
                     <p>Invitation-only membership for senior technology executives</p>
@@ -335,24 +229,22 @@
                     <div class="achievement-image">
                         <img src="assets/images/huggingface-placeholder.jpg" alt="Hugging Face CEO">
                     </div>
-                    <h3>AI Innovation with Hugging Face</h3>
-                    <p>Led winning team at AI hackathon with Clement Delangue (CEO)</p>
-                    <a href="https://www.instagram.com/p/DLYaJptxeaV/?img_index=1" target="_blank" class="publication-link">View Photo →</a>
+                    <h3>Meeting with Clement Delangue</h3>
+                    <p>CEO of Hugging Face - AI/ML collaboration discussions</p>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="achievement-image">
-                        <img src="assets/images/award-placeholder.jpg" alt="Business Award">
+                        <img src="assets/images/hackathon-placeholder.jpg" alt="Hackathon Jury">
                     </div>
-                    <h3>Business Excellence Award 2020</h3>
-                    <p>Recognized for innovation and digital transformation</p>
-                    <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" class="publication-link">View Award →</a>
+                    <h3>Hackathon Jury Member</h3>
+                    <p>TechCrunch Disrupt & multiple AI/ML hackathons</p>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="achievement-image">
-                        <img src="assets/images/hackathon-placeholder.jpg" alt="Hackathon Victory">
+                        <img src="assets/images/award-placeholder.jpg" alt="Business Award">
                     </div>
-                    <h3>Claude Code Development Pioneer</h3>
-                    <p>Built complete AI solution in 1 day using Claude Code, leading team to victory</p>
+                    <h3>Prize Winner 2020</h3>
+                    <p>Innovation Excellence Award for Digital Transformation</p>
                 </div>
             </div>
         </div>
@@ -361,70 +253,31 @@
     <!-- Publications Section -->
     <section id="publications" class="publications section">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Publications & Research</h2>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-                <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AOV7GLM9lx-SQwKY1EKrhL8umZ6EqX6E0o9bwOsawKPUmvjy-eo2LMzWgHHCYILSTSzAfUHMHww9mjMS076N0LZavHge_eaVsl85DU9Nin0&user=fvm5dY-8Q3EC" 
-                   target="_blank" class="btn btn-outline">
-                    <i class="fas fa-graduation-cap"></i> View Google Scholar Profile
-                </a>
-            </div>
-            
+            <h2 class="section-title" data-aos="fade-up">Publications & Speaking</h2>
             <div class="publications-grid">
                 <div class="publication-card" data-aos="fade-up">
-                    <div class="publication-type">Forbes Tech Council</div>
-                    <h3>A Holistic Approach To Internal Company Resource Optimization</h3>
-                    <p class="publication-venue">Forbes Technology Council, 2023</p>
-                    <a href="https://www.forbes.com/sites/forbestechcouncil/2023/05/02/a-holistic-approach-to-internal-company-resource-optimization-bridging-employee-motivation-and-company-growth/" target="_blank" class="publication-link">Read Article →</a>
+                    <div class="publication-type">Article</div>
+                    <h3>Microservices at Scale: Lessons from Fortune 500 Transformations</h3>
+                    <p class="publication-venue">Forbes Tech Council, 2023</p>
+                    <a href="#" class="publication-link">Read Article →</a>
                 </div>
-                
                 <div class="publication-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="publication-type">Research Paper</div>
-                    <h3>Integrating Employee Motivation and Resource Optimization</h3>
-                    <p class="publication-venue">APNI.ru Scientific Publication, 2023</p>
-                    <a href="https://apni.ru/article/6002-integrating-employee-motivation-and-resource" target="_blank" class="publication-link">Read Paper →</a>
+                    <div class="publication-type">Article</div>
+                    <h3>AI in Healthcare: Building HIPAA-Compliant ML Platforms</h3>
+                    <p class="publication-venue">InfoQ, 2024</p>
+                    <a href="#" class="publication-link">Read Article →</a>
                 </div>
-                
                 <div class="publication-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="publication-type">Academic Journal</div>
-                    <h3>Balancing Data Normalization in Sports Platforms</h3>
-                    <p class="publication-venue">Инновации и инвестиции, 2023</p>
-                    <a href="http://innovazia.ru/upload/iblock/3d0/f7chdnii590aaia3q5nk7r174bgl1n17/%E2%84%964%202023%20%D0%98%D0%B8%D0%98.pdf" target="_blank" class="publication-link">Read Paper →</a>
-                </div>
-                
-                <div class="publication-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="publication-type">Engineering Journal</div>
-                    <h3>Leveraging Microservices Architecture on AWS</h3>
-                    <p class="publication-venue">IJLEMR, Volume 8, 2023</p>
-                    <a href="http://www.ijlemr.com/papers/volume8-issue05/5-IJLEMR-77810.pdf" target="_blank" class="publication-link">Read Paper →</a>
-                </div>
-                
-                <div class="publication-card" data-aos="fade-up">
-                    <div class="publication-type">Technical Article</div>
-                    <h3>Advanced Database Architecture Patterns</h3>
-                    <p class="publication-venue">Habr Technical Blog, 2015</p>
-                    <a href="https://habr.com/ru/post/271853/" target="_blank" class="publication-link">Read Article →</a>
-                </div>
-                
-                <div class="publication-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="publication-type">Conference</div>
                     <h3>Scaling Kubernetes to 1000+ Microservices</h3>
                     <p class="publication-venue">KubeCon North America 2023</p>
                     <a href="#" class="publication-link">View Talk →</a>
                 </div>
-                
-                <div class="publication-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="publication-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="publication-type">Conference</div>
                     <h3>Building Resilient Microservices with .NET 8</h3>
                     <p class="publication-venue">.NET Conf 2024</p>
                     <a href="#" class="publication-link">View Talk →</a>
-                </div>
-                
-                <div class="publication-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="publication-type">Research Doc</div>
-                    <h3>EasyChamp Platform Architecture</h3>
-                    <p class="publication-venue">Technical Documentation, 2024</p>
-                    <a href="https://docs.google.com/document/d/1WJ8boFofyoqjotTTE9kFsQClrmPQ9ckY10hfQhU5ufw/edit" target="_blank" class="publication-link">View Document →</a>
                 </div>
             </div>
         </div>
@@ -434,57 +287,32 @@
     <section id="personal" class="personal section">
         <div class="container">
             <h2 class="section-title" data-aos="fade-up">Beyond Technology</h2>
-            
-            <!-- Music Section -->
-            <div style="margin-bottom: 50px;">
-                <h3 style="text-align: center; margin-bottom: 30px; color: var(--secondary-color);">🎹 Piano Performance</h3>
-                <div class="music-card" data-aos="fade-up">
-                    <h4>Classical Piano Repertoire</h4>
-                    <p>15+ years of classical piano training and performance</p>
-                    <div style="margin-top: 15px;">
-                        <a href="https://www.youtube.com/watch?v=abf_p1vqI-Q" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Chopin Performance
-                        </a>
-                        <a href="https://youtu.be/5WVYgxMCWPg" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Laviniak Performance
-                        </a>
-                        <a href="https://youtu.be/v5sYkSmO8bM" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Rachmaninoff Performance
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Sports & Achievements -->
             <div class="hobbies-grid">
                 <div class="hobby-card" data-aos="fade-up">
                     <div class="hobby-icon">⚽</div>
-                    <h3>Futsal Excellence</h3>
+                    <h3>Soccer Excellence</h3>
                     <ul>
                         <li>Master of Sport in Belarus</li>
                         <li>Winner of Minsk Championship</li>
                         <li>Played in Belarusian Top Futsal League</li>
-                        <li>Professional indoor football player</li>
                     </ul>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="hobby-icon">⚽</div>
-                    <h3>Soccer Coach</h3>
+                    <div class="hobby-icon">🏈</div>
+                    <h3>Football Coach</h3>
                     <ul>
                         <li>11x11 Dade County Winner</li>
-                        <li>Youth Development Program Leader</li>
+                        <li>Youth Development Program</li>
                         <li>Tactical Strategy Expert</li>
-                        <li>Licensed youth coach</li>
                     </ul>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="hobby-icon">🎹</div>
-                    <h3>Piano Mastery</h3>
+                    <h3>Piano Playing</h3>
                     <ul>
                         <li>Classical & Contemporary</li>
                         <li>15+ Years Experience</li>
                         <li>Composer & Performer</li>
-                        <li>YouTube performances</li>
                     </ul>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="300">
@@ -494,7 +322,6 @@
                         <li>Extraordinary Ability (EB-1A)</li>
                         <li>Science & Technology</li>
                         <li>International Recognition</li>
-                        <li>Forbes Tech Council</li>
                     </ul>
                 </div>
             </div>
@@ -513,9 +340,6 @@
                     </a>
                     <a href="https://github.com/anton-abyzov" target="_blank" class="social-link">
                         <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://scholar.google.com/citations?user=fvm5dY-8Q3EC" target="_blank" class="social-link">
-                        <i class="fas fa-graduation-cap"></i>
                     </a>
                     <a href="https://twitter.com/antonabyzov" target="_blank" class="social-link">
                         <i class="fab fa-twitter"></i>
@@ -541,12 +365,5 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
-    <script>
-        function toggleExpand(button) {
-            const details = button.nextElementSibling;
-            details.classList.toggle('expanded');
-            button.textContent = details.classList.contains('expanded') ? 'Show Less' : 'Read More Details';
-        }
-    </script>
 </body>
 </html>
