@@ -1075,18 +1075,16 @@ function openFutsalGallery() {
     // Create close button
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
+    closeBtn.type = 'button';
     closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
-    closeBtn.onclick = () => closeModal(modal.id);
+    closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeModal(modal.id);
+    };
     
     const content = `
         <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">Futsal Achievements</h2>
         <div style="display: grid; gap: 30px;">
-            <!-- Master of Sport Certificate -->
-            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
-                <h3 style="color: #ffd700; margin-bottom: 15px;">Master of Sport - Belarus</h3>
-                <img src="/assets/images/achievements/master_of_sports.jpg" alt="Master of Sport Certificate" style="width: 100%; max-width: 600px; border-radius: 10px; margin: 0 auto; display: block;">
-            </div>
-            
             <!-- Euro Tournament Photos -->
             <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
                 <h3 style="color: #ffd700; margin-bottom: 15px;">Euro Tournament Winner - France 2008</h3>
@@ -1094,6 +1092,12 @@ function openFutsalGallery() {
                     <img src="/assets/images/achievements/soccer_france_euro_national_2008_winner.jpg" alt="Euro Tournament Winner" style="width: 100%; border-radius: 10px;">
                     <img src="/assets/images/achievements/soccer_france_euro_national_2008_after_winner.jpg" alt="Euro Tournament Celebration" style="width: 100%; border-radius: 10px;">
                 </div>
+            </div>
+            
+            <!-- Master of Sport Certificate -->
+            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Master of Sport - Belarus</h3>
+                <img src="/assets/images/achievements/master_of_sports.jpg" alt="Master of Sport Certificate" style="width: 100%; max-width: 600px; border-radius: 10px; margin: 0 auto; display: block; transform: rotate(90deg);">
             </div>
             
             <!-- Goal Video -->
@@ -1107,7 +1111,8 @@ function openFutsalGallery() {
         </div>
     `;
     
-    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modalContent.innerHTML = content;
+    modalContent.appendChild(closeBtn);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
     
