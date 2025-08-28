@@ -697,10 +697,14 @@ function createPlatformValueModal() {
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content platform-value-modal';
     
-    const closeBtn = document.createElement('span');
+    const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.innerHTML = '&times;';
-    closeBtn.onclick = () => closePlatformValueModal(modal);
+    closeBtn.type = 'button';
+    closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        closePlatformValueModal(modal);
+    };
     
     const content = `
         <div class="platform-value-header">
@@ -765,7 +769,8 @@ function createPlatformValueModal() {
         </div>
     `;
     
-    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modalContent.innerHTML = content;
+    modalContent.appendChild(closeBtn);
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
     
@@ -796,6 +801,20 @@ function closePlatformValueModal(modal) {
             document.body.removeChild(modal);
         }
     }, 300);
+}
+
+// Universal modal close function
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId) || document.querySelector('.modal.active');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            if (modal && modal.parentNode) {
+                document.body.removeChild(modal);
+            }
+        }, 300);
+    }
 }
 
 // Soccer Gallery

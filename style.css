@@ -967,21 +967,21 @@ body {
 }
 
 .modal-close {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.15);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-size: 28px;
-    font-weight: 300;
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
     z-index: 10002;
@@ -989,10 +989,11 @@ body {
 }
 
 .modal-close:hover {
-    background: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background: #ff4757;
+    border-color: #ff4757;
+    color: white;
     transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
 }
 
 /* Carousel Styles */
@@ -1150,12 +1151,14 @@ body {
 
 /* Platform Value Modal */
 .platform-value-modal {
-    padding: 30px;
+    padding: 40px 30px 30px 30px;
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(0, 102, 255, 0.1));
     border-radius: 20px;
     max-width: 800px;
     margin: auto;
     border: 1px solid rgba(0, 212, 255, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 .platform-value-header {
