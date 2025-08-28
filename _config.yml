@@ -1,0 +1,15 @@
+# GitHub Pages Configuration
+title: Anton Abyzov - Technology Evangelist
+description: Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures and AI/ML solutions
+url: https://antonabyzov.com
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+theme: null
+
+# Exclude from processing
+exclude:
+  - README.md
+  - .gitignore
+  - LICENSE
