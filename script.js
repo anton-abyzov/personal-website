@@ -368,10 +368,12 @@ function toggleFullExperience(e) {
                         <p>${exp.description}</p>
                         <button class="expand-btn" onclick="toggleExpand(this)">Read More Details</button>
                         <div class="experience-details">
-                            <h5>Key Achievements:</h5>
-                            <ul>
-                                ${exp.details ? exp.details.map(detail => `<li>${detail}</li>`).join('') : ''}
-                            </ul>
+                            <div class="experience-details-content">
+                                <h5>Key Achievements:</h5>
+                                <ul>
+                                    ${exp.details ? exp.details.map(detail => `<li>${detail}</li>`).join('') : ''}
+                                </ul>
+                            </div>
                         </div>
                         <div class="tech-tags">
                             ${exp.tech.map(t => `<span>${t}</span>`).join('')}
@@ -653,48 +655,57 @@ function createPlatformValueModal() {
         </div>
         <div class="platform-value-breakdown">
             <div class="platform-value-item">
+                <div class="platform-value-company">SocialWellth</div>
+                <div class="platform-value-amount">$32M+</div>
+                <div class="platform-value-description">
+                    Led platform architecture for financial wellness startup. Company raised 
+                    $32M Series A funding. Built scalable fintech infrastructure processing 
+                    billions in transactions with 99.99% uptime.
+                </div>
+            </div>
+            <div class="platform-value-item">
                 <div class="platform-value-company">LuxNow</div>
-                <div class="platform-value-amount">$85M+</div>
+                <div class="platform-value-amount">$25M+</div>
                 <div class="platform-value-description">
-                    Led architectural design and development of luxury marketplace platform. 
-                    Raised $85M in Series C funding with $500M valuation. Implemented scalable 
-                    microservices architecture supporting 1M+ users.
-                </div>
-            </div>
-            <div class="platform-value-item">
-                <div class="platform-value-company">PolyFrog Digital</div>
-                <div class="platform-value-amount">$7.3M</div>
-                <div class="platform-value-description">
-                    As CTO, grew startup from inception to $7.3M revenue. Built complete 
-                    technology stack, assembled engineering team, and established DevOps practices 
-                    that reduced deployment time by 90%.
-                </div>
-            </div>
-            <div class="platform-value-item">
-                <div class="platform-value-company">EasyChamp Sports Platform</div>
-                <div class="platform-value-amount">$2M+</div>
-                <div class="platform-value-description">
-                    Architected cloud-native sports management platform serving 100K+ athletes. 
-                    Implemented real-time scoring system, payment processing, and AI-powered 
-                    features that increased user engagement by 200%.
+                    Architected luxury marketplace platform infrastructure. 
+                    Implemented microservices architecture supporting 500K+ active users 
+                    and millions in GMV monthly transactions.
                 </div>
             </div>
             <div class="platform-value-item">
                 <div class="platform-value-company">DentistryAutomation</div>
-                <div class="platform-value-amount">$3M+</div>
+                <div class="platform-value-amount">$15M+</div>
                 <div class="platform-value-description">
                     Designed healthcare automation platform reducing administrative overhead by 60%. 
-                    Integrated with major insurance providers and implemented HIPAA-compliant 
-                    infrastructure processing millions of claims annually.
+                    HIPAA-compliant infrastructure processing 10M+ claims annually with major 
+                    insurance provider integrations.
                 </div>
             </div>
             <div class="platform-value-item">
                 <div class="platform-value-company">Enterprise Consulting</div>
-                <div class="platform-value-amount">$5M+</div>
+                <div class="platform-value-amount">$10M+</div>
                 <div class="platform-value-description">
                     Digital transformation initiatives across Fortune 500 companies. Led cloud 
                     migrations, AI/ML implementations, and DevOps transformations resulting in 
                     average 40% cost reduction and 3x performance improvements.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">Softgreat (Founded)</div>
+                <div class="platform-value-amount">$7.3M</div>
+                <div class="platform-value-description">
+                    Founded and scaled to $7.3M revenue with 66 employees. Built complete 
+                    technology stack, assembled engineering team, and established DevOps practices 
+                    serving Fortune 500 clients.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">EasyChamp Sports Platform</div>
+                <div class="platform-value-amount">$5M+</div>
+                <div class="platform-value-description">
+                    Architected cloud-native sports management platform serving 100K+ athletes. 
+                    Real-time scoring system, payment processing, and AI-powered features 
+                    increasing user engagement by 200%.
                 </div>
             </div>
         </div>
@@ -923,9 +934,24 @@ function closePianoModal(modal) {
     }, 300);
 }
 
+// Marathon Gallery
+function openMarathonGallery() {
+    const images = [
+        '/assets/images/achievements/half-marathon1.jpg',
+        '/assets/images/achievements/half-marathon2.jpg'
+    ];
+    const captions = [
+        '2019 Minsk Half-Marathon - 21.1km',
+        'Crossing the Finish Line - Personal Achievement'
+    ];
+    const carousel = new ImageCarousel(images, captions);
+    carousel.open();
+}
+
 // Make sure functions are available globally
 window.openSoccerGallery = openSoccerGallery;
 window.openCrossFitGallery = openCrossFitGallery;
+window.openMarathonGallery = openMarathonGallery;
 window.openVideoModal = openVideoModal;
 window.openPianoModal = openPianoModal;
 window.createPlatformValueModal = createPlatformValueModal;
