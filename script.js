@@ -1087,7 +1087,7 @@ function openFutsalGallery() {
     const captions = [
         'Euro Tournament Winner - France 2008',
         'Euro Tournament Celebration',
-        'Master of Sport - Belarus (Rotated 90°)'
+        'Master of Sport - Belarus'
     ];
     
     // Create enhanced carousel with special styling for master of sports
