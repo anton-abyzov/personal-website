@@ -589,6 +589,60 @@ class ImageCarousel {
                 if (e.key === 'ArrowRight') this.navigate(1);
             }
         });
+        
+        // Touch support for mobile swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slidesContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        slidesContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe(touchStartX, touchEndX);
+        }, { passive: true });
+        
+        // Mouse drag support for desktop
+        let mouseDown = false;
+        let startX = 0;
+        
+        slidesContainer.addEventListener('mousedown', (e) => {
+            mouseDown = true;
+            startX = e.pageX;
+            slidesContainer.style.cursor = 'grabbing';
+        });
+        
+        slidesContainer.addEventListener('mouseup', (e) => {
+            if (mouseDown) {
+                mouseDown = false;
+                slidesContainer.style.cursor = 'grab';
+                const endX = e.pageX;
+                this.handleSwipe(startX, endX);
+            }
+        });
+        
+        slidesContainer.addEventListener('mouseleave', () => {
+            mouseDown = false;
+            slidesContainer.style.cursor = 'grab';
+        });
+        
+        slidesContainer.style.cursor = 'grab';
+    }
+    
+    handleSwipe(startX, endX) {
+        const swipeThreshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swiped left - next image
+                this.navigate(1);
+            } else {
+                // Swiped right - previous image
+                this.navigate(-1);
+            }
+        }
     }
     
     navigate(direction) {
@@ -691,19 +745,19 @@ function createPlatformValueModal() {
                 </div>
             </div>
             <div class="platform-value-item">
-                <div class="platform-value-company">Softgreat (Founded)</div>
+                <div class="platform-value-company">Softgreat</div>
                 <div class="platform-value-amount">$7.3M</div>
                 <div class="platform-value-description">
-                    Founded and scaled to $7.3M revenue with 66 employees. Built complete 
+                    As CTO, scaled company to $7.3M revenue with 66 employees. Built complete 
                     technology stack, assembled engineering team, and established DevOps practices 
                     serving Fortune 500 clients.
                 </div>
             </div>
             <div class="platform-value-item">
-                <div class="platform-value-company">EasyChamp Sports Platform</div>
-                <div class="platform-value-amount">$5M+</div>
+                <div class="platform-value-company">EasyChamp Sports Platform (Founded)</div>
+                <div class="platform-value-amount">$2M+</div>
                 <div class="platform-value-description">
-                    Architected cloud-native sports management platform serving 100K+ athletes. 
+                    Founded and architected cloud-native sports management platform serving 100K+ athletes. 
                     Real-time scoring system, payment processing, and AI-powered features 
                     increasing user engagement by 200%.
                 </div>
@@ -747,16 +801,14 @@ function closePlatformValueModal(modal) {
 // Soccer Gallery
 function openSoccerGallery() {
     const images = [
-        '/assets/images/achievements/soccer_dcfc1.jpeg',
         '/assets/images/achievements/soccer_dcfc2.jpeg',
         '/assets/images/achievements/soccer_dcfc3.jpeg',
         '/assets/images/achievements/soccer_dcfc4.jpeg'
     ];
     const captions = [
         '2024 USSL Championship - FC Miami Dade County',
-        'Team Celebration After Victory',
         'Championship Trophy Presentation',
-        'Team Strategy and Training'
+        'Team Victory Celebration'
     ];
     const carousel = new ImageCarousel(images, captions);
     carousel.open();
@@ -766,11 +818,15 @@ function openSoccerGallery() {
 function openCrossFitGallery() {
     const images = [
         '/assets/images/achievements/crossfit1.jpeg',
-        '/assets/images/achievements/crossfit2.jpeg'
+        '/assets/images/achievements/crossfit2.jpeg',
+        '/assets/images/achievements/crossfit3.jpg',
+        '/assets/images/achievements/crossfit4.jpg'
     ];
     const captions = [
         'CrossFit Training - 5+ Years Experience',
-        'Argument Competition 2024 - Winner'
+        'Argument Competition 2024 - Winner',
+        'Intense Competition Performance',
+        'CrossFit Championship Event'
     ];
     const carousel = new ImageCarousel(images, captions);
     carousel.open();
@@ -948,10 +1004,80 @@ function openMarathonGallery() {
     carousel.open();
 }
 
+// Futsal Gallery with achievements and video
+function openFutsalGallery() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'futsalModal';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modalContent.style.maxWidth = '1200px';
+    modalContent.style.padding = '40px';
+    
+    // Create close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
+    closeBtn.onclick = () => closeModal(modal.id);
+    
+    const content = `
+        <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">Futsal Achievements</h2>
+        <div style="display: grid; gap: 30px;">
+            <!-- Master of Sport Certificate -->
+            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Master of Sport - Belarus</h3>
+                <img src="/assets/images/achievements/master_of_sports.jpg" alt="Master of Sport Certificate" style="width: 100%; max-width: 600px; border-radius: 10px; margin: 0 auto; display: block;">
+            </div>
+            
+            <!-- Euro Tournament Photos -->
+            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Euro Tournament Winner - France 2008</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <img src="/assets/images/achievements/soccer_france_euro_national_2008_winner.jpg" alt="Euro Tournament Winner" style="width: 100%; border-radius: 10px;">
+                    <img src="/assets/images/achievements/soccer_france_euro_national_2008_after_winner.jpg" alt="Euro Tournament Celebration" style="width: 100%; border-radius: 10px;">
+                </div>
+            </div>
+            
+            <!-- Goal Video -->
+            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Goal in Belarusian Top League</h3>
+                <p style="margin-bottom: 15px; color: #aaa;">Scoring against Lidselmash in the top Belarus futsal league</p>
+                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=77', 'Goal vs Lidselmash - Top Belarus League')">
+                    <i class="fas fa-play"></i> Watch Goal Video
+                </button>
+            </div>
+        </div>
+    `;
+    
+    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeModal(modal.id);
+        }
+    };
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal(modal.id);
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    document.body.style.overflow = 'hidden';
+}
+
 // Make sure functions are available globally
 window.openSoccerGallery = openSoccerGallery;
 window.openCrossFitGallery = openCrossFitGallery;
 window.openMarathonGallery = openMarathonGallery;
 window.openVideoModal = openVideoModal;
 window.openPianoModal = openPianoModal;
+window.openFutsalGallery = openFutsalGallery;
 window.createPlatformValueModal = createPlatformValueModal;
