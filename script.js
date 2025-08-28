@@ -833,60 +833,51 @@ function openSoccerGallery() {
     carousel.open();
 }
 
-// CrossFit Gallery with Video
+// CrossFit Gallery - Consistent with futsal gallery style
 function openCrossFitGallery() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.id = 'crossfitModal';
+    const images = [
+        '/assets/images/achievements/crossfit1.jpeg',
+        '/assets/images/achievements/crossfit2.jpeg',
+        '/assets/images/achievements/crossfit3.jpg',
+        '/assets/images/achievements/crossfit4.jpg'
+    ];
+    const captions = [
+        'CrossFit Training - 5+ Years Experience',
+        'Argument Competition 2024 - Winner',
+        'Intense Competition Performance',
+        'CrossFit Championship Event'
+    ];
     
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content';
-    modalContent.style.maxWidth = '1200px';
-    modalContent.style.padding = '40px';
+    // Create enhanced carousel with video button like futsal gallery
+    const carousel = new ImageCarousel(images, captions);
     
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'modal-close';
-    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
-    closeBtn.onclick = () => closeModal(modal.id);
-    
-    const content = `
-        <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">CrossFit Achievements</h2>
-        <div style="display: grid; gap: 30px;">
-            <!-- Photo Gallery -->
-            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
-                <h3 style="color: #ffd700; margin-bottom: 15px;">Competition Photos & Video</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
-                    <img src="/assets/images/achievements/crossfit1.jpeg" alt="CrossFit Training" style="width: 100%; border-radius: 10px;">
-                    <img src="/assets/images/achievements/crossfit2.jpeg" alt="Argument Competition Winner" style="width: 100%; border-radius: 10px;">
-                    <img src="/assets/images/achievements/crossfit3.jpg" alt="Competition Performance" style="width: 100%; border-radius: 10px;">
-                    <img src="/assets/images/achievements/crossfit4.jpg" alt="Championship Event" style="width: 100%; border-radius: 10px;">
-                </div>
-                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; width: 100%;" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024 - Winner')">
-                    <i class="fab fa-youtube"></i> Watch Competition Video
-                </button>
-            </div>
-        </div>
-    `;
-    
-    modalContent.innerHTML = closeBtn.outerHTML + content;
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-    
-    modal.onclick = (e) => {
-        if (e.target === modal) {
-            closeModal(modal.id);
-        }
+    // Override the create method to add video button after carousel
+    const originalCreate = carousel.create.bind(carousel);
+    carousel.create = function() {
+        originalCreate();
+        
+        // Add video button after carousel (same style as futsal gallery)
+        const videoButton = document.createElement('div');
+        videoButton.style.cssText = `
+            text-align: center; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: rgba(255, 215, 0, 0.1); 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        `;
+        videoButton.innerHTML = `
+            <h3 style="color: #ffd700; margin-bottom: 15px;">Argument Competition 2024 - Winner</h3>
+            <p style="margin-bottom: 15px; color: #aaa;">High-intensity functional fitness competition performance</p>
+            <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024 - Winner')">
+                <i class="fab fa-youtube"></i> Watch Competition Video
+            </button>
+        `;
+        
+        this.modal.querySelector('.modal-content').appendChild(videoButton);
     };
     
-    document.addEventListener('keydown', function escapeHandler(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal(modal.id);
-            document.removeEventListener('keydown', escapeHandler);
-        }
-    });
-    
-    setTimeout(() => modal.classList.add('active'), 10);
-    document.body.style.overflow = 'hidden';
+    carousel.open();
 }
 
 // Video Modal
