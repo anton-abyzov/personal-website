@@ -38,16 +38,57 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
     <style>
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
         .experience-details {
             margin-top: 20px;
-            padding: 20px;
-            background: rgba(0, 102, 255, 0.05);
-            border-radius: 10px;
+            padding: 25px;
+            background: rgba(0, 102, 255, 0.08);
+            border-radius: 12px;
             border-left: 3px solid var(--secondary-color);
             display: none;
+            animation: slideDown 0.3s ease-out;
         }
         .experience-details.expanded {
             display: block;
+        }
+        .experience-details h5 {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .experience-details ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .experience-details li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .experience-details li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .expand-btn {
             background: transparent;
@@ -79,6 +120,15 @@
             font-size: 0.85rem;
             margin: 3px;
             border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        .achievement-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
         }
         .music-card {
             background: rgba(255, 255, 255, 0.05);
@@ -325,34 +375,34 @@
             <h2 class="section-title" data-aos="fade-up">Business Achievements</h2>
             <div class="achievements-grid">
                 <div class="achievement-card" data-aos="fade-up">
-                    <div class="achievement-image">
-                        <img src="assets/images/forbes-header.png" alt="Forbes Technology Council">
+                    <div class="achievement-icon">
+                        <i class="fas fa-award"></i>
                     </div>
                     <h3>Forbes Technology Council</h3>
                     <p>Invitation-only membership for senior technology executives</p>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="achievement-image">
-                        <img src="assets/images/huggingface-placeholder.jpg" alt="Hugging Face CEO">
+                    <div class="achievement-icon">
+                        <i class="fas fa-robot"></i>
                     </div>
                     <h3>AI Innovation with Hugging Face</h3>
-                    <p>Led winning team at AI hackathon with Clement Delangue (CEO)</p>
-                    <a href="https://www.instagram.com/p/DLYaJptxeaV/?img_index=1" target="_blank" class="publication-link">View Photo →</a>
+                    <p>Participated in AI hackathon with Clement Delangue (CEO) - our innovative solution received notable recognition</p>
+                    <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" class="publication-link">View Photo →</a>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="achievement-image">
-                        <img src="assets/images/award-placeholder.jpg" alt="Business Award">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
                     </div>
                     <h3>Business Excellence Award 2020</h3>
                     <p>Recognized for innovation and digital transformation</p>
                     <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" class="publication-link">View Award →</a>
                 </div>
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="achievement-image">
-                        <img src="assets/images/hackathon-placeholder.jpg" alt="Hackathon Victory">
+                    <div class="achievement-icon">
+                        <i class="fas fa-code"></i>
                     </div>
                     <h3>Claude Code Development Pioneer</h3>
-                    <p>Built complete AI solution in 1 day using Claude Code, leading team to victory</p>
+                    <p>Built complete AI solution in 1 day using Claude Code, achieving top placement in competition</p>
                 </div>
             </div>
         </div>
@@ -424,7 +474,7 @@
                     <div class="publication-type">Research Doc</div>
                     <h3>EasyChamp Platform Architecture</h3>
                     <p class="publication-venue">Technical Documentation, 2024</p>
-                    <a href="https://docs.google.com/document/d/1WJ8boFofyoqjotTTE9kFsQClrmPQ9ckY10hfQhU5ufw/edit" target="_blank" class="publication-link">View Document →</a>
+                    <a href="#" class="publication-link">View Document →</a>
                 </div>
             </div>
         </div>
@@ -541,12 +591,5 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
-    <script>
-        function toggleExpand(button) {
-            const details = button.nextElementSibling;
-            details.classList.toggle('expanded');
-            button.textContent = details.classList.contains('expanded') ? 'Show Less' : 'Read More Details';
-        }
-    </script>
 </body>
 </html>
