@@ -529,27 +529,47 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .via-company {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 3px 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    gap: 6px;
+    padding: 5px 12px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 102, 255, 0.1) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    border-radius: 15px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.8rem;
+    color: var(--secondary-color);
+    font-size: 0.85rem;
+    font-weight: 500;
     transition: var(--transition);
+    position: relative;
+}
+
+.via-company:before {
+    content: 'Contracted through';
+    position: absolute;
+    top: -18px;
+    left: 12px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
 }
 
 .via-company:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--secondary-color);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.25) 0%, rgba(0, 102, 255, 0.2) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
     border-color: var(--secondary-color);
+}
+
+.via-company .company-type {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-weight: 400;
 }
 
 .timeline-content:hover {

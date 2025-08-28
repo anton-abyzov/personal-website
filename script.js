@@ -181,7 +181,7 @@ function toggleFullExperience(e) {
                 date: 'Jan 2020 - Jun 2022',
                 company: '⚽ Sportradar',
                 title: 'Senior Platform Engineer / Live Data Architect',
-                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/', type: 'LLC' },
                 description: 'Architected real-time sports data platform processing live feeds from 100K+ sporting events.',
                 details: [
                     'Built ultra-low latency platform processing 1M+ events/second with sub-100ms latency',
@@ -199,7 +199,7 @@ function toggleFullExperience(e) {
                 date: 'Apr 2018 - Mar 2020',
                 company: '🏭 Grenzebach Group',
                 title: 'IIoT Platform Architect / Technical Lead',
-                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/', type: 'LLC' },
                 description: 'Led 50+ engineers across 3 continents building Industrial IoT platform for smart factory automation.',
                 details: [
                     'Architected IIoT platform collecting telemetry from 10,000+ industrial sensors using OPC UA',
@@ -217,7 +217,7 @@ function toggleFullExperience(e) {
                 date: 'May 2017 - May 2018',
                 company: '🛍️ Luxnow',
                 title: 'Platform Engineer / Full-Stack Developer',
-                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/' },
+                viaCompany: { name: 'Softgreat', url: 'https://softgreat.com/', type: 'LLC' },
                 description: 'Built luxury goods rental marketplace from MVP to $1M+ revenue.',
                 details: [
                     'Developed multi-vendor marketplace platform using Django, PostgreSQL supporting 500+ vendors',
@@ -271,7 +271,7 @@ function toggleFullExperience(e) {
                 date: 'Mar 2013 - Jul 2014',
                 company: '📊 Agiboo',
                 title: 'Senior Software Engineer',
-                viaCompany: { name: 'Ciklum', url: 'https://www.ciklum.com/' },
+                viaCompany: { name: 'Ciklum', url: 'https://www.ciklum.com/', type: 'Inc.' },
                 description: 'Developed commodity trading and risk management (CTRM) platform for agricultural commodities.',
                 details: [
                     'Built high-frequency trading engine processing 100K+ transactions daily',
@@ -351,8 +351,10 @@ function toggleFullExperience(e) {
                 
                 const viaCompanyHtml = exp.viaCompany ? `
                     <div class="company-meta">
-                        <a href="${exp.viaCompany.url}" target="_blank" class="via-company">
-                            <i class="fas fa-building"></i> via ${exp.viaCompany.name}
+                        <a href="${exp.viaCompany.url}" target="_blank" class="via-company" title="Contracted through ${exp.viaCompany.name}">
+                            <i class="fas fa-handshake"></i>
+                            <span>${exp.viaCompany.name}</span>
+                            <span class="company-type">${exp.viaCompany.type || ''}</span>
                         </a>
                     </div>
                 ` : '';
