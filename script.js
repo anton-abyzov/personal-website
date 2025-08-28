@@ -1061,78 +1061,76 @@ function openMarathonGallery() {
     carousel.open();
 }
 
-// Futsal Gallery with achievements and video
+// Soccer Gallery - Consistent with other galleries
+function openSoccerGallery() {
+    const images = [
+        '/assets/images/achievements/soccer_dcfc2.jpeg',
+        '/assets/images/achievements/soccer_dcfc3.jpeg',
+        '/assets/images/achievements/soccer_dcfc4.jpeg'
+    ];
+    const captions = [
+        '2024 USSL Championship Winner - FC Miami Dade County',
+        'Championship Trophy Celebration',
+        'Team Victory Moment'
+    ];
+    const carousel = new ImageCarousel(images, captions);
+    carousel.open();
+}
+
+// Futsal Gallery - Consistent with other galleries
 function openFutsalGallery() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.id = 'futsalModal';
+    const images = [
+        '/assets/images/achievements/soccer_france_euro_national_2008_winner.jpg',
+        '/assets/images/achievements/soccer_france_euro_national_2008_after_winner.jpg',
+        '/assets/images/achievements/master_of_sports.jpg'
+    ];
+    const captions = [
+        'Euro Tournament Winner - France 2008',
+        'Euro Tournament Celebration',
+        'Master of Sport - Belarus (Rotated 90°)'
+    ];
     
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal-content';
-    modalContent.style.maxWidth = '1200px';
-    modalContent.style.padding = '40px';
+    // Create enhanced carousel with special styling for master of sports
+    const carousel = new ImageCarousel(images, captions);
     
-    // Create close button
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'modal-close';
-    closeBtn.type = 'button';
-    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
-    closeBtn.onclick = (e) => {
-        e.stopPropagation();
-        closeModal(modal.id);
+    // Override the create method to add custom styling for the rotated image
+    const originalCreate = carousel.create.bind(carousel);
+    carousel.create = function() {
+        originalCreate();
+        
+        // Add rotation to the master of sports image (3rd image)
+        const slides = this.carousel.querySelectorAll('.carousel-slide');
+        if (slides[2]) {
+            const masterImg = slides[2].querySelector('img');
+            if (masterImg) {
+                masterImg.style.transform = 'rotate(90deg)';
+                masterImg.style.maxHeight = '70vh';
+                masterImg.style.objectFit = 'contain';
+            }
+        }
+        
+        // Add video button after carousel
+        const videoButton = document.createElement('div');
+        videoButton.style.cssText = `
+            text-align: center; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background: rgba(255, 215, 0, 0.1); 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        `;
+        videoButton.innerHTML = `
+            <h3 style="color: #ffd700; margin-bottom: 15px;">Goal in Belarusian Top League</h3>
+            <p style="margin-bottom: 15px; color: #aaa;">Scoring against Lidselmash in the top Belarus futsal league</p>
+            <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=76', 'Goal vs Lidselmash - Top Belarus League')">
+                <i class="fas fa-play"></i> Watch Goal Video
+            </button>
+        `;
+        
+        this.modal.querySelector('.modal-content').appendChild(videoButton);
     };
     
-    const content = `
-        <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">Futsal Achievements</h2>
-        <div style="display: grid; gap: 30px;">
-            <!-- Euro Tournament Photos -->
-            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
-                <h3 style="color: #ffd700; margin-bottom: 15px;">Euro Tournament Winner - France 2008</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <img src="/assets/images/achievements/soccer_france_euro_national_2008_winner.jpg" alt="Euro Tournament Winner" style="width: 100%; border-radius: 10px;">
-                    <img src="/assets/images/achievements/soccer_france_euro_national_2008_after_winner.jpg" alt="Euro Tournament Celebration" style="width: 100%; border-radius: 10px;">
-                </div>
-            </div>
-            
-            <!-- Master of Sport Certificate -->
-            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
-                <h3 style="color: #ffd700; margin-bottom: 15px;">Master of Sport - Belarus</h3>
-                <img src="/assets/images/achievements/master_of_sports.jpg" alt="Master of Sport Certificate" style="width: 100%; max-width: 600px; border-radius: 10px; margin: 0 auto; display: block; transform: rotate(90deg);">
-            </div>
-            
-            <!-- Goal Video -->
-            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
-                <h3 style="color: #ffd700; margin-bottom: 15px;">Goal in Belarusian Top League</h3>
-                <p style="margin-bottom: 15px; color: #aaa;">Scoring against Lidselmash in the top Belarus futsal league</p>
-                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=76', 'Goal vs Lidselmash - Top Belarus League')">
-                    <i class="fas fa-play"></i> Watch Goal Video
-                </button>
-            </div>
-        </div>
-    `;
-    
-    modalContent.innerHTML = content;
-    modalContent.appendChild(closeBtn);
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-    
-    // Close on outside click
-    modal.onclick = (e) => {
-        if (e.target === modal) {
-            closeModal(modal.id);
-        }
-    };
-    
-    // Close on Escape key
-    document.addEventListener('keydown', function escapeHandler(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal(modal.id);
-            document.removeEventListener('keydown', escapeHandler);
-        }
-    });
-    
-    setTimeout(() => modal.classList.add('active'), 10);
-    document.body.style.overflow = 'hidden';
+    carousel.open();
 }
 
 // Professional Photo Stack
