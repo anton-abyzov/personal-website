@@ -510,31 +510,7 @@
         <div class="container">
             <h2 class="section-title" data-aos="fade-up">Beyond Technology</h2>
             
-            <!-- Music Section -->
-            <div style="margin-bottom: 50px;">
-                <h3 style="text-align: center; margin-bottom: 30px; color: var(--secondary-color);">🎹 Piano Performance</h3>
-                <div class="music-card" data-aos="fade-up">
-                    <h4>Classical Piano Repertoire</h4>
-                    <p>15+ years of classical piano training and performance</p>
-                    <div style="margin-top: 15px;">
-                        <a href="https://www.youtube.com/watch?v=abf_p1vqI-Q" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Chopin Performance
-                        </a>
-                        <a href="https://youtu.be/5WVYgxMCWPg" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Laviniak Performance
-                        </a>
-                        <a href="https://youtu.be/v5sYkSmO8bM" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Rachmaninoff Performance
-                        </a>
-                        <a href="https://youtu.be/MpfOGcUC-4I?t=32" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Classical Performance
-                        </a>
-                        <a href="https://youtu.be/KCo4qpaZhAk" target="_blank" class="btn btn-outline" style="margin: 5px;">
-                            <i class="fab fa-youtube"></i> Piano Recital
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <!-- Sports & Achievements -->
             
             <!-- Sports & Achievements -->
             <div class="hobbies-grid">
@@ -557,9 +533,9 @@
                         <li>Youth Development Program Leader</li>
                         <li>Tactical Strategy Expert</li>
                     </ul>
-                    <a href="javascript:void(0)" class="achievement-gallery-trigger" onclick="openSoccerGallery()">
-                        <i class="fas fa-images"></i> View Championship Photos
-                    </a>
+                    <button class="achievement-gallery-btn" onclick="openSoccerGallery()">
+                        <i class="fas fa-trophy"></i> Championship Gallery
+                    </button>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="hobby-icon">💪</div>
@@ -570,22 +546,25 @@
                         <li>Functional Fitness Expert</li>
                         <li>High-Intensity Training Specialist</li>
                     </ul>
-                    <a href="javascript:void(0)" class="achievement-gallery-trigger" onclick="openCrossFitGallery()">
-                        <i class="fas fa-images"></i> View Competition Photos
-                    </a>
-                    <a href="https://www.youtube.com/watch?v=BKab-1SjT4A" target="_blank" class="achievement-gallery-trigger">
-                        <i class="fab fa-youtube"></i> Watch Competition Video
-                    </a>
+                    <button class="achievement-gallery-btn" onclick="openCrossFitGallery()">
+                        <i class="fas fa-medal"></i> Competition Gallery
+                    </button>
+                    <button class="achievement-gallery-btn" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024')">
+                        <i class="fab fa-youtube"></i> Competition Video
+                    </button>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="hobby-icon">🎹</div>
                     <h3>Piano Mastery</h3>
                     <ul>
-                        <li>Classical & Contemporary</li>
-                        <li>15+ Years Experience</li>
-                        <li>Composer & Performer</li>
-                        <li>YouTube performances</li>
+                        <li>15+ Years Classical Training</li>
+                        <li>Classical, Jazz & Contemporary</li>
+                        <li>Chopin, Rachmaninoff, Twin Peaks</li>
+                        <li>Por Una Cabeza & More</li>
                     </ul>
+                    <button class="piano-performances-btn" onclick="openPianoModal()">
+                        <i class="fas fa-play-circle"></i> View 5 Performances
+                    </button>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="hobby-icon">🌟</div>

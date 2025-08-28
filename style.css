@@ -1067,26 +1067,60 @@ body {
     margin-top: 10px;
 }
 
-/* Achievement Gallery Trigger */
-.achievement-gallery-trigger {
+/* Achievement Gallery Buttons */
+.achievement-gallery-btn,
+.piano-performances-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 102, 255, 0.1));
     color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 25px;
+    padding: 10px 20px;
+    margin: 8px 5px;
     cursor: pointer;
-    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
     transition: all 0.3s;
-    margin-top: 10px;
-    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+    width: calc(100% - 10px);
 }
 
-.achievement-gallery-trigger:hover {
-    transform: translateX(5px);
+.achievement-gallery-btn:before,
+.piano-performances-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.achievement-gallery-btn:hover,
+.piano-performances-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 102, 255, 0.2));
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
     color: #00ffff;
+    border-color: #00ffff;
 }
 
-.achievement-gallery-trigger i {
-    font-size: 1.2rem;
+.achievement-gallery-btn:hover:before,
+.piano-performances-btn:hover:before {
+    left: 100%;
+}
+
+.achievement-gallery-btn i,
+.piano-performances-btn i {
+    font-size: 1.1rem;
 }
 
 /* Platform Value Modal */
@@ -1156,6 +1190,109 @@ body {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
     font-size: 0.95rem;
+}
+
+/* Video Modal */
+.video-modal-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-modal-content iframe {
+    width: 100%;
+    max-width: 900px;
+    height: 506px;
+    border-radius: 12px;
+    border: 2px solid var(--secondary-color);
+}
+
+.video-modal-title {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Piano Modal */
+.piano-modal-content {
+    max-width: 800px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(0, 102, 255, 0.1));
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.piano-modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.piano-modal-title {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--secondary-color), #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+}
+
+.piano-modal-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+.piano-performances-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.piano-performance-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 3px solid var(--secondary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.piano-performance-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.piano-performance-info h4 {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.piano-performance-info p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+}
+
+.piano-performance-btn {
+    background: var(--secondary-color);
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.piano-performance-btn:hover {
+    background: #00ffff;
+    transform: scale(1.05);
 }
 
 /* Animations */

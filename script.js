@@ -764,3 +764,168 @@ function openCrossFitGallery() {
     const carousel = new ImageCarousel(images, captions);
     carousel.open();
 }
+
+// Video Modal
+function openVideoModal(videoUrl, title) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content video-modal-content';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => closeVideoModal(modal);
+    
+    const videoTitle = document.createElement('h3');
+    videoTitle.className = 'video-modal-title';
+    videoTitle.textContent = title;
+    
+    const iframe = document.createElement('iframe');
+    iframe.src = videoUrl;
+    iframe.frameBorder = '0';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    
+    modalContent.appendChild(closeBtn);
+    modalContent.appendChild(videoTitle);
+    modalContent.appendChild(iframe);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeVideoModal(modal);
+        }
+    };
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeVideoModal(modal);
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+        if (modal && modal.parentNode) {
+            document.body.removeChild(modal);
+        }
+    }, 300);
+}
+
+// Piano Modal
+function openPianoModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content piano-modal-content';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => closePianoModal(modal);
+    
+    const content = `
+        <div class="piano-modal-header">
+            <h2 class="piano-modal-title">🎹 Piano Performances</h2>
+            <p class="piano-modal-subtitle">15+ Years of Musical Journey</p>
+        </div>
+        <div class="piano-performances-list">
+            <div class="piano-performance-item">
+                <div class="piano-performance-info">
+                    <h4>Chopin - Nocturne & Etudes</h4>
+                    <p>Classical masterpiece showcasing technical precision</p>
+                </div>
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/abf_p1vqI-Q', 'Chopin Performance')">
+                    <i class="fas fa-play"></i> Watch
+                </button>
+            </div>
+            <div class="piano-performance-item">
+                <div class="piano-performance-info">
+                    <h4>Twin Peaks Theme - Laviniak</h4>
+                    <p>Hauntingly beautiful arrangement of the iconic theme</p>
+                </div>
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/5WVYgxMCWPg', 'Twin Peaks - Laviniak Performance')">
+                    <i class="fas fa-play"></i> Watch
+                </button>
+            </div>
+            <div class="piano-performance-item">
+                <div class="piano-performance-info">
+                    <h4>Rachmaninoff - Prelude</h4>
+                    <p>Powerful romantic era composition with dramatic flair</p>
+                </div>
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/v5sYkSmO8bM', 'Rachmaninoff Performance')">
+                    <i class="fas fa-play"></i> Watch
+                </button>
+            </div>
+            <div class="piano-performance-item">
+                <div class="piano-performance-info">
+                    <h4>Jazz Standards & Por Una Cabeza</h4>
+                    <p>Tango classic and jazz interpretations</p>
+                </div>
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Jazz & Tango Performance')">
+                    <i class="fas fa-play"></i> Watch
+                </button>
+            </div>
+            <div class="piano-performance-item">
+                <div class="piano-performance-info">
+                    <h4>Contemporary & Modern Pieces</h4>
+                    <p>Modern interpretations and original arrangements</p>
+                </div>
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/KCo4qpaZhAk', 'Contemporary Piano Recital')">
+                    <i class="fas fa-play"></i> Watch
+                </button>
+            </div>
+        </div>
+    `;
+    
+    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closePianoModal(modal);
+        }
+    };
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closePianoModal(modal);
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    document.body.style.overflow = 'hidden';
+}
+
+function closePianoModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+        if (modal && modal.parentNode) {
+            document.body.removeChild(modal);
+        }
+    }, 300);
+}
+
+// Make sure functions are available globally
+window.openSoccerGallery = openSoccerGallery;
+window.openCrossFitGallery = openCrossFitGallery;
+window.openVideoModal = openVideoModal;
+window.openPianoModal = openPianoModal;
+window.createPlatformValueModal = createPlatformValueModal;
