@@ -1010,6 +1010,8 @@ body {
     border-radius: 12px;
     scroll-behavior: smooth;
     position: relative;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .carousel-slide {
@@ -1032,18 +1034,25 @@ body {
     transform: translateY(-50%);
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     padding: 20px 15px;
     cursor: pointer;
     font-size: 24px;
     border-radius: 8px;
     backdrop-filter: blur(5px);
     transition: all 0.3s;
+    z-index: 100;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    outline: none;
 }
 
 .carousel-nav:hover {
     background-color: rgba(0, 212, 255, 0.3);
     transform: translateY(-50%) scale(1.1);
+    border-color: rgba(0, 212, 255, 0.5);
 }
 
 .carousel-prev {

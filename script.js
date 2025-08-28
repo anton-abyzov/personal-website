@@ -814,22 +814,60 @@ function openSoccerGallery() {
     carousel.open();
 }
 
-// CrossFit Gallery
+// CrossFit Gallery with Video
 function openCrossFitGallery() {
-    const images = [
-        '/assets/images/achievements/crossfit1.jpeg',
-        '/assets/images/achievements/crossfit2.jpeg',
-        '/assets/images/achievements/crossfit3.jpg',
-        '/assets/images/achievements/crossfit4.jpg'
-    ];
-    const captions = [
-        'CrossFit Training - 5+ Years Experience',
-        'Argument Competition 2024 - Winner',
-        'Intense Competition Performance',
-        'CrossFit Championship Event'
-    ];
-    const carousel = new ImageCarousel(images, captions);
-    carousel.open();
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'crossfitModal';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modalContent.style.maxWidth = '1200px';
+    modalContent.style.padding = '40px';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>';
+    closeBtn.onclick = () => closeModal(modal.id);
+    
+    const content = `
+        <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center;">CrossFit Achievements</h2>
+        <div style="display: grid; gap: 30px;">
+            <!-- Photo Gallery -->
+            <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
+                <h3 style="color: #ffd700; margin-bottom: 15px;">Competition Photos & Video</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                    <img src="/assets/images/achievements/crossfit1.jpeg" alt="CrossFit Training" style="width: 100%; border-radius: 10px;">
+                    <img src="/assets/images/achievements/crossfit2.jpeg" alt="Argument Competition Winner" style="width: 100%; border-radius: 10px;">
+                    <img src="/assets/images/achievements/crossfit3.jpg" alt="Competition Performance" style="width: 100%; border-radius: 10px;">
+                    <img src="/assets/images/achievements/crossfit4.jpg" alt="Championship Event" style="width: 100%; border-radius: 10px;">
+                </div>
+                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; width: 100%;" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024 - Winner')">
+                    <i class="fab fa-youtube"></i> Watch Competition Video
+                </button>
+            </div>
+        </div>
+    `;
+    
+    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closeModal(modal.id);
+        }
+    };
+    
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal(modal.id);
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    document.body.style.overflow = 'hidden';
 }
 
 // Video Modal
@@ -920,10 +958,10 @@ function openPianoModal() {
             </div>
             <div class="piano-performance-item">
                 <div class="piano-performance-info">
-                    <h4>Twin Peaks Theme - Laviniak</h4>
-                    <p>Hauntingly beautiful arrangement of the iconic theme</p>
+                    <h4>Laviniak March-Galop</h4>
+                    <p>Energetic classical march with brilliant technical passages</p>
                 </div>
-                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/5WVYgxMCWPg', 'Twin Peaks - Laviniak Performance')">
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/5WVYgxMCWPg', 'Laviniak March-Galop Performance')">
                     <i class="fas fa-play"></i> Watch
                 </button>
             </div>
@@ -938,10 +976,10 @@ function openPianoModal() {
             </div>
             <div class="piano-performance-item">
                 <div class="piano-performance-info">
-                    <h4>Jazz Standards & Por Una Cabeza</h4>
-                    <p>Tango classic and jazz interpretations</p>
+                    <h4>Por Una Cabeza & Jazz Fusion</h4>
+                    <p>Passionate tango classic with contemporary jazz arrangements and improvisations</p>
                 </div>
-                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Jazz & Tango Performance')">
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Por Una Cabeza & Jazz Fusion')">
                     <i class="fas fa-play"></i> Watch
                 </button>
             </div>
@@ -1043,7 +1081,7 @@ function openFutsalGallery() {
             <div style="background: rgba(255, 215, 0, 0.05); border-radius: 15px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.2);">
                 <h3 style="color: #ffd700; margin-bottom: 15px;">Goal in Belarusian Top League</h3>
                 <p style="margin-bottom: 15px; color: #aaa;">Scoring against Lidselmash in the top Belarus futsal league</p>
-                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=77', 'Goal vs Lidselmash - Top Belarus League')">
+                <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=76', 'Goal vs Lidselmash - Top Belarus League')">
                     <i class="fas fa-play"></i> Watch Goal Video
                 </button>
             </div>
@@ -1102,7 +1140,7 @@ function initPhotoStack() {
     }
     
     function startAutoRotate() {
-        autoRotateInterval = setInterval(nextPhoto, 4000);
+        autoRotateInterval = setInterval(nextPhoto, 8000);
     }
     
     function stopAutoRotate() {
