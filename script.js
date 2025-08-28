@@ -417,7 +417,7 @@ document.querySelectorAll('.skill-card').forEach(card => {
 });
 
 // Add counter animation for stats
-function animateCounter(element, target, duration = 2000) {
+function animateCounter(element, target, isCurrency = false, suffix = '', duration = 2000) {
     const start = 0;
     const increment = target / (duration / 16);
     let current = start;
@@ -425,10 +425,10 @@ function animateCounter(element, target, duration = 2000) {
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
-            element.textContent = target;
+            element.textContent = (isCurrency ? '$' : '') + target + suffix;
             clearInterval(timer);
         } else {
-            element.textContent = Math.floor(current);
+            element.textContent = (isCurrency ? '$' : '') + Math.floor(current) + suffix;
         }
     }, 16);
 }
@@ -447,12 +447,22 @@ const statsObserver = new IntersectionObserver((entries) => {
             statNumbers.forEach(stat => {
                 const text = stat.textContent;
                 if (text.includes('+')) {
-                    const num = parseInt(text.replace('+', ''));
-                    stat.textContent = '0';
-                    animateCounter(stat, num);
-                    setTimeout(() => {
-                        stat.textContent = text;
-                    }, 2000);
+                    // Extract number from text, handling currency symbols
+                    const cleanText = text.replace(/[\$,]/g, '').replace('+', '');
+                    const num = parseInt(cleanText);
+                    
+                    // Check if we successfully parsed a number
+                    if (!isNaN(num)) {
+                        // Determine if it's a currency value
+                        const isCurrency = text.includes('$');
+                        const suffix = text.includes('M') ? 'M' : '';
+                        
+                        stat.textContent = isCurrency ? '$0' : '0';
+                        animateCounter(stat, num, isCurrency, suffix);
+                        setTimeout(() => {
+                            stat.textContent = text;
+                        }, 2000);
+                    }
                 }
             });
         }
