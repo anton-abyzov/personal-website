@@ -214,9 +214,10 @@
                         <span class="stat-number">18+</span>
                         <span class="stat-label">Years Experience</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-item" style="cursor: pointer;" onclick="createPlatformValueModal()">
                         <span class="stat-number">$100M+</span>
                         <span class="stat-label">Platform Value Delivered</span>
+                        <span style="font-size: 0.8rem; color: var(--secondary-color); display: block;">Click for breakdown →</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">200+</span>
@@ -525,6 +526,12 @@
                         <a href="https://youtu.be/v5sYkSmO8bM" target="_blank" class="btn btn-outline" style="margin: 5px;">
                             <i class="fab fa-youtube"></i> Rachmaninoff Performance
                         </a>
+                        <a href="https://youtu.be/MpfOGcUC-4I?t=32" target="_blank" class="btn btn-outline" style="margin: 5px;">
+                            <i class="fab fa-youtube"></i> Classical Performance
+                        </a>
+                        <a href="https://youtu.be/KCo4qpaZhAk" target="_blank" class="btn btn-outline" style="margin: 5px;">
+                            <i class="fab fa-youtube"></i> Piano Recital
+                        </a>
                     </div>
                 </div>
             </div>
@@ -545,13 +552,32 @@
                     <div class="hobby-icon">⚽</div>
                     <h3>Soccer Coach</h3>
                     <ul>
+                        <li>2024 USSL Championship Winner - FC Miami Dade County</li>
                         <li>11x11 Dade County Winner</li>
                         <li>Youth Development Program Leader</li>
                         <li>Tactical Strategy Expert</li>
-                        <li>Licensed youth coach</li>
                     </ul>
+                    <a href="javascript:void(0)" class="achievement-gallery-trigger" onclick="openSoccerGallery()">
+                        <i class="fas fa-images"></i> View Championship Photos
+                    </a>
                 </div>
                 <div class="hobby-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="hobby-icon">💪</div>
+                    <h3>CrossFit Athlete</h3>
+                    <ul>
+                        <li>5+ Years Training Experience</li>
+                        <li>Argument Competition Winner 2024</li>
+                        <li>Functional Fitness Expert</li>
+                        <li>High-Intensity Training Specialist</li>
+                    </ul>
+                    <a href="javascript:void(0)" class="achievement-gallery-trigger" onclick="openCrossFitGallery()">
+                        <i class="fas fa-images"></i> View Competition Photos
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=BKab-1SjT4A" target="_blank" class="achievement-gallery-trigger">
+                        <i class="fab fa-youtube"></i> Watch Competition Video
+                    </a>
+                </div>
+                <div class="hobby-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="hobby-icon">🎹</div>
                     <h3>Piano Mastery</h3>
                     <ul>
@@ -561,7 +587,7 @@
                         <li>YouTube performances</li>
                     </ul>
                 </div>
-                <div class="hobby-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="hobby-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="hobby-icon">🌟</div>
                     <h3>US Recognition</h3>
                     <ul>

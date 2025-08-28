@@ -484,3 +484,283 @@ window.addEventListener('load', () => {
 console.log('%c👋 Hey there, fellow developer!', 'font-size: 20px; color: #00d4ff; font-weight: bold;');
 console.log('%cLooking for something interesting? Check out my GitHub!', 'font-size: 14px; color: #0066ff;');
 console.log('%c🚀 https://github.com/anton-abyzov', 'font-size: 14px; color: #ff00ff;');
+
+// Modal and Carousel Functionality
+class ImageCarousel {
+    constructor(images, captions = []) {
+        this.images = images;
+        this.captions = captions;
+        this.currentIndex = 0;
+        this.modal = null;
+        this.carousel = null;
+    }
+
+    create() {
+        // Create modal structure
+        this.modal = document.createElement('div');
+        this.modal.className = 'modal';
+        
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        
+        const closeBtn = document.createElement('span');
+        closeBtn.className = 'modal-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.onclick = () => this.close();
+        
+        // Create carousel
+        this.carousel = document.createElement('div');
+        this.carousel.className = 'carousel-container';
+        
+        const slidesContainer = document.createElement('div');
+        slidesContainer.className = 'carousel-slides';
+        
+        // Add images
+        this.images.forEach((img, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            const imgElement = document.createElement('img');
+            imgElement.src = img;
+            imgElement.alt = this.captions[index] || `Image ${index + 1}`;
+            slide.appendChild(imgElement);
+            slidesContainer.appendChild(slide);
+        });
+        
+        // Navigation buttons
+        if (this.images.length > 1) {
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'carousel-nav carousel-prev';
+            prevBtn.innerHTML = '❮';
+            prevBtn.onclick = () => this.navigate(-1);
+            
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'carousel-nav carousel-next';
+            nextBtn.innerHTML = '❯';
+            nextBtn.onclick = () => this.navigate(1);
+            
+            this.carousel.appendChild(prevBtn);
+            this.carousel.appendChild(nextBtn);
+        }
+        
+        // Indicators
+        if (this.images.length > 1) {
+            const indicatorsContainer = document.createElement('div');
+            indicatorsContainer.className = 'carousel-indicators';
+            
+            this.images.forEach((_, index) => {
+                const indicator = document.createElement('span');
+                indicator.className = 'carousel-indicator';
+                if (index === 0) indicator.classList.add('active');
+                indicator.onclick = () => this.goToSlide(index);
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            this.carousel.appendChild(indicatorsContainer);
+        }
+        
+        // Caption
+        if (this.captions.length > 0) {
+            const caption = document.createElement('div');
+            caption.className = 'carousel-caption';
+            caption.textContent = this.captions[0];
+            this.carousel.appendChild(caption);
+        }
+        
+        this.carousel.appendChild(slidesContainer);
+        modalContent.appendChild(closeBtn);
+        modalContent.appendChild(this.carousel);
+        this.modal.appendChild(modalContent);
+        document.body.appendChild(this.modal);
+        
+        // Close on outside click
+        this.modal.onclick = (e) => {
+            if (e.target === this.modal) {
+                this.close();
+            }
+        };
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', this.handleKeyboard = (e) => {
+            if (this.modal.classList.contains('active')) {
+                if (e.key === 'Escape') this.close();
+                if (e.key === 'ArrowLeft') this.navigate(-1);
+                if (e.key === 'ArrowRight') this.navigate(1);
+            }
+        });
+    }
+    
+    navigate(direction) {
+        const slides = this.carousel.querySelectorAll('.carousel-slide');
+        const indicators = this.carousel.querySelectorAll('.carousel-indicator');
+        const caption = this.carousel.querySelector('.carousel-caption');
+        
+        this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
+        
+        slides.forEach((slide, index) => {
+            slide.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+        });
+        
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.currentIndex);
+        });
+        
+        if (caption && this.captions[this.currentIndex]) {
+            caption.textContent = this.captions[this.currentIndex];
+        }
+    }
+    
+    goToSlide(index) {
+        this.currentIndex = index;
+        this.navigate(0);
+    }
+    
+    open() {
+        if (!this.modal) this.create();
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    close() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            if (this.modal) {
+                document.body.removeChild(this.modal);
+                this.modal = null;
+            }
+        }, 300);
+        document.removeEventListener('keydown', this.handleKeyboard);
+    }
+}
+
+// Platform Value Modal
+function createPlatformValueModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content platform-value-modal';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => closePlatformValueModal(modal);
+    
+    const content = `
+        <div class="platform-value-header">
+            <h2 class="platform-value-total">$100M+</h2>
+            <p class="platform-value-subtitle">Platform Value Delivered Through Technology Innovation</p>
+        </div>
+        <div class="platform-value-breakdown">
+            <div class="platform-value-item">
+                <div class="platform-value-company">LuxNow</div>
+                <div class="platform-value-amount">$85M+</div>
+                <div class="platform-value-description">
+                    Led architectural design and development of luxury marketplace platform. 
+                    Raised $85M in Series C funding with $500M valuation. Implemented scalable 
+                    microservices architecture supporting 1M+ users.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">PolyFrog Digital</div>
+                <div class="platform-value-amount">$7.3M</div>
+                <div class="platform-value-description">
+                    As CTO, grew startup from inception to $7.3M revenue. Built complete 
+                    technology stack, assembled engineering team, and established DevOps practices 
+                    that reduced deployment time by 90%.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">EasyChamp Sports Platform</div>
+                <div class="platform-value-amount">$2M+</div>
+                <div class="platform-value-description">
+                    Architected cloud-native sports management platform serving 100K+ athletes. 
+                    Implemented real-time scoring system, payment processing, and AI-powered 
+                    features that increased user engagement by 200%.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">DentistryAutomation</div>
+                <div class="platform-value-amount">$3M+</div>
+                <div class="platform-value-description">
+                    Designed healthcare automation platform reducing administrative overhead by 60%. 
+                    Integrated with major insurance providers and implemented HIPAA-compliant 
+                    infrastructure processing millions of claims annually.
+                </div>
+            </div>
+            <div class="platform-value-item">
+                <div class="platform-value-company">Enterprise Consulting</div>
+                <div class="platform-value-amount">$5M+</div>
+                <div class="platform-value-description">
+                    Digital transformation initiatives across Fortune 500 companies. Led cloud 
+                    migrations, AI/ML implementations, and DevOps transformations resulting in 
+                    average 40% cost reduction and 3x performance improvements.
+                </div>
+            </div>
+        </div>
+    `;
+    
+    modalContent.innerHTML = closeBtn.outerHTML + content;
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+    
+    // Close on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            closePlatformValueModal(modal);
+        }
+    };
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closePlatformValueModal(modal);
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    setTimeout(() => modal.classList.add('active'), 10);
+    document.body.style.overflow = 'hidden';
+}
+
+function closePlatformValueModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+        if (modal && modal.parentNode) {
+            document.body.removeChild(modal);
+        }
+    }, 300);
+}
+
+// Soccer Gallery
+function openSoccerGallery() {
+    const images = [
+        '/assets/images/achievements/soccer_dcfc1.jpeg',
+        '/assets/images/achievements/soccer_dcfc2.jpeg',
+        '/assets/images/achievements/soccer_dcfc3.jpeg',
+        '/assets/images/achievements/soccer_dcfc4.jpeg'
+    ];
+    const captions = [
+        '2024 USSL Championship - FC Miami Dade County',
+        'Team Celebration After Victory',
+        'Championship Trophy Presentation',
+        'Team Strategy and Training'
+    ];
+    const carousel = new ImageCarousel(images, captions);
+    carousel.open();
+}
+
+// CrossFit Gallery
+function openCrossFitGallery() {
+    const images = [
+        '/assets/images/achievements/crossfit1.jpeg',
+        '/assets/images/achievements/crossfit2.jpeg'
+    ];
+    const captions = [
+        'CrossFit Training - 5+ Years Experience',
+        'Argument Competition 2024 - Winner'
+    ];
+    const carousel = new ImageCarousel(images, captions);
+    carousel.open();
+}
