@@ -1097,13 +1097,26 @@ function openFutsalGallery() {
     // Create enhanced carousel with special styling for master of sports
     const carousel = new ImageCarousel(images, captions);
     
-    // Override the create method to add custom styling for the rotated image
+    // Override the create method to add custom styling for specific images
     const originalCreate = carousel.create.bind(carousel);
     carousel.create = function() {
         originalCreate();
         
-        // Add rotation to the master of sports image (3rd image)
         const slides = this.carousel.querySelectorAll('.carousel-slide');
+        
+        // Keep the first image (championship team photo) at natural size
+        if (slides[0]) {
+            const championshipImg = slides[0].querySelector('img');
+            if (championshipImg) {
+                championshipImg.style.maxHeight = '70vh';
+                championshipImg.style.width = 'auto';
+                championshipImg.style.height = 'auto';
+                championshipImg.style.objectFit = 'contain';
+                championshipImg.style.imageRendering = 'auto';
+            }
+        }
+        
+        // Add rotation to the master of sports image (3rd image)
         if (slides[2]) {
             const masterImg = slides[2].querySelector('img');
             if (masterImg) {
