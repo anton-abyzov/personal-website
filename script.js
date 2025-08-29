@@ -906,13 +906,6 @@ function openVideoModal(videoUrl, title) {
         } else if (videoUrl.includes('&t=')) {
             processedUrl = videoUrl.replace(/&t=(\d+)/, '&start=$1');
         }
-        
-        // Add autoplay parameter for better UX when starting at specific time
-        if (processedUrl.includes('?')) {
-            processedUrl += '&autoplay=1&mute=1';
-        } else {
-            processedUrl += '?autoplay=1&mute=1';
-        }
     }
     
     const iframe = document.createElement('iframe');
@@ -1121,27 +1114,22 @@ function openFutsalGallery() {
         
         const slides = this.carousel.querySelectorAll('.carousel-slide');
         
-        // Keep the first image (Euro 2012 Turkey championship) at natural size
-        if (slides[0]) {
-            const championshipImg = slides[0].querySelector('img');
-            if (championshipImg) {
-                championshipImg.style.maxHeight = '70vh';
-                championshipImg.style.width = 'auto';
-                championshipImg.style.height = 'auto';
-                championshipImg.style.objectFit = 'contain';
-                championshipImg.style.imageRendering = 'auto';
+        // Apply natural size to ALL images for consistency
+        slides.forEach((slide, index) => {
+            const img = slide.querySelector('img');
+            if (img) {
+                img.style.maxHeight = '70vh';
+                img.style.width = 'auto';
+                img.style.height = 'auto';
+                img.style.objectFit = 'contain';
+                img.style.imageRendering = 'auto';
+                
+                // Only rotate the master of sports image (4th image, index 3)
+                if (index === 3) {
+                    img.style.transform = 'rotate(90deg)';
+                }
             }
-        }
-        
-        // Add rotation to the master of sports image (now 4th image)
-        if (slides[3]) {
-            const masterImg = slides[3].querySelector('img');
-            if (masterImg) {
-                masterImg.style.transform = 'rotate(90deg)';
-                masterImg.style.maxHeight = '70vh';
-                masterImg.style.objectFit = 'contain';
-            }
-        }
+        });
         
         // Add video button after carousel
         const videoButton = document.createElement('div');
