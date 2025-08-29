@@ -1084,13 +1084,15 @@ function openSoccerGallery() {
 // Futsal Gallery - Consistent with other galleries
 function openFutsalGallery() {
     const images = [
+        '/assets/images/achievements/soccer_national_winner_turkey_2012.JPG',
         '/assets/images/achievements/soccer_france_euro_national_2008_winner.jpg',
         '/assets/images/achievements/soccer_france_euro_national_2008_after_winner.jpg',
         '/assets/images/achievements/master_of_sports.jpg'
     ];
     const captions = [
+        'Euro Tournament Winner - Turkey 2012',
         'Euro Tournament Winner - France 2009',
-        'Euro Tournament Celebration',
+        'Euro Tournament Celebration - France 2009',
         'Master of Sport - Belarus'
     ];
     
@@ -1104,7 +1106,7 @@ function openFutsalGallery() {
         
         const slides = this.carousel.querySelectorAll('.carousel-slide');
         
-        // Keep the first image (championship team photo) at natural size
+        // Keep the first image (Euro 2012 Turkey championship) at natural size
         if (slides[0]) {
             const championshipImg = slides[0].querySelector('img');
             if (championshipImg) {
@@ -1116,9 +1118,9 @@ function openFutsalGallery() {
             }
         }
         
-        // Add rotation to the master of sports image (3rd image)
-        if (slides[2]) {
-            const masterImg = slides[2].querySelector('img');
+        // Add rotation to the master of sports image (now 4th image)
+        if (slides[3]) {
+            const masterImg = slides[3].querySelector('img');
             if (masterImg) {
                 masterImg.style.transform = 'rotate(90deg)';
                 masterImg.style.maxHeight = '70vh';
