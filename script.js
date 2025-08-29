@@ -820,7 +820,7 @@ function closeModal(modalId) {
 // Soccer Gallery
 function openSoccerGallery() {
     const images = [
-        '/assets/images/achievements/soccer_dcfc2.jpeg',
+        '/assets/images/achievements/soccer_dcfc5.jpeg',
         '/assets/images/achievements/soccer_dcfc3.jpeg',
         '/assets/images/achievements/soccer_dcfc4.jpeg'
     ];
@@ -1060,7 +1060,7 @@ function openMarathonGallery() {
 // Soccer Gallery - Consistent with other galleries
 function openSoccerGallery() {
     const images = [
-        '/assets/images/achievements/soccer_dcfc2.jpeg',
+        '/assets/images/achievements/soccer_dcfc5.jpeg',
         '/assets/images/achievements/soccer_dcfc3.jpeg',
         '/assets/images/achievements/soccer_dcfc4.jpeg'
     ];
