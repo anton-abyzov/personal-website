@@ -898,18 +898,33 @@ function openVideoModal(videoUrl, title) {
     videoTitle.textContent = title;
     
     // Fix YouTube timestamp parameter for embeds
-    // YouTube embeds use ?start= instead of ?t= for timestamps
     let processedUrl = videoUrl;
     if (videoUrl.includes('youtube.com/embed/')) {
-        // Replace ?t= or &t= with ?start= or &start=
-        processedUrl = videoUrl.replace(/([?&])t=(\d+)/, '$1start=$2');
+        // Replace ?t= with ?start= for YouTube embeds
+        if (videoUrl.includes('?t=')) {
+            processedUrl = videoUrl.replace(/\?t=(\d+)/, '?start=$1');
+        } else if (videoUrl.includes('&t=')) {
+            processedUrl = videoUrl.replace(/&t=(\d+)/, '&start=$1');
+        }
+        
+        // Add autoplay parameter for better UX when starting at specific time
+        if (processedUrl.includes('?')) {
+            processedUrl += '&autoplay=1&mute=1';
+        } else {
+            processedUrl += '?autoplay=1&mute=1';
+        }
     }
     
     const iframe = document.createElement('iframe');
     iframe.src = processedUrl;
+    iframe.width = '100%';
+    iframe.height = '100%';
     iframe.frameBorder = '0';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     iframe.allowFullscreen = true;
+    iframe.setAttribute('allowfullscreen', 'true');
+    iframe.setAttribute('webkitallowfullscreen', 'true');
+    iframe.setAttribute('mozallowfullscreen', 'true');
     
     modalContent.appendChild(closeBtn);
     modalContent.appendChild(videoTitle);
