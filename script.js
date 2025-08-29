@@ -897,8 +897,16 @@ function openVideoModal(videoUrl, title) {
     videoTitle.className = 'video-modal-title';
     videoTitle.textContent = title;
     
+    // Fix YouTube timestamp parameter for embeds
+    // YouTube embeds use ?start= instead of ?t= for timestamps
+    let processedUrl = videoUrl;
+    if (videoUrl.includes('youtube.com/embed/')) {
+        // Replace ?t= or &t= with ?start= or &start=
+        processedUrl = videoUrl.replace(/([?&])t=(\d+)/, '$1start=$2');
+    }
+    
     const iframe = document.createElement('iframe');
-    iframe.src = videoUrl;
+    iframe.src = processedUrl;
     iframe.frameBorder = '0';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
@@ -993,7 +1001,7 @@ function openPianoModal() {
                     <h4>Jazz Fusion, Por Una Cabeza & more</h4>
                     <p>Passionate tango classic with contemporary jazz arrangements and improvisations</p>
                 </div>
-                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Por Una Cabeza & Jazz Fusion')">
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/MpfOGcUC-4I?t=32', 'Por Una Cabeza, Jazz Fusion & more')">
                     <i class="fas fa-play"></i> Watch
                 </button>
             </div>
