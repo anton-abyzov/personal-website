@@ -1019,14 +1019,35 @@ body {
     min-width: 100%;
     flex-shrink: 0;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, rgba(0,0,0,0) 70%);
 }
 
 .carousel-slide img {
-    width: 100%;
+    width: auto;
     height: auto;
-    max-height: 80vh;
+    max-width: 90%;
+    max-height: 70vh;
     object-fit: contain;
     border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+    animation: fadeInScale 0.6s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .carousel-nav {
@@ -1755,5 +1776,99 @@ body {
     
     .photo-card.photo-card-3 {
         transform: translateX(20px) translateY(20px) rotateY(-10deg) scale(0.9);
+    }
+}
+
+/* Carousel Responsive Improvements */
+@media (max-width: 1200px) {
+    .carousel-container {
+        max-width: 95%;
+    }
+    
+    .carousel-slide img {
+        max-width: 85%;
+        max-height: 65vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-slide {
+        min-height: 300px;
+    }
+    
+    .carousel-slide img {
+        max-width: 95%;
+        max-height: 60vh;
+        box-shadow: 0 5px 20px rgba(0, 212, 255, 0.15);
+    }
+    
+    .carousel-nav {
+        padding: 15px 10px;
+        font-size: 20px;
+    }
+    
+    .carousel-prev {
+        left: 10px;
+    }
+    
+    .carousel-next {
+        right: 10px;
+    }
+    
+    .carousel-indicators {
+        padding: 15px 0;
+        gap: 8px;
+    }
+    
+    .carousel-caption {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-slide {
+        min-height: 250px;
+        background: radial-gradient(circle, rgba(0,212,255,0.03) 0%, rgba(0,0,0,0) 60%);
+    }
+    
+    .carousel-slide img {
+        max-width: 98%;
+        max-height: 50vh;
+        border-radius: 8px;
+    }
+    
+    .carousel-nav {
+        padding: 12px 8px;
+        font-size: 18px;
+        border-radius: 6px;
+    }
+    
+    .carousel-indicators {
+        padding: 12px 0;
+    }
+    
+    .carousel-indicator {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* High DPI Display Optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .carousel-slide img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Landscape Mobile Optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .carousel-slide {
+        min-height: 200px;
+    }
+    
+    .carousel-slide img {
+        max-height: 45vh;
     }
 }

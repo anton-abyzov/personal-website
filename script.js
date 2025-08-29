@@ -1114,20 +1114,14 @@ function openFutsalGallery() {
         
         const slides = this.carousel.querySelectorAll('.carousel-slide');
         
-        // Apply natural size to ALL images for consistency
+        // Only apply rotation to the master of sports image (4th image, index 3)
+        // Let CSS handle all other styling for consistency
         slides.forEach((slide, index) => {
             const img = slide.querySelector('img');
-            if (img) {
-                img.style.maxHeight = '70vh';
-                img.style.width = 'auto';
-                img.style.height = 'auto';
-                img.style.objectFit = 'contain';
-                img.style.imageRendering = 'auto';
-                
-                // Only rotate the master of sports image (4th image, index 3)
-                if (index === 3) {
-                    img.style.transform = 'rotate(90deg)';
-                }
+            if (img && index === 3) {
+                // Master of Sports image needs rotation
+                img.style.transform = 'rotate(90deg)';
+                img.style.maxWidth = '60vh'; // Adjust for rotated image
             }
         });
         
