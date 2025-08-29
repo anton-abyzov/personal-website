@@ -709,7 +709,7 @@ function createPlatformValueModal() {
     const content = `
         <div class="platform-value-header">
             <h2 class="platform-value-total">$100M+</h2>
-            <p class="platform-value-subtitle">Platform Value Delivered Through Technology Innovation</p>
+            <p class="platform-value-subtitle">Created through my leadership as CTO & Founder</p>
         </div>
         <div class="platform-value-breakdown">
             <div class="platform-value-item">
