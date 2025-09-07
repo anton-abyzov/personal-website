@@ -1,0 +1,55 @@
+# Robots.txt for antonabyzov.com
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+Disallow: /assets/images/
+Disallow: *.pdf$
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://antonabyzov.com/sitemap.xml
+
+# Allow search engines to index everything except private assets
+User-agent: Googlebot-Image
+Allow: /assets/images/og-image.jpg
+Allow: /favicon.svg
+Disallow: /assets/images/
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Cache control hint
+# Visit-time: 0100-0500

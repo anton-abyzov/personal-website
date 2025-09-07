@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anton Abyzov - Technology Evangelist & Digital Transformation Pioneer</title>
     <meta name="description" content="Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures and AI/ML solutions">
-    <meta name="keywords" content="Anton Abyzov, Platform Architect, AI/ML, Cloud Native, DevOps, Digital Transformation">
+    <meta name="keywords" content="Anton Abyzov, Technology Evangelist, Platform Architect, AI/ML, Cloud Native, DevOps, Digital Transformation, Enterprise Architecture, Machine Learning, Kubernetes, Azure, AWS, Solution Architecture">
+    <meta name="author" content="Anton Abyzov">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://antonabyzov.com/">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -23,6 +28,58 @@
     <meta property="twitter:url" content="https://antonabyzov.com/">
     <meta property="twitter:title" content="Anton Abyzov - Technology Evangelist">
     <meta property="twitter:description" content="Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation">
+    <meta property="twitter:image" content="https://antonabyzov.com/assets/images/og-image.jpg">
+    <meta property="twitter:creator" content="@aabyzov">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Anton Abyzov",
+      "alternateName": "Anton Abyzov",
+      "description": "Technology Evangelist & Digital Transformation Pioneer with 15+ years driving enterprise innovation through cloud-native architectures and AI/ML solutions",
+      "url": "https://antonabyzov.com",
+      "image": "https://antonabyzov.com/assets/images/og-image.jpg",
+      "sameAs": [
+        "https://linkedin.com/in/antonabyzov",
+        "https://github.com/anton-abyzov",
+        "https://twitter.com/aabyzov",
+        "https://scholar.google.com/citations?user=fvm5dY-8Q3EC"
+      ],
+      "jobTitle": "Technology Evangelist & Platform Architect",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Leading Technology Companies"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Technical University"
+      },
+      "knowsAbout": [
+        "Cloud Native Architecture",
+        "Artificial Intelligence",
+        "Machine Learning",
+        "DevOps",
+        "Digital Transformation",
+        "Kubernetes",
+        "Azure",
+        "AWS",
+        "Enterprise Architecture",
+        "Platform Engineering"
+      ],
+      "email": "mailto:anton.abyzov@gmail.com"
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,9 +92,20 @@
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://ko-fi.com">
+    <link rel="dns-prefetch" href="https://ko-fi.com">
+    <link rel="preconnect" href="https://storage.ko-fi.com">
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Critical CSS for above-the-fold content -->
     <style>
+        /* Optimize Core Web Vitals with critical CSS */
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .navbar { position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .hero { min-height: 100vh; display: flex; align-items: center; }
+        
         .timeline-date {
             font-size: 0.9rem;
             color: var(--secondary-color);
@@ -649,6 +717,9 @@
                 </div>
                 <div class="contact-cta">
                     <a href="mailto:anton.abyzov@gmail.com" class="btn btn-primary">Send Message</a>
+                    <a href="https://ko-fi.com/antonabyzov" target="_blank" class="btn btn-secondary" style="margin-left: 15px; background: #ff5e5b; border-color: #ff5e5b;">
+                        <i class="fas fa-coffee"></i> Buy Me a Coffee
+                    </a>
                 </div>
             </div>
         </div>
@@ -661,8 +732,33 @@
         </div>
     </footer>
 
+    <!-- Ko-fi Widget (Floating Button) -->
+    <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+    <script>
+      kofiWidgetOverlay.draw('antonabyzov', {
+        'type': 'floating-chat',
+        'floating-chat.donateButton.text': 'Support',
+        'floating-chat.donateButton.background-color': '#ff5e5b',
+        'floating-chat.donateButton.text-color': '#fff'
+      });
+    </script>
+    
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Stripe Configuration (for future use) -->
+    <script>
+      // Stripe configuration placeholder
+      const stripeConfig = {
+        publicKey: 'pk_live_XXXXXXXXXX', // Replace with your Stripe public key
+        currency: 'USD',
+        products: [
+          { id: 'consultation-1hr', name: '1-Hour Consultation', price: 250 },
+          { id: 'workshop-full', name: 'Full Day Workshop', price: 2500 },
+          { id: 'advisory-monthly', name: 'Monthly Advisory', price: 5000 }
+        ]
+      };
+    </script>
 </body>
 </html>

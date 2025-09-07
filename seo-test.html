@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Test Dashboard - antonabyzov.com</title>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0a0f1c;
+            color: #fff;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 { color: #0066ff; margin-bottom: 30px; }
+        .test-section {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0,102,255,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .test-item:last-child { border-bottom: none; }
+        .status { 
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        .pass { background: #4caf50; }
+        .fail { background: #f44336; }
+        .warning { background: #ff9800; }
+        .info { background: #2196f3; }
+        .test-name { flex: 1; }
+        .test-details { 
+            color: rgba(255,255,255,0.7); 
+            font-size: 0.9rem;
+            margin-left: 45px;
+            margin-top: 5px;
+        }
+        button {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover { background: #0052cc; }
+        .score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #0066ff;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>SEO Test Dashboard</h1>
+    
+    <div class="test-section">
+        <h2>SEO Score</h2>
+        <div class="score" id="seo-score">0/100</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Meta Tags & SEO Elements</h2>
+        <div id="meta-tests"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Structured Data</h2>
+        <div id="structured-tests"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Performance & Integration</h2>
+        <div id="performance-tests"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>File Validation</h2>
+        <div id="file-tests"></div>
+    </div>
+
+    <button onclick="runTests()">Run SEO Tests</button>
+
+    <script>
+        async function runTests() {
+            let totalScore = 0;
+            let maxScore = 0;
+
+            // Test Meta Tags
+            const metaTests = await testMetaTags();
+            displayTests('meta-tests', metaTests);
+            
+            // Test Structured Data
+            const structuredTests = await testStructuredData();
+            displayTests('structured-tests', structuredTests);
+            
+            // Test Performance
+            const performanceTests = await testPerformance();
+            displayTests('performance-tests', performanceTests);
+            
+            // Test Files
+            const fileTests = await testFiles();
+            displayTests('file-tests', fileTests);
+
+            // Calculate score
+            [metaTests, structuredTests, performanceTests, fileTests].forEach(tests => {
+                tests.forEach(test => {
+                    maxScore += test.weight || 1;
+                    if (test.status === 'pass') {
+                        totalScore += test.weight || 1;
+                    }
+                });
+            });
+
+            document.getElementById('seo-score').textContent = `${Math.round((totalScore/maxScore)*100)}/100`;
+        }
+
+        async function testMetaTags() {
+            const response = await fetch('/');
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            return [
+                {
+                    name: 'Title Tag',
+                    status: doc.querySelector('title') ? 'pass' : 'fail',
+                    details: doc.querySelector('title')?.textContent || 'Missing',
+                    weight: 3
+                },
+                {
+                    name: 'Meta Description',
+                    status: doc.querySelector('meta[name="description"]') ? 'pass' : 'fail',
+                    details: doc.querySelector('meta[name="description"]')?.content || 'Missing',
+                    weight: 3
+                },
+                {
+                    name: 'Canonical URL',
+                    status: doc.querySelector('link[rel="canonical"]') ? 'pass' : 'fail',
+                    details: doc.querySelector('link[rel="canonical"]')?.href || 'Missing',
+                    weight: 2
+                },
+                {
+                    name: 'Open Graph Tags',
+                    status: doc.querySelector('meta[property^="og:"]') ? 'pass' : 'fail',
+                    details: doc.querySelectorAll('meta[property^="og:"]').length + ' tags found',
+                    weight: 2
+                },
+                {
+                    name: 'Twitter Cards',
+                    status: doc.querySelector('meta[property^="twitter:"]') ? 'pass' : 'fail',
+                    details: doc.querySelectorAll('meta[property^="twitter:"]').length + ' tags found',
+                    weight: 1
+                },
+                {
+                    name: 'Robots Meta',
+                    status: doc.querySelector('meta[name="robots"]') ? 'pass' : 'fail',
+                    details: doc.querySelector('meta[name="robots"]')?.content || 'Missing',
+                    weight: 2
+                }
+            ];
+        }
+
+        async function testStructuredData() {
+            const response = await fetch('/');
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            const jsonLd = doc.querySelector('script[type="application/ld+json"]');
+            let structuredData = null;
+            
+            try {
+                if (jsonLd) {
+                    structuredData = JSON.parse(jsonLd.textContent);
+                }
+            } catch (e) {
+                console.error('Failed to parse JSON-LD:', e);
+            }
+
+            return [
+                {
+                    name: 'JSON-LD Present',
+                    status: jsonLd ? 'pass' : 'fail',
+                    details: jsonLd ? 'Schema.org structured data found' : 'Missing',
+                    weight: 3
+                },
+                {
+                    name: 'Person Schema',
+                    status: structuredData && structuredData['@type'] === 'Person' ? 'pass' : 'fail',
+                    details: structuredData ? `Type: ${structuredData['@type']}` : 'Missing',
+                    weight: 2
+                },
+                {
+                    name: 'Social Links',
+                    status: structuredData && structuredData.sameAs ? 'pass' : 'fail',
+                    details: structuredData?.sameAs ? `${structuredData.sameAs.length} links` : 'Missing',
+                    weight: 1
+                }
+            ];
+        }
+
+        async function testPerformance() {
+            const response = await fetch('/');
+            const html = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            return [
+                {
+                    name: 'Ko-fi Integration',
+                    status: html.includes('ko-fi.com') ? 'pass' : 'fail',
+                    details: html.includes('ko-fi.com') ? 'Widget integrated' : 'Not found',
+                    weight: 2
+                },
+                {
+                    name: 'Google Analytics',
+                    status: html.includes('gtag') ? 'pass' : 'warning',
+                    details: 'Placeholder ID needs configuration',
+                    weight: 2
+                },
+                {
+                    name: 'Stripe Configuration',
+                    status: html.includes('stripeConfig') ? 'pass' : 'fail',
+                    details: 'Configuration placeholder added',
+                    weight: 1
+                },
+                {
+                    name: 'Preconnect Headers',
+                    status: doc.querySelector('link[rel="preconnect"]') ? 'pass' : 'fail',
+                    details: doc.querySelectorAll('link[rel="preconnect"]').length + ' preconnects',
+                    weight: 1
+                }
+            ];
+        }
+
+        async function testFiles() {
+            const tests = [];
+            
+            // Test robots.txt
+            try {
+                const robotsResponse = await fetch('/robots.txt');
+                tests.push({
+                    name: 'robots.txt',
+                    status: robotsResponse.ok ? 'pass' : 'fail',
+                    details: robotsResponse.ok ? 'File exists' : 'Not found',
+                    weight: 2
+                });
+            } catch (e) {
+                tests.push({
+                    name: 'robots.txt',
+                    status: 'fail',
+                    details: 'Error loading file',
+                    weight: 2
+                });
+            }
+
+            // Test sitemap.xml
+            try {
+                const sitemapResponse = await fetch('/sitemap.xml');
+                tests.push({
+                    name: 'sitemap.xml',
+                    status: sitemapResponse.ok ? 'pass' : 'fail',
+                    details: sitemapResponse.ok ? 'File exists' : 'Not found',
+                    weight: 2
+                });
+            } catch (e) {
+                tests.push({
+                    name: 'sitemap.xml',
+                    status: 'fail',
+                    details: 'Error loading file',
+                    weight: 2
+                });
+            }
+
+            return tests;
+        }
+
+        function displayTests(containerId, tests) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            tests.forEach(test => {
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = `
+                    <div class="test-item">
+                        <div class="status ${test.status}">
+                            ${test.status === 'pass' ? '✓' : test.status === 'fail' ? '✗' : test.status === 'warning' ? '!' : 'i'}
+                        </div>
+                        <div class="test-name">${test.name}</div>
+                    </div>
+                    ${test.details ? `<div class="test-details">${test.details}</div>` : ''}
+                `;
+                container.appendChild(testDiv);
+            });
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>
