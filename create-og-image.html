@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OG Image Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background: #1a1a1a;
+        }
+        #canvas-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #0066ff;
+            display: block;
+            margin: 0 auto;
+        }
+        button {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #0052cc;
+        }
+        .instructions {
+            color: white;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h1>OG Image Generator for antonabyzov.com</h1>
+        <p>This tool creates a 1200x630px Open Graph image for social media sharing.</p>
+        <p>Click "Generate OG Image" then "Download" to save as og-image.jpg</p>
+    </div>
+    
+    <div id="canvas-container">
+        <canvas id="ogCanvas" width="1200" height="630"></canvas>
+        <br>
+        <button onclick="generateImage()">Generate OG Image</button>
+        <button onclick="downloadImage()">Download as og-image.jpg</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ogCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateImage() {
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#0a0f1c');
+            gradient.addColorStop(0.5, '#1a2332');
+            gradient.addColorStop(1, '#0066ff');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // Tech pattern overlay
+            ctx.strokeStyle = 'rgba(0, 102, 255, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 1200; i += 60) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, 630);
+                ctx.stroke();
+            }
+            for (let i = 0; i < 630; i += 60) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(1200, i);
+                ctx.stroke();
+            }
+
+            // Add glow effect
+            ctx.shadowColor = '#0066ff';
+            ctx.shadowBlur = 50;
+            
+            // Main title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 72px Plus Jakarta Sans, -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Anton Abyzov', 600, 200);
+            
+            // Reset shadow for subtitle
+            ctx.shadowBlur = 0;
+            
+            // Subtitle
+            ctx.fillStyle = '#0099ff';
+            ctx.font = '36px Plus Jakarta Sans, -apple-system, sans-serif';
+            ctx.fillText('Technology Evangelist', 600, 280);
+            
+            // Divider line
+            ctx.strokeStyle = '#0066ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(300, 320);
+            ctx.lineTo(900, 320);
+            ctx.stroke();
+            
+            // Description
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '28px Plus Jakarta Sans, -apple-system, sans-serif';
+            const lines = [
+                'Digital Transformation Pioneer',
+                'Platform Architect • AI/ML Expert',
+                'Cloud Native Solutions'
+            ];
+            
+            lines.forEach((line, index) => {
+                ctx.fillText(line, 600, 400 + (index * 45));
+            });
+            
+            // Website URL
+            ctx.fillStyle = '#0099ff';
+            ctx.font = 'bold 24px Plus Jakarta Sans, -apple-system, sans-serif';
+            ctx.fillText('antonabyzov.com', 600, 570);
+            
+            // Tech icons/decoration
+            ctx.strokeStyle = 'rgba(0, 153, 255, 0.5)';
+            ctx.lineWidth = 2;
+            
+            // Left decoration
+            ctx.beginPath();
+            ctx.moveTo(50, 315);
+            ctx.lineTo(100, 315);
+            ctx.lineTo(120, 295);
+            ctx.stroke();
+            
+            // Right decoration
+            ctx.beginPath();
+            ctx.moveTo(1150, 315);
+            ctx.lineTo(1100, 315);
+            ctx.lineTo(1080, 295);
+            ctx.stroke();
+            
+            console.log('OG Image generated successfully!');
+        }
+
+        function downloadImage() {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'og-image.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg', 0.95);
+        }
+
+        // Generate on load
+        window.onload = generateImage;
+    </script>
+</body>
+</html>
