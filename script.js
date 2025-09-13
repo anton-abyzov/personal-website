@@ -979,7 +979,7 @@ function openPianoModal() {
         <div class="piano-performances-list">
             <div class="piano-performance-item">
                 <div class="piano-performance-info">
-                    <h4>Chopin - Nocturne & Etudes</h4>
+                    <h4>Chopin - Fantaisie-Impromptu</h4>
                     <p>Classical masterpiece showcasing technical precision</p>
                 </div>
                 <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/abf_p1vqI-Q', 'Chopin Performance')">
@@ -988,10 +988,10 @@ function openPianoModal() {
             </div>
             <div class="piano-performance-item">
                 <div class="piano-performance-info">
-                    <h4>Laviniak March-Galop</h4>
+                    <h4>Lavignac March-Galop</h4>
                     <p>Energetic classical march with brilliant technical passages</p>
                 </div>
-                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/5WVYgxMCWPg', 'Laviniak March-Galop Performance')">
+                <button class="piano-performance-btn" onclick="openVideoModal('https://www.youtube.com/embed/5WVYgxMCWPg', 'Lavignac March-Galop Performance')">
                     <i class="fas fa-play"></i> Watch
                 </button>
             </div>
