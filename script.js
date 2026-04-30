@@ -35,11 +35,12 @@ document.querySelectorAll('.nav-link').forEach(link => {
 // Typewriter effect
 const phrases = [
     'Platform Technology Lead',
-    'AI/ML Pioneer',
+    'AI Agent Skills Pioneer',
+    'Open Source Maintainer',
     'Cloud Native Architect',
-    'DevOps Champion',
+    'Spec-Driven Dev Builder',
     'Digital Transformation Expert',
-    'Full-Stack Developer',
+    'Forbes Tech Council Member',
     'Technical Leader'
 ];
 

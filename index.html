@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anton Abyzov - Technology Evangelist & Digital Transformation Pioneer</title>
-    <meta name="description" content="Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures and AI/ML solutions">
-    <meta name="keywords" content="Anton Abyzov, Technology Evangelist, Platform Architect, AI/ML, Cloud Native, DevOps, Digital Transformation, Enterprise Architecture, Machine Learning, Kubernetes, Azure, AWS, Solution Architecture">
+    <title>Anton Abyzov — Technology Evangelist, Open Source Maintainer & AI Agent Skills Pioneer</title>
+    <meta name="description" content="20+ years driving enterprise innovation. Selected for Anthropic's Built with Opus 4.7 Hackathon (1 of 500 globally). Creator of SpecWeave (OSS spec-driven dev framework) and verified-skill.com (AI skill security scanner).">
+    <meta name="keywords" content="Anton Abyzov, Technology Evangelist, Platform Architect, SpecWeave, verified-skill, vskill, Claude Code, Opus 4.7, AI Agent Skills, Spec-Driven Development, AI/ML, Cloud Native, DevOps, Forbes Tech Council, Open Source">
     <meta name="author" content="Anton Abyzov">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -19,15 +19,15 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://antonabyzov.com/">
-    <meta property="og:title" content="Anton Abyzov - Technology Evangelist">
-    <meta property="og:description" content="Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation">
+    <meta property="og:title" content="Anton Abyzov — Tech Evangelist & Open Source Maintainer">
+    <meta property="og:description" content="20+ years. Anthropic Hackathon (1/500 globally). Creator of SpecWeave & verified-skill.com.">
     <meta property="og:image" content="https://antonabyzov.com/assets/images/anton_suit2.jpeg">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://antonabyzov.com/">
-    <meta name="twitter:title" content="Anton Abyzov - Technology Evangelist">
-    <meta name="twitter:description" content="Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation">
+    <meta name="twitter:title" content="Anton Abyzov — Tech Evangelist & Open Source Maintainer">
+    <meta name="twitter:description" content="20+ years. Anthropic Hackathon (1/500 globally). Creator of SpecWeave & verified-skill.com.">
     <meta name="twitter:image" content="https://antonabyzov.com/assets/images/anton_suit2.jpeg">
     <meta name="twitter:creator" content="@aabyzov">
     
@@ -38,7 +38,7 @@
       "@type": "Person",
       "name": "Anton Abyzov",
       "alternateName": "Anton Abyzov",
-      "description": "Technology Evangelist & Digital Transformation Pioneer with 15+ years driving enterprise innovation through cloud-native architectures and AI/ML solutions",
+      "description": "Technology Evangelist & Digital Transformation Pioneer with 20+ years driving enterprise innovation through cloud-native architectures, AI/ML solutions, and open-source developer tooling (SpecWeave, vskill).",
       "url": "https://antonabyzov.com",
       "image": "https://antonabyzov.com/assets/images/anton_suit2.jpeg",
       "sameAs": [
@@ -66,7 +66,11 @@
         "Azure",
         "AWS",
         "Enterprise Architecture",
-        "Platform Engineering"
+        "Platform Engineering",
+        "Spec-Driven Development",
+        "Claude Code",
+        "AI Agent Skills",
+        "Open Source Tooling"
       ],
       "email": "mailto:anton.abyzov@gmail.com"
     }
@@ -222,6 +226,66 @@
             height: 24px;
             visibility: hidden;
         }
+        /* Featured achievement cards with custom badge artwork */
+        .achievement-card-featured {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(0, 212, 255, 0.18);
+            min-height: 380px;
+        }
+        .achievement-card-featured:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 212, 255, 0.18);
+        }
+        .achievement-badge {
+            margin: 0 auto 20px;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .achievement-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .achievement-card-featured:hover .achievement-badge img {
+            transform: scale(1.05);
+        }
+        .achievement-card-featured h3 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .badge-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.12);
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        .badge-stars i {
+            font-size: 0.75rem;
+        }
+        .achievement-card-featured code {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--secondary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+        }
         .music-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 20px;
@@ -269,11 +333,11 @@
                     <span class="typewriter" id="typewriter"></span>
                 </p>
                 <div class="hero-description">
-                    <p>🚀 Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures and AI/ML solutions. Forbes Technology Council Member | Scaled Softgreat (0->$7.3M revenue) | US EB-1A Extraordinary Ability</p>
+                    <p>🚀 Technology Evangelist & Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures, AI/ML, and open-source developer tooling. Forbes Technology Council | IEEE Senior Member | Selected for Anthropic's <em>Built with Opus 4.7</em> Hackathon (1 of 500 builders globally) | Creator of <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener">SpecWeave</a> &amp; <a href="https://verified-skill.com" target="_blank" rel="noopener">verified-skill.com</a> | US EB-1A Extraordinary Ability</p>
                 </div>
                 <div class="hero-stats">
                     <div class="stat-item">
-                        <span class="stat-number">18+</span>
+                        <span class="stat-number">20+</span>
                         <span class="stat-label">Years Experience</span>
                     </div>
                     <div class="stat-item" style="cursor: pointer;" onclick="createPlatformValueModal()">
@@ -334,14 +398,17 @@
                 <div class="about-text" data-aos="fade-up" data-aos-delay="100">
                     <h3>Core Achievements</h3>
                     <ul class="achievement-list">
+                        <li>Selected for <strong>Anthropic's "Built with Opus 4.7" Hackathon</strong> — 1 of 500 builders globally (Apr 2026)</li>
+                        <li>Creator of <strong>SpecWeave</strong> (134★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
+                        <li>Founder of <strong>verified-skill.com</strong> (28★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
                         <li>Led $100M+ in platform value delivery across Fortune 500 enterprises (Carnival, Olympus, MUFG)</li>
                         <li>Softgreat: Scaled from 0 to $7.3M revenue, 66 employees, serving Fortune 500 clients</li>
                         <li>Forbes Technology Council Member (invitation-only senior executives)</li>
-                        <li>IEEE Senior Member - Elevated grade recognizing professional maturity and significant performance</li>
+                        <li>IEEE Senior Member — Elevated grade recognizing professional maturity and significant performance</li>
                         <li>Architected platforms processing billions of transactions daily (5PB data warehouse)</li>
                         <li>Led 200+ engineers across global teams in US, Europe, and Asia</li>
-                        <li>Heart Coach App contributor - Top 50 App Store Medical Category 2023</li>
-                        <li>US Green Card (EB-1A) - Extraordinary Ability in Science/Technology</li>
+                        <li>Heart Coach App contributor — Top 50 App Store Medical Category 2023</li>
+                        <li>US Green Card (EB-1A) — Extraordinary Ability in Science/Technology</li>
                     </ul>
                     <h3 style="margin-top: 30px;">Professional Certifications & Memberships</h3>
                     <div>
@@ -368,8 +435,8 @@
                     </div>
                     <div class="skill-card">
                         <div class="skill-icon"><i class="fas fa-robot"></i></div>
-                        <h4>AI/ML Pioneer</h4>
-                        <p>YOLOv11, GPT-5, LangChain, Vector DBs</p>
+                        <h4>AI / Agent Skills</h4>
+                        <p>Claude Code, Opus 4.7, MCP, LangChain, Vector DBs</p>
                     </div>
                     <div class="skill-card">
                         <div class="skill-icon"><i class="fas fa-code"></i></div>
@@ -501,39 +568,66 @@
     <!-- Business Achievements Section -->
     <section id="achievements" class="achievements section">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Business Achievements</h2>
+            <h2 class="section-title" data-aos="fade-up">Featured Achievements</h2>
             <div class="achievements-grid">
-                <div class="achievement-card" data-aos="fade-up">
+                <!-- Anthropic Hackathon -->
+                <div class="achievement-card achievement-card-featured" data-aos="fade-up">
+                    <div class="achievement-badge">
+                        <img src="assets/images/badges/opus47-badge.png" alt="Built with Opus 4.7 — Anthropic Hackathon" loading="lazy">
+                    </div>
+                    <h3>Built with Opus 4.7 — Anthropic Hackathon</h3>
+                    <p>Selected as <strong>1 of 500 builders globally</strong> for Anthropic &amp; Cerebral Valley's flagship Claude Code hackathon (Apr 21–28, 2026). Submitted <strong>Skill Studio</strong> — a web UI for evaluating and iterating on Claude Code Agent Skills.</p>
+                    <a href="https://www.youtube.com/watch?v=yEg46Ybh4Yk" target="_blank" rel="noopener" class="achievement-link">Watch 3-min Demo →</a>
+                </div>
+
+                <!-- SpecWeave OSS -->
+                <div class="achievement-card achievement-card-featured" data-aos="fade-up" data-aos-delay="100">
+                    <div class="achievement-badge">
+                        <img src="assets/images/badges/specweave-badge.png" alt="SpecWeave — open-source spec-driven development framework" loading="lazy">
+                    </div>
+                    <h3>SpecWeave <span class="badge-stars"><i class="fas fa-star"></i> 134</span></h3>
+                    <p>Creator &amp; maintainer of the open-source <strong>spec-driven development framework</strong> for Claude Code. Plans features, generates specs, and syncs increments bidirectionally with GitHub, JIRA, and Azure DevOps. Distributed as 100+ <code>sw:*</code> Agent Skills.</p>
+                    <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener" class="achievement-link">View on GitHub →</a>
+                </div>
+
+                <!-- Verified Skill -->
+                <div class="achievement-card achievement-card-featured" data-aos="fade-up" data-aos-delay="200">
+                    <div class="achievement-badge">
+                        <img src="assets/images/badges/vskill-badge.png" alt="vskill / verified-skill.com — secure AI skill registry &amp; scanner" loading="lazy">
+                    </div>
+                    <h3>verified-skill.com <span class="badge-stars"><i class="fas fa-star"></i> 28</span></h3>
+                    <p>Founder of the <strong>trusted registry &amp; security scanner for AI agent skills</strong>. 52 scan patterns across 39 platform adapters detect malicious prompts, exfiltration, and over-privileged tools in <code>SKILL.md</code> files. Distributed on npm.</p>
+                    <a href="https://verified-skill.com" target="_blank" rel="noopener" class="achievement-link">verified-skill.com →</a>
+                </div>
+
+                <!-- Forbes -->
+                <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="achievement-icon">
                         <i class="fas fa-award"></i>
                     </div>
                     <h3>Forbes Technology Council</h3>
                     <p>Invitation-only membership for senior technology executives. Published thought leader on digital transformation and sports-tech innovation.</p>
-                    <a href="https://www.forbes.com/councils/forbestechcouncil/people/antonabyzov/" target="_blank" class="achievement-link">View Forbes Profile →</a>
+                    <a href="https://www.forbes.com/councils/forbestechcouncil/people/antonabyzov/" target="_blank" rel="noopener" class="achievement-link">View Forbes Profile →</a>
                 </div>
-                <div class="achievement-card" data-aos="fade-up" data-aos-delay="100">
+
+                <!-- Hugging Face -->
+                <div class="achievement-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="achievement-icon">
                         <i class="fas fa-robot"></i>
                     </div>
                     <h3>AI Innovation with Hugging Face</h3>
-                    <p>Participated in AI hackathon with Clement Delangue (CEO) - our innovative solution received notable recognition</p>
-                    <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" class="achievement-link">View Photo →</a>
+                    <p>Participated in AI hackathon with Clement Delangue (CEO) — our innovative solution received notable recognition.</p>
+                    <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" rel="noopener" class="achievement-link">View Photo →</a>
                 </div>
-                <div class="achievement-card" data-aos="fade-up" data-aos-delay="200">
+
+                <!-- Business Excellence -->
+                <div class="achievement-card" data-aos="fade-up" data-aos-delay="500">
                     <div class="achievement-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <h3>Business Excellence Award 2020</h3>
-                    <p>Recognized for innovation and digital transformation</p>
-                    <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" class="achievement-link">View Award →</a>
-                </div>
-                <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="achievement-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Claude Code Development Pioneer</h3>
-                    <p>Built complete AI solution in 1 day using Claude Code, achieving top placement in competition</p>
-                    <div class="achievement-link-spacer"></div>
+                    <p>Recognized for innovation and digital transformation across enterprise platforms.</p>
+                    <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" rel="noopener" class="achievement-link">View Award →</a>
                 </div>
             </div>
         </div>
