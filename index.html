@@ -286,6 +286,27 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.85em;
         }
+        /* Custom achievement icon images (replaces Font Awesome glyph) */
+        .achievement-icon-img {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+        .achievement-icon-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .achievement-card:hover .achievement-icon-img {
+            transform: scale(1.06);
+        }
         .music-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 20px;
@@ -399,8 +420,8 @@
                     <h3>Core Achievements</h3>
                     <ul class="achievement-list">
                         <li>Selected for <strong>Anthropic's "Built with Opus 4.7" Hackathon</strong> — 1 of 500 builders chosen from <strong>22K+ applications (top ~2%)</strong>, Apr 2026</li>
-                        <li>Creator of <strong>SpecWeave</strong> (134★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
-                        <li>Founder of <strong>verified-skill.com</strong> (28★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
+                        <li>Creator of <strong>SpecWeave</strong> (<span data-stars="specweave">…</span>★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
+                        <li>Founder of <strong>verified-skill.com</strong> (<span data-stars="vskill">…</span>★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
                         <li>Led $100M+ in platform value delivery across Fortune 500 enterprises (Carnival, Olympus, MUFG)</li>
                         <li>Softgreat: Scaled from 0 to $7.3M revenue, 66 employees, serving Fortune 500 clients</li>
                         <li>Forbes Technology Council Member (invitation-only senior executives)</li>
@@ -429,22 +450,22 @@
                 </div>
                 <div class="skills-grid" data-aos="fade-up" data-aos-delay="200">
                     <div class="skill-card">
-                        <div class="skill-icon"><i class="fas fa-cloud"></i></div>
+                        <div class="skill-icon-img"><img src="assets/images/badges/icon-cloud.png" alt="" loading="lazy"></div>
                         <h4>Cloud Architecture</h4>
                         <p>Azure, AWS, GCP Multi-cloud Expert</p>
                     </div>
                     <div class="skill-card">
-                        <div class="skill-icon"><i class="fas fa-robot"></i></div>
+                        <div class="skill-icon-img"><img src="assets/images/badges/icon-ai.png" alt="" loading="lazy"></div>
                         <h4>AI / Agent Skills</h4>
                         <p>Claude Code, Opus 4.7, MCP, LangChain, Vector DBs</p>
                     </div>
                     <div class="skill-card">
-                        <div class="skill-icon"><i class="fas fa-code"></i></div>
+                        <div class="skill-icon-img"><img src="assets/images/badges/icon-fullstack.png" alt="" loading="lazy"></div>
                         <h4>Full-Stack Development</h4>
                         <p>.NET 9, React, TypeScript, Python</p>
                     </div>
                     <div class="skill-card">
-                        <div class="skill-icon"><i class="fas fa-server"></i></div>
+                        <div class="skill-icon-img"><img src="assets/images/badges/icon-devops.png" alt="" loading="lazy"></div>
                         <h4>DevOps Excellence</h4>
                         <p>Kubernetes, GitOps, CI/CD, IaC</p>
                     </div>
@@ -585,7 +606,7 @@
                     <div class="achievement-badge">
                         <img src="assets/images/badges/specweave-badge.png" alt="SpecWeave — open-source spec-driven development framework" loading="lazy">
                     </div>
-                    <h3>SpecWeave <span class="badge-stars"><i class="fas fa-star"></i> 134</span></h3>
+                    <h3>SpecWeave <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star"></i> <span data-stars="specweave">…</span></span></h3>
                     <p>Creator &amp; maintainer of the open-source <strong>spec-driven development framework</strong> for Claude Code. Plans features, generates specs, and syncs increments bidirectionally with GitHub, JIRA, and Azure DevOps. Distributed as 100+ <code>sw:*</code> Agent Skills.</p>
                     <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener" class="achievement-link">View on GitHub →</a>
                 </div>
@@ -595,15 +616,15 @@
                     <div class="achievement-badge">
                         <img src="assets/images/badges/vskill-badge.png" alt="vskill / verified-skill.com — secure AI skill registry &amp; scanner" loading="lazy">
                     </div>
-                    <h3>verified-skill.com <span class="badge-stars"><i class="fas fa-star"></i> 28</span></h3>
+                    <h3>verified-skill.com <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star"></i> <span data-stars="vskill">…</span></span></h3>
                     <p>Founder of the <strong>trusted registry &amp; security scanner for AI agent skills</strong>. 52 scan patterns across 39 platform adapters detect malicious prompts, exfiltration, and over-privileged tools in <code>SKILL.md</code> files. Distributed on npm.</p>
                     <a href="https://verified-skill.com" target="_blank" rel="noopener" class="achievement-link">verified-skill.com →</a>
                 </div>
 
                 <!-- Forbes -->
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
-                    <div class="achievement-icon">
-                        <i class="fas fa-award"></i>
+                    <div class="achievement-icon-img">
+                        <img src="assets/images/icons/ach-forbes.png" alt="" loading="lazy">
                     </div>
                     <h3>Forbes Technology Council</h3>
                     <p>Invitation-only membership for senior technology executives. Published thought leader on digital transformation and sports-tech innovation.</p>
@@ -612,8 +633,8 @@
 
                 <!-- Hugging Face -->
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="400">
-                    <div class="achievement-icon">
-                        <i class="fas fa-robot"></i>
+                    <div class="achievement-icon-img">
+                        <img src="assets/images/icons/ach-ai-collab.png" alt="" loading="lazy">
                     </div>
                     <h3>AI Innovation with Hugging Face</h3>
                     <p>Participated in AI hackathon with Clement Delangue (CEO) — our innovative solution received notable recognition.</p>
@@ -622,8 +643,8 @@
 
                 <!-- Business Excellence -->
                 <div class="achievement-card" data-aos="fade-up" data-aos-delay="500">
-                    <div class="achievement-icon">
-                        <i class="fas fa-trophy"></i>
+                    <div class="achievement-icon-img">
+                        <img src="assets/images/icons/ach-trophy.png" alt="" loading="lazy">
                     </div>
                     <h3>Business Excellence Award 2020</h3>
                     <p>Recognized for innovation and digital transformation across enterprise platforms.</p>
@@ -834,6 +855,58 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
+
+    <!-- Live GitHub stars (cached 6h in localStorage) -->
+    <script>
+    (function () {
+        const REPOS = {
+            specweave: 'anton-abyzov/specweave',
+            vskill: 'anton-abyzov/vskill'
+        };
+        const CACHE_KEY = 'gh-stars-v1';
+        const TTL_MS = 6 * 60 * 60 * 1000;
+
+        function readCache() {
+            try {
+                const raw = localStorage.getItem(CACHE_KEY);
+                if (!raw) return null;
+                const obj = JSON.parse(raw);
+                if (!obj || Date.now() - obj.t > TTL_MS) return null;
+                return obj.d;
+            } catch (e) { return null; }
+        }
+        function writeCache(d) {
+            try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
+        }
+        function paint(key, count) {
+            document.querySelectorAll('[data-stars="' + key + '"]').forEach(el => {
+                el.textContent = Number(count).toLocaleString();
+            });
+        }
+        async function refresh() {
+            const cached = readCache();
+            if (cached) { Object.entries(cached).forEach(([k, v]) => paint(k, v)); return; }
+            const fresh = {};
+            await Promise.all(Object.entries(REPOS).map(async ([key, repo]) => {
+                try {
+                    const r = await fetch('https://api.github.com/repos/' + repo, { headers: { Accept: 'application/vnd.github+json' } });
+                    if (!r.ok) return;
+                    const j = await r.json();
+                    if (typeof j.stargazers_count === 'number') {
+                        fresh[key] = j.stargazers_count;
+                        paint(key, j.stargazers_count);
+                    }
+                } catch (e) {}
+            }));
+            if (Object.keys(fresh).length) writeCache(fresh);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', refresh);
+        } else {
+            refresh();
+        }
+    })();
+    </script>
     
 </body>
 </html>
