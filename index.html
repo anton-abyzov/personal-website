@@ -96,7 +96,7 @@
     <link rel="preconnect" href="https://storage.ko-fi.com">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2026-04-30b">
     <!-- Critical CSS for above-the-fold content -->
     <style>
         /* Optimize Core Web Vitals with critical CSS */
@@ -854,9 +854,9 @@
     
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=2026-04-30b"></script>
 
-    <!-- Live GitHub stars (cached 6h in localStorage) -->
+    <!-- Live GitHub stars: stale-while-revalidate (paint cache instantly, refresh in background, 1h TTL) -->
     <script>
     (function () {
         const REPOS = {
@@ -864,15 +864,13 @@
             vskill: 'anton-abyzov/vskill'
         };
         const CACHE_KEY = 'gh-stars-v1';
-        const TTL_MS = 6 * 60 * 60 * 1000;
+        const TTL_MS = 60 * 60 * 1000; // 1h freshness window
 
         function readCache() {
             try {
                 const raw = localStorage.getItem(CACHE_KEY);
                 if (!raw) return null;
-                const obj = JSON.parse(raw);
-                if (!obj || Date.now() - obj.t > TTL_MS) return null;
-                return obj.d;
+                return JSON.parse(raw); // { t, d }
             } catch (e) { return null; }
         }
         function writeCache(d) {
@@ -883,27 +881,42 @@
                 el.textContent = Number(count).toLocaleString();
             });
         }
-        async function refresh() {
-            const cached = readCache();
-            if (cached) { Object.entries(cached).forEach(([k, v]) => paint(k, v)); return; }
+        async function fetchOne(repo) {
+            try {
+                const r = await fetch('https://api.github.com/repos/' + repo, {
+                    headers: { Accept: 'application/vnd.github+json' }
+                });
+                if (!r.ok) return null;
+                const j = await r.json();
+                return typeof j.stargazers_count === 'number' ? j.stargazers_count : null;
+            } catch (e) { return null; }
+        }
+        async function fetchAllAndPaint() {
             const fresh = {};
             await Promise.all(Object.entries(REPOS).map(async ([key, repo]) => {
-                try {
-                    const r = await fetch('https://api.github.com/repos/' + repo, { headers: { Accept: 'application/vnd.github+json' } });
-                    if (!r.ok) return;
-                    const j = await r.json();
-                    if (typeof j.stargazers_count === 'number') {
-                        fresh[key] = j.stargazers_count;
-                        paint(key, j.stargazers_count);
-                    }
-                } catch (e) {}
+                const n = await fetchOne(repo);
+                if (n != null) {
+                    fresh[key] = n;
+                    paint(key, n);
+                }
             }));
             if (Object.keys(fresh).length) writeCache(fresh);
         }
+        function init() {
+            const cached = readCache();
+            // 1) Paint cached values IMMEDIATELY so users never see "..."
+            if (cached && cached.d) {
+                Object.entries(cached.d).forEach(([k, v]) => paint(k, v));
+            }
+            // 2) Refresh in background if cache is stale or missing
+            if (!cached || (Date.now() - cached.t) > TTL_MS) {
+                fetchAllAndPaint();
+            }
+        }
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', refresh);
+            document.addEventListener('DOMContentLoaded', init);
         } else {
-            refresh();
+            init();
         }
     })();
     </script>
