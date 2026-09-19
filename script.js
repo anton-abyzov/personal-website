@@ -98,7 +98,9 @@ window.addEventListener('DOMContentLoaded', () => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        // "#" alone is not a valid selector; those anchors are buttons in disguise.
+        const target = (href && href.length > 1) ? document.querySelector(href) : null;
         if (target) {
             const offsetTop = target.offsetTop - 80;
             window.scrollTo({
@@ -1230,3 +1232,102 @@ window.openVideoModal = openVideoModal;
 window.openPianoModal = openPianoModal;
 window.openFutsalGallery = openFutsalGallery;
 window.createPlatformValueModal = createPlatformValueModal;
+/* =========================================================================
+   Progressive enhancement for the layered layout. Nothing here reveals or
+   hides content — the page is complete and legible without this block.
+   ========================================================================= */
+(function () {
+    'use strict';
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supportsSDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll(root)'));
+
+    /* ---- core-sample rail: mark the stratum in the reading band ---- */
+    var railLinks = Array.prototype.slice.call(document.querySelectorAll('.rail-list a[data-rail]'));
+    if (railLinks.length) {
+        var setCurrent = function (id) {
+            railLinks.forEach(function (a) {
+                var on = a.getAttribute('data-rail') === id;
+                a.classList.toggle('is-current', on);
+                if (on) { a.setAttribute('aria-current', 'true'); }
+                else { a.removeAttribute('aria-current'); }
+            });
+        };
+
+        var targets = railLinks
+            .map(function (a) { return document.getElementById(a.getAttribute('data-rail')); })
+            .filter(Boolean);
+
+        if ('IntersectionObserver' in window) {
+            var visible = {};
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    visible[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0;
+                });
+                var best = null, bestRatio = 0;
+                Object.keys(visible).forEach(function (id) {
+                    if (visible[id] > bestRatio) { bestRatio = visible[id]; best = id; }
+                });
+                if (best) setCurrent(best);
+            }, { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.01, 0.2, 0.5, 1] });
+            targets.forEach(function (t) { io.observe(t); });
+        }
+        setCurrent('home');
+    }
+
+    /* ---- rail progress fill for browsers without CSS scroll-driven animations ---- */
+    if (!supportsSDA && !reduced) {
+        var railFill = document.querySelector('.rail-fill');
+        if (railFill) {
+            var ticking = false;
+            var paint = function () {
+                var doc = document.documentElement;
+                var max = doc.scrollHeight - doc.clientHeight;
+                var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+                railFill.style.transform = 'scaleY(' + p + ')';
+                ticking = false;
+            };
+            window.addEventListener('scroll', function () {
+                if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+            }, { passive: true });
+            paint();
+        }
+    }
+
+    /* ---- hero stats: the count-up above can race its own restore timer and
+            drop the trailing "+". Re-assert the authored values. ---- */
+    var statEls = document.querySelectorAll('.hero-stats .stat-number');
+    if (statEls.length) {
+        var authored = Array.prototype.map.call(statEls, function (el) { return el.textContent.trim(); });
+        var restoreStats = function () {
+            Array.prototype.forEach.call(statEls, function (el, i) {
+                if (el.textContent.trim() !== authored[i]) el.textContent = authored[i];
+            });
+        };
+        [2300, 3200, 4200].forEach(function (t) { setTimeout(restoreStats, t); });
+        window.addEventListener('load', function () {
+            setTimeout(restoreStats, 2600);
+            setTimeout(restoreStats, 4400);
+        });
+    }
+
+    /* ---- hamburger: keep aria-expanded truthful, and allow Escape ---- */
+    var burger = document.querySelector('.hamburger');
+    var menu = document.querySelector('.nav-menu');
+    if (burger && menu) {
+        var sync = function () {
+            burger.setAttribute('aria-expanded', menu.classList.contains('active') ? 'true' : 'false');
+        };
+        burger.addEventListener('click', function () { requestAnimationFrame(sync); });
+        menu.addEventListener('click', function () { requestAnimationFrame(sync); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                burger.classList.remove('active');
+                sync();
+                burger.focus();
+            }
+        });
+        sync();
+    }
+})();
