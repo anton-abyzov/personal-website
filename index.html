@@ -98,7 +98,8 @@
     <link rel="dns-prefetch" href="https://ko-fi.com">
     <link rel="preconnect" href="https://storage.ko-fi.com">
 
-    <link rel="stylesheet" href="style.css?v=2026-09-19">
+    <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high">
+    <link rel="stylesheet" href="style.css?v=2026-09-19b">
 
     <!-- The legacy site script expects AOS to exist; this page reveals with CSS instead. -->
     <script>window.AOS={init:function(){},refresh:function(){},refreshHard:function(){}};</script>
@@ -125,6 +126,7 @@
         <ul class="nav-menu" id="nav-menu">
             <li><a href="#home" class="nav-link">Home</a></li>
             <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
             <li><a href="#experience" class="nav-link">Experience</a></li>
             <li><a href="#achievements" class="nav-link">Achievements</a></li>
             <li><a href="#publications" class="nav-link">Publications</a></li>
@@ -142,29 +144,51 @@
     <span class="rail-cap" aria-hidden="true">Core</span>
     <div class="rail-track" aria-hidden="true"><i class="rail-fill"></i></div>
     <ol class="rail-list">
-        <li><a href="#home" data-rail="home"><b>00</b><span>Surface</span></a></li>
-        <li><a href="#about" data-rail="about"><b>01</b><span>About</span></a></li>
-        <li><a href="#experience" data-rail="experience"><b>02</b><span>Experience</span></a></li>
-        <li><a href="#achievements" data-rail="achievements"><b>03</b><span>Achievements</span></a></li>
-        <li><a href="#publications" data-rail="publications"><b>04</b><span>Publications</span></a></li>
-        <li><a href="#personal" data-rail="personal"><b>05</b><span>Personal</span></a></li>
-        <li><a href="#contact" data-rail="contact"><b>06</b><span>Contact</span></a></li>
-    </ol>
+            <li><a href="#home" data-rail="home"><b>00</b><span>Surface</span></a></li>
+            <li><a href="#about" data-rail="about"><b>01</b><span>About</span></a></li>
+            <li><a href="#skills" data-rail="skills"><b>02</b><span>Competencies</span></a></li>
+            <li><a href="#experience" data-rail="experience"><b>03</b><span>Experience</span></a></li>
+            <li><a href="#achievements" data-rail="achievements"><b>04</b><span>Achievements</span></a></li>
+            <li><a href="#publications" data-rail="publications"><b>05</b><span>Publications</span></a></li>
+            <li><a href="#personal" data-rail="personal"><b>06</b><span>Personal</span></a></li>
+            <li><a href="#contact" data-rail="contact"><b>07</b><span>Contact</span></a></li>
+        </ol>
     <span class="rail-cap rail-cap-end" aria-hidden="true">2026</span>
 </nav>
 
 <main>
-<!-- ============ Hero / Stratum 00 ============ -->
-<section id="home" class="hero" aria-labelledby="hero-name">
-    <div class="hero-bg" aria-hidden="true"><div class="hero-particles"></div></div>
-    <div class="shell hero-shell">
-        <div class="hero-text">
-            <p class="eyebrow eyebrow-accent"><span class="tick"></span>Stratum 00 — Surface</p>
+<!-- ============ Hero / Stratum 00 — magazine cover, five planes ============ -->
+<section id="home" class="hero cover" aria-labelledby="hero-name">
+    <!-- plane 2 — cover air: orbs and hairlines, slowest of the hero planes -->
+    <div class="cover-air" aria-hidden="true">
+        <span class="cover-orb cover-orb-a"></span>
+        <span class="cover-orb cover-orb-b"></span>
+        <span class="cover-orb cover-orb-c"></span>
+        <span class="cover-hair cover-hair-1"></span>
+        <span class="cover-hair cover-hair-2"></span>
+        <span class="cover-hair cover-hair-3"></span>
+    </div>
+
+    <div class="shell cover-shell">
+        <!-- plane 5 — masthead -->
+        <div class="cover-masthead">
+            <span class="masthead-mark">AA</span>
+            <span class="masthead-title">antonabyzov.com</span>
+            <span class="masthead-rule" aria-hidden="true"></span>
+            <span class="masthead-meta">Issue 2026 &nbsp;·&nbsp; Stratum 00 — Surface</span>
+        </div>
+
+        <!-- plane 4 — type lockup -->
+        <div class="cover-lockup">
+            <p class="eyebrow eyebrow-accent"><span class="tick"></span>Twenty years on the record</p>
             <h1 class="hero-title" id="hero-name">
-                <span class="greeting">Hello, I'm</span>
                 <span class="name"><span class="name-a">Anton</span> <span class="name-b">Abyzov</span></span>
             </h1>
             <p class="hero-subtitle"><span class="typewriter" id="typewriter">Platform Technology Lead</span></p>
+        </div>
+
+        <!-- plane 4 — body copy, stats and calls to action -->
+        <div class="cover-body hero-text">
             <div class="hero-description">
                 <p>Technology Evangelist &amp; Digital Transformation Pioneer driving enterprise innovation through cloud-native architectures, AI/ML, and open-source developer tooling. Forbes Technology Council <span class="sep">/</span> IEEE Senior Member <span class="sep">/</span> Selected for Anthropic's <em>Built with Opus 4.7</em>&nbsp;Hackathon — 1 of 500 builders chosen from 22K+ applications (top ~2%) <span class="sep">/</span> Creator of <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener">SpecWeave</a> &amp; <a href="https://verified-skill.com" target="_blank" rel="noopener">verified-skill.com</a> <span class="sep">/</span> US EB-1A Extraordinary Ability</p>
             </div>
@@ -188,19 +212,21 @@
                 <a href="#experience" class="btn btn-outline">View Experience</a>
             </div>
         </div>
-        <div class="hero-image">
+
+        <!-- plane 3 — portrait, scroll-linked zoom -->
+        <div class="cover-portrait">
             <div class="professional-photo-stack">
                 <div class="photo-stack-container">
                     <div class="photo-card photo-card-1 active">
-                        <img src="assets/images/profile.jpg" alt="Anton Abyzov - Technology Leader" class="profile-img">
+                        <img src="assets/images/profile.jpg" alt="Anton Abyzov - Technology Leader" class="profile-img" fetchpriority="high">
                         <div class="photo-overlay"><span class="photo-label">Technology Leader</span></div>
                     </div>
                     <div class="photo-card photo-card-2">
-                        <img src="assets/images/anton_suit2.jpeg" alt="Anton Abyzov - Business Executive" class="profile-img">
+                        <img src="assets/images/anton_suit2.jpeg" alt="Anton Abyzov - Business Executive" class="profile-img" loading="lazy">
                         <div class="photo-overlay"><span class="photo-label">Business Executive</span></div>
                     </div>
                     <div class="photo-card photo-card-3">
-                        <img src="assets/images/anton_easychamp_lower.jpeg" alt="Anton Abyzov - Vegas Innovation" class="profile-img">
+                        <img src="assets/images/anton_easychamp_lower.jpeg" alt="Anton Abyzov - Vegas Innovation" class="profile-img" loading="lazy">
                         <div class="photo-overlay"><span class="photo-label">Vegas Innovation</span></div>
                     </div>
                 </div>
@@ -209,15 +235,22 @@
                     <button class="photo-indicator" data-index="1" aria-label="Show photo 2"></button>
                     <button class="photo-indicator" data-index="2" aria-label="Show photo 3"></button>
                 </div>
-                <ul class="hero-chips" aria-label="Credentials">
-                    <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
-                    <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
-                    <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
-                </ul>
             </div>
         </div>
+
+        <!-- plane 5 — cover lines, the fastest layer -->
+        <ul class="hero-chips" aria-label="Credentials">
+            <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
+            <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
+            <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
+        </ul>
     </div>
-    <div class="scroll-indicator" aria-hidden="true"><span></span></div>
+
+    <div class="cover-foot" aria-hidden="true">
+        <span class="cover-foot-label">Scroll — dig down</span>
+        <span class="cover-foot-track"><i class="cover-foot-fill"></i></span>
+        <span class="cover-foot-label cover-foot-label-end">Seven strata</span>
+    </div>
 </section>
 
 <!-- ============ About / Stratum 01 ============ -->
@@ -231,77 +264,165 @@
         </header>
 
         <div class="about-content">
-            <div class="about-text rise">
+            <div class="about-text">
                 <h3 class="block-title">Core Achievements</h3>
                 <ul class="achievement-list">
-                    <li>Selected for <strong>Anthropic's "Built with Opus 4.7" Hackathon</strong> — 1 of 500 builders chosen from <strong>22K+ applications (top ~2%)</strong>, Apr 2026</li>
-                    <li>Creator of <strong>SpecWeave</strong> (<span data-stars="specweave">…</span>★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
-                    <li>Founder of <strong>verified-skill.com</strong> (<span data-stars="vskill">…</span>★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
-                    <li>Led $100M+ in platform value delivery across Fortune 500 enterprises (Carnival, Olympus, MUFG)</li>
-                    <li>Softgreat: Scaled from 0 to $7.3M revenue, 66 employees, serving Fortune 500 clients</li>
-                    <li>Forbes Technology Council Member (invitation-only senior executives)</li>
-                    <li>IEEE Senior Member — Elevated grade recognizing professional maturity and significant performance</li>
-                    <li>Architected platforms processing billions of transactions daily (5PB data warehouse)</li>
-                    <li>Led 200+ engineers across global teams in US, Europe, and Asia</li>
-                    <li>Heart Coach App contributor — Top 50 App Store Medical Category 2023</li>
-                    <li>US Green Card (EB-1A) — Extraordinary Ability in Science/Technology</li>
+                    <li class="record-line">Selected for <strong>Anthropic's "Built with Opus 4.7" Hackathon</strong> — 1 of 500 builders chosen from <strong>22K+ applications (top ~2%)</strong>, Apr 2026</li>
+                    <li class="record-line">Creator of <strong>SpecWeave</strong> (<span data-stars="specweave">…</span>★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
+                    <li class="record-line">Founder of <strong>verified-skill.com</strong> (<span data-stars="vskill">…</span>★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
+                    <li class="record-line">Led $100M+ in platform value delivery across Fortune 500 enterprises (Carnival, Olympus, MUFG)</li>
+                    <li class="record-line">Softgreat: Scaled from 0 to $7.3M revenue, 66 employees, serving Fortune 500 clients</li>
+                    <li class="record-line">Forbes Technology Council Member (invitation-only senior executives)</li>
+                    <li class="record-line">IEEE Senior Member — Elevated grade recognizing professional maturity and significant performance</li>
+                    <li class="record-line">Architected platforms processing billions of transactions daily (5PB data warehouse)</li>
+                    <li class="record-line">Led 200+ engineers across global teams in US, Europe, and Asia</li>
+                    <li class="record-line">Heart Coach App contributor — Top 50 App Store Medical Category 2023</li>
+                    <li class="record-line">US Green Card (EB-1A) — Extraordinary Ability in Science/Technology</li>
                 </ul>
-
             </div>
+        </div>
+    </div>
+</section>
 
-            <div class="about-rail rise">
-                <h3 class="block-title block-title-rail">Core Competencies</h3>
-            <div class="skills-grid">
-                <article class="skill-card">
-                    <div class="skill-icon-img"><img src="assets/images/badges/icon-cloud.png" alt=""></div>
-                    <h4>Cloud Architecture</h4>
-                    <p>Azure, AWS, GCP Multi-cloud Expert</p>
-                </article>
-                <article class="skill-card">
-                    <div class="skill-icon-img"><img src="assets/images/badges/icon-ai.png" alt=""></div>
-                    <h4>AI / Agent Skills</h4>
-                    <p>Claude Code, Opus 4.7, MCP, LangChain, Vector DBs</p>
-                </article>
-                <article class="skill-card">
-                    <div class="skill-icon-img"><img src="assets/images/badges/icon-fullstack.png" alt=""></div>
-                    <h4>Full-Stack Development</h4>
-                    <p>.NET 9, React, TypeScript, Python</p>
-                </article>
-                <article class="skill-card">
-                    <div class="skill-icon-img"><img src="assets/images/badges/icon-devops.png" alt=""></div>
-                    <h4>DevOps Excellence</h4>
-                    <p>Kubernetes, GitOps, CI/CD, IaC</p>
-                </article>
+<!-- ============ Core Competencies / Stratum 02 — pinned competency rail ============ -->
+<section id="skills" class="competencies section stratum" aria-labelledby="skills-title">
+    <span class="stratum-mark" aria-hidden="true">02</span>
+    <div class="shell">
+        <header class="section-head comp-head">
+            <div>
+                <p class="eyebrow"><span class="tick"></span>Stratum 02</p>
+                <h2 class="section-title" id="skills-title">Core Competencies</h2>
+                <p class="section-lede">Five seams, cut across twenty years. Keep scrolling — each one slides over the last.</p>
             </div>
-                <h3 class="block-title block-title-rail">Professional Certifications &amp; Memberships</h3>
-                <div class="cert-row">
-                    <span class="cert-badge cert-badge-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</span>
-                    <span class="cert-badge">Azure Solutions Architect Expert</span>
-                    <span class="cert-badge">AWS Solutions Architect</span>
-                    <span class="cert-badge">Google Cloud Professional</span>
-                    <span class="cert-badge">Certified Kubernetes Administrator</span>
-                    <span class="cert-badge">HashiCorp Terraform Associate</span>
-                    <span class="cert-badge">Full-Stack Engineer</span>
-                    <span class="cert-badge">.NET Developer</span>
-                    <span class="cert-badge">MongoDB Certified</span>
-                    <span class="cert-badge">Databricks Data Engineer</span>
+        </header>
+    </div>
+
+    <div class="comp-stage">
+        <div class="comp-pin">
+            <div class="shell comp-viewport">
+                <p class="comp-status" aria-hidden="true">
+                    <span class="comp-status-label">Core Competencies</span>
+                    <span class="comp-status-count"><b class="comp-index">01</b> <span class="comp-of">/ 05</span></span>
+                </p>
+                <div class="comp-progress" aria-hidden="true"><i class="comp-progress-fill"></i></div>
+                <div class="comp-rail">
+
+                    <article class="comp-panel">
+                        <span class="comp-panel-num" aria-hidden="true">01</span>
+                        <div class="comp-panel-head">
+                            <div class="skill-icon-img"><img src="assets/images/badges/icon-cloud.png" alt="" loading="lazy"></div>
+                            <div>
+                                <h3>Cloud Architecture</h3>
+                                <p class="comp-panel-lede">Azure, AWS, GCP Multi-cloud Expert</p>
+                            </div>
+                        </div>
+                        <ul class="comp-list">
+                            <li>Azure — Synapse, Microsoft Fabric, Purview, Azure ML</li>
+                            <li>AWS — EKS, Lambda, managed data services</li>
+                            <li>GCP — Vertex AI, GKE, Dataflow, Apache Beam</li>
+                            <li>5PB warehouse migration, Oracle to Azure Synapse</li>
+                            <li>Disaster recovery with a 15-minute RTO</li>
+                            <li>FinOps practice — 40–45% infrastructure cost reduction</li>
+                        </ul>
+                    </article>
+
+                    <article class="comp-panel">
+                        <span class="comp-panel-num" aria-hidden="true">02</span>
+                        <div class="comp-panel-head">
+                            <div class="skill-icon-img"><img src="assets/images/badges/icon-ai.png" alt="" loading="lazy"></div>
+                            <div>
+                                <h3>AI / Agent Skills</h3>
+                                <p class="comp-panel-lede">Claude Code, Opus 4.7, MCP, LangChain, Vector DBs</p>
+                            </div>
+                        </div>
+                        <ul class="comp-list">
+                            <li>Claude Code Agent Skills — 100+ <code>sw:*</code> skills in SpecWeave</li>
+                            <li>Skill security scanning — 52 patterns, 39 platform adapters</li>
+                            <li>LangChain coaching assistants on GPT-class models</li>
+                            <li>Vector search — Pinecone across 100K+ training videos</li>
+                            <li>Computer vision — YOLOv11 player tracking at 92% accuracy</li>
+                            <li>ML pipelines — Azure ML, MLflow, Google Vertex AI</li>
+                        </ul>
+                    </article>
+
+                    <article class="comp-panel">
+                        <span class="comp-panel-num" aria-hidden="true">03</span>
+                        <div class="comp-panel-head">
+                            <div class="skill-icon-img"><img src="assets/images/badges/icon-fullstack.png" alt="" loading="lazy"></div>
+                            <div>
+                                <h3>Full-Stack Development</h3>
+                                <p class="comp-panel-lede">.NET 9, React, TypeScript, Python</p>
+                            </div>
+                        </div>
+                        <ul class="comp-list">
+                            <li>.NET 8 / .NET 9 and C# across enterprise services</li>
+                            <li>React, Next.js 14 and TypeScript front ends</li>
+                            <li>Python for data engineering and ML tooling</li>
+                            <li>React Native mobile apps at a 99.9% crash-free rate</li>
+                            <li>GraphQL and REST APIs behind Kong API Gateway</li>
+                            <li>MongoDB, Snowflake, Cassandra, Azure Synapse</li>
+                        </ul>
+                    </article>
+
+                    <article class="comp-panel">
+                        <span class="comp-panel-num" aria-hidden="true">04</span>
+                        <div class="comp-panel-head">
+                            <div class="skill-icon-img"><img src="assets/images/badges/icon-devops.png" alt="" loading="lazy"></div>
+                            <div>
+                                <h3>DevOps Excellence</h3>
+                                <p class="comp-panel-lede">Kubernetes, GitOps, CI/CD, IaC</p>
+                            </div>
+                        </div>
+                        <ul class="comp-list">
+                            <li>Kubernetes on AKS, EKS and GKE — 200+ apps migrated, zero downtime</li>
+                            <li>GitOps delivery and Terraform infrastructure as code</li>
+                            <li>Kafka and Apache Pulsar — 100M+ events a day</li>
+                            <li>Observability with Datadog and Site24x7 — 99.99% uptime</li>
+                            <li>5000+ unit, 500+ integration and 100+ Playwright E2E tests</li>
+                            <li>Auto-scaling built for 10x traffic spikes</li>
+                        </ul>
+                    </article>
+
+                    <article class="comp-panel comp-panel-certs">
+                        <span class="comp-panel-num" aria-hidden="true">05</span>
+                        <div class="comp-panel-head">
+                            <div class="skill-icon-img skill-icon-seal"><i class="fas fa-award" aria-hidden="true"></i></div>
+                            <div>
+                                <h3>Certifications &amp; Memberships</h3>
+                                <p class="comp-panel-lede">Verified credentials, current</p>
+                            </div>
+                        </div>
+                        <div class="cert-row">
+                            <span class="cert-badge cert-badge-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</span>
+                            <span class="cert-badge">Azure Solutions Architect Expert</span>
+                            <span class="cert-badge">AWS Solutions Architect</span>
+                            <span class="cert-badge">Google Cloud Professional</span>
+                            <span class="cert-badge">Certified Kubernetes Administrator</span>
+                            <span class="cert-badge">HashiCorp Terraform Associate</span>
+                            <span class="cert-badge">Full-Stack Engineer</span>
+                            <span class="cert-badge">.NET Developer</span>
+                            <span class="cert-badge">MongoDB Certified</span>
+                            <span class="cert-badge">Databricks Data Engineer</span>
+                        </div>
+                    </article>
+
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ============ Experience / Stratum 02 ============ -->
+<!-- ============ Experience / Stratum 03 ============ -->
 <section id="experience" class="experience section stratum">
-    <span class="stratum-mark" aria-hidden="true">02</span>
+    <span class="stratum-mark" aria-hidden="true">03</span>
     <div class="shell">
         <header class="section-head">
-            <p class="eyebrow"><span class="tick"></span>Stratum 02</p>
+            <p class="eyebrow"><span class="tick"></span>Stratum 03</p>
             <h2 class="section-title">Professional Experience</h2>
             <p class="section-lede">Each era settles over the one before it. Scroll to dig down through the record.</p>
         </header>
 
-        <div class="timeline">
+        <div class="timeline" id="timeline">
             <div class="timeline-item">
                 <div class="timeline-content">
                     <div class="timeline-date">Apr 2024 - Present</div>
@@ -396,16 +517,35 @@
 
 <!-- ============ Achievements / Stratum 03 ============ -->
 <section id="achievements" class="achievements section stratum">
-    <span class="stratum-mark" aria-hidden="true">03</span>
+    <span class="stratum-mark" aria-hidden="true">04</span>
     <div class="shell">
         <header class="section-head">
-            <p class="eyebrow"><span class="tick"></span>Stratum 03</p>
+            <p class="eyebrow"><span class="tick"></span>Stratum 04</p>
             <h2 class="section-title">Featured Achievements</h2>
             <p class="section-lede">The deposits that hardened: selection, shipped open source, and public recognition.</p>
         </header>
 
+        <div class="record-band" aria-label="Selection record">
+            <div class="record-item">
+                <span class="record-num" data-count="500">500</span>
+                <span class="record-label">Builders selected worldwide</span>
+            </div>
+            <div class="record-item">
+                <span class="record-num" data-count="22000" data-count-suffix="+">22,000+</span>
+                <span class="record-label">Applications to the hackathon</span>
+            </div>
+            <div class="record-item">
+                <span class="record-num" data-count="100" data-count-suffix="+">100+</span>
+                <span class="record-label">Agent Skills shipped in SpecWeave</span>
+            </div>
+            <div class="record-item">
+                <span class="record-num" data-count="52">52</span>
+                <span class="record-label">Security scan patterns in vskill</span>
+            </div>
+        </div>
+
         <div class="achievements-grid">
-            <article class="achievement-card achievement-card-featured rise">
+            <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
                     <img src="assets/images/badges/opus47-badge.png" alt="Built with Opus 4.7 — Anthropic Hackathon">
                 </div>
@@ -414,7 +554,7 @@
                 <a href="https://www.youtube.com/watch?v=yEg46Ybh4Yk" target="_blank" rel="noopener" class="achievement-link">Watch 3-min Demo →</a>
             </article>
 
-            <article class="achievement-card achievement-card-featured rise">
+            <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
                     <img src="assets/images/badges/specweave-badge.png" alt="SpecWeave — open-source spec-driven development framework">
                 </div>
@@ -423,7 +563,7 @@
                 <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener" class="achievement-link">View on GitHub →</a>
             </article>
 
-            <article class="achievement-card achievement-card-featured rise">
+            <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
                     <img src="assets/images/badges/vskill-badge.png" alt="vskill / verified-skill.com — secure AI skill registry &amp; scanner">
                 </div>
@@ -432,21 +572,21 @@
                 <a href="https://verified-skill.com" target="_blank" rel="noopener" class="achievement-link">verified-skill.com →</a>
             </article>
 
-            <article class="achievement-card rise">
+            <article class="achievement-card rise layer">
                 <div class="achievement-icon-img"><img src="assets/images/icons/ach-forbes.png" alt=""></div>
                 <h3>Forbes Technology Council</h3>
                 <p>Invitation-only membership for senior technology executives. Published thought leader on digital transformation and sports-tech innovation.</p>
                 <a href="https://www.forbes.com/councils/forbestechcouncil/people/antonabyzov/" target="_blank" rel="noopener" class="achievement-link">View Forbes Profile →</a>
             </article>
 
-            <article class="achievement-card rise">
+            <article class="achievement-card rise layer">
                 <div class="achievement-icon-img"><img src="assets/images/icons/ach-ai-collab.png" alt=""></div>
                 <h3>AI Innovation with Hugging Face</h3>
                 <p>Participated in AI hackathon with Clement Delangue (CEO) — our innovative solution received notable recognition.</p>
                 <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" rel="noopener" class="achievement-link">View Photo →</a>
             </article>
 
-            <article class="achievement-card rise">
+            <article class="achievement-card rise layer">
                 <div class="achievement-icon-img"><img src="assets/images/icons/ach-trophy.png" alt=""></div>
                 <h3>Business Excellence Award 2020</h3>
                 <p>Recognized for innovation and digital transformation across enterprise platforms.</p>
@@ -455,13 +595,13 @@
         </div>
 
         <div class="channel-band">
-            <a class="channel-card channel-card-wide rise" href="https://football.antonabyzov.com" target="_blank" rel="noopener">
+            <a class="channel-card channel-card-wide rise layer" href="https://football.antonabyzov.com" target="_blank" rel="noopener">
                 <span class="eyebrow"><span class="tick"></span>Athlete channel</span>
                 <h3>football.antonabyzov.com</h3>
                 <p>The playing record in full — futsal, coaching and the goals worth watching, with match footage and tournament archives.</p>
                 <span class="channel-go">Open football profile →</span>
             </a>
-            <a class="channel-card rise" href="https://easychamp.com" target="_blank" rel="noopener">
+            <a class="channel-card rise layer" href="https://easychamp.com" target="_blank" rel="noopener">
                 <span class="eyebrow"><span class="tick"></span>Product</span>
                 <h3>EasyChamp</h3>
                 <p>AI-powered sports competition management platform. Founder &amp; CTO.</p>
@@ -473,11 +613,11 @@
 
 <!-- ============ Publications / Stratum 04 ============ -->
 <section id="publications" class="publications section stratum">
-    <span class="stratum-mark" aria-hidden="true">04</span>
+    <span class="stratum-mark" aria-hidden="true">05</span>
     <div class="shell">
         <header class="section-head section-head-split">
             <div>
-                <p class="eyebrow"><span class="tick"></span>Stratum 04</p>
+                <p class="eyebrow"><span class="tick"></span>Stratum 05</p>
                 <h2 class="section-title">Publications &amp; Research</h2>
                 <p class="section-lede">Peer-reviewed papers, council essays and technical writing from 2015 onward.</p>
             </div>
@@ -488,37 +628,37 @@
         </header>
 
         <div class="publications-grid">
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Forbes Tech Council</div>
                 <h3>A Holistic Approach To Internal Company Resource Optimization</h3>
                 <p class="publication-venue">Forbes Technology Council, 2023</p>
                 <a href="https://www.forbes.com/sites/forbestechcouncil/2023/05/02/a-holistic-approach-to-internal-company-resource-optimization-bridging-employee-motivation-and-company-growth/" target="_blank" rel="noopener" class="publication-link">Read Article →</a>
             </article>
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Forbes Tech Council</div>
                 <h3>How Blending Sports And Digital Tools Paves The Way For A Healthier Generation</h3>
                 <p class="publication-venue">Forbes Technology Council, 2023</p>
                 <a href="https://www.forbes.com/councils/forbestechcouncil/2023/06/01/how-blending-sports-and-digital-tools-paves-the-way-for-a-healthier-generation/" target="_blank" rel="noopener" class="publication-link">Read Article →</a>
             </article>
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Research Paper</div>
                 <h3>Integrating Employee Motivation and Resource Optimization</h3>
                 <p class="publication-venue">APNI.ru Scientific Publication, 2023</p>
                 <a href="https://apni.ru/article/6002-integrating-employee-motivation-and-resource" target="_blank" rel="noopener" class="publication-link">Read Paper →</a>
             </article>
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Academic Journal</div>
                 <h3>Balancing Data Normalization in Sports Platforms</h3>
                 <p class="publication-venue">Инновации и инвестиции, 2023</p>
                 <a href="http://innovazia.ru/upload/iblock/3d0/f7chdnii590aaia3q5nk7r174bgl1n17/%E2%84%964%202023%20%D0%98%D0%B8%D0%98.pdf" target="_blank" rel="noopener" class="publication-link">Read Paper →</a>
             </article>
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Engineering Journal</div>
                 <h3>Leveraging Microservices Architecture on AWS</h3>
                 <p class="publication-venue">IJLEMR, Volume 8, 2023</p>
                 <a href="http://www.ijlemr.com/papers/volume8-issue05/5-IJLEMR-77810.pdf" target="_blank" rel="noopener" class="publication-link">Read Paper →</a>
             </article>
-            <article class="publication-card rise">
+            <article class="publication-card rise layer">
                 <div class="publication-type">Technical Article</div>
                 <h3>Advanced Database Architecture Patterns</h3>
                 <p class="publication-venue">Habr Technical Blog, 2015</p>
@@ -530,16 +670,16 @@
 
 <!-- ============ Personal / Stratum 05 ============ -->
 <section id="personal" class="personal section stratum">
-    <span class="stratum-mark" aria-hidden="true">05</span>
+    <span class="stratum-mark" aria-hidden="true">06</span>
     <div class="shell">
         <header class="section-head">
-            <p class="eyebrow"><span class="tick"></span>Stratum 05</p>
+            <p class="eyebrow"><span class="tick"></span>Stratum 06</p>
             <h2 class="section-title">Beyond Technology</h2>
             <p class="section-lede">The bedrock layer — sport, music and endurance. Every card opens a real gallery.</p>
         </header>
 
         <div class="hobbies-grid">
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/futsal.png" alt=""></div>
                 <h3>Futsal Excellence</h3>
                 <ul>
@@ -552,7 +692,7 @@
                     <i class="fas fa-trophy" aria-hidden="true"></i> Achievements Gallery
                 </button>
             </article>
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/coach.png" alt=""></div>
                 <h3>Soccer Coach</h3>
                 <ul>
@@ -565,7 +705,7 @@
                     <i class="fas fa-trophy" aria-hidden="true"></i> Achievements Gallery
                 </button>
             </article>
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/crossfit.png" alt=""></div>
                 <h3>CrossFit Athlete</h3>
                 <ul>
@@ -578,7 +718,7 @@
                     <i class="fas fa-trophy" aria-hidden="true"></i> Achievements Gallery
                 </button>
             </article>
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/piano.png" alt=""></div>
                 <h3>Piano Mastery</h3>
                 <ul>
@@ -591,7 +731,7 @@
                     <i class="fas fa-music" aria-hidden="true"></i> Performances Gallery
                 </button>
             </article>
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/marathon.png" alt=""></div>
                 <h3>Marathon Runner</h3>
                 <ul>
@@ -604,7 +744,7 @@
                     <i class="fas fa-trophy" aria-hidden="true"></i> Achievements Gallery
                 </button>
             </article>
-            <article class="hobby-card rise">
+            <article class="hobby-card rise layer">
                 <div class="hobby-icon-img"><img src="assets/images/icons/hobby/recognition.png" alt=""></div>
                 <h3>US Recognition</h3>
                 <ul>
@@ -620,10 +760,10 @@
 
 <!-- ============ Contact / Stratum 06 ============ -->
 <section id="contact" class="contact section stratum">
-    <span class="stratum-mark" aria-hidden="true">06</span>
+    <span class="stratum-mark" aria-hidden="true">07</span>
     <div class="shell">
         <header class="section-head">
-            <p class="eyebrow"><span class="tick"></span>Stratum 06</p>
+            <p class="eyebrow"><span class="tick"></span>Stratum 07</p>
             <h2 class="section-title">Let's Connect</h2>
         </header>
         <div class="contact-layout">
@@ -678,8 +818,12 @@
   });
 </script>
 
+<!-- Pinned sequences only. Static, fully legible fallback if these never load. -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 <!-- Shared site logic: navigation, typewriter, counters, modals, galleries, photo stack -->
-<script src="script.js?v=2026-09-19"></script>
+<script src="script.js?v=2026-09-19b"></script>
 
 <!-- Live GitHub stars: stale-while-revalidate (paint cache instantly, refresh in background, 1h TTL) -->
 <script>

@@ -89,8 +89,14 @@ function typewrite() {
     setTimeout(typewrite, time);
 }
 
-// Start typewriter effect when page loads
+// Start typewriter effect when page loads (motion-sensitive visitors get the
+// first phrase as static text instead of a looping type-and-delete cycle)
 window.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const el = document.getElementById('typewriter');
+        if (el) el.textContent = phrases[0];
+        return;
+    }
     setTimeout(typewrite, 1000);
 });
 
@@ -474,11 +480,11 @@ const statsObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe hero stats
+// Hero stats stay at their authored values: the cover is above the fold and
+// a count-up there only ever showed "0" during the first paint. The
+// scroll-linked counters live in the Stratum 04 record band instead.
 const heroStats = document.querySelector('.hero-stats');
-if (heroStats) {
-    statsObserver.observe(heroStats);
-}
+void heroStats; void statsObserver;
 
 // Add loading animation
 window.addEventListener('load', () => {
@@ -1329,5 +1335,179 @@ window.createPlatformValueModal = createPlatformValueModal;
             }
         });
         sync();
+    }
+})();
+
+/* =========================================================================
+   ScrollCraft — pinned competency rail, era depth and scroll-linked counters.
+   GSAP + ScrollTrigger are loaded with `defer` from cdnjs and are strictly
+   optional: without them (or with reduced motion) every panel, era and
+   number is already laid out and readable. Nothing here reveals content.
+   ========================================================================= */
+(function () {
+    'use strict';
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pad2(n) { return ('0' + n).slice(-2); }
+
+    /* ---- Stratum 02: the competency rail, pinned and scrubbed sideways ---- */
+    function initCompetencies(mm) {
+        var section = document.querySelector('.competencies');
+        if (!section) return;
+        var pin      = section.querySelector('.comp-pin');
+        var viewport = section.querySelector('.comp-viewport');
+        var rail     = section.querySelector('.comp-rail');
+        var fill     = section.querySelector('.comp-progress-fill');
+        var index    = section.querySelector('.comp-index');
+        var stage    = section.querySelector('.comp-stage');
+        if (!pin || !rail || !viewport || !stage) return;
+
+        var panels = rail.querySelectorAll('.comp-panel');
+        if (panels.length < 2) return;
+
+        mm.add('(min-width: 1000px)', function () {
+            section.classList.add('is-pinned');
+
+            var distance = function () {
+                var last = panels[panels.length - 1];
+                return Math.max(0, last.offsetLeft + last.offsetWidth - viewport.clientWidth);
+            };
+
+            var tween = gsap.to(rail, {
+                x: function () { return -distance(); },
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: stage,
+                    start: 'top top',
+                    /* ~86vh of scroll per seam: slow enough to read, long
+                       enough that the sequence spans several scroll stops. */
+                    end: function () {
+                        return '+=' + Math.round((panels.length - 1) * 0.72 * window.innerHeight + window.innerHeight * 0.34);
+                    },
+                    pin: pin,
+                    pinSpacing: true,
+                    anticipatePin: 1,
+                    scrub: 0.8,
+                    invalidateOnRefresh: true,
+                    onUpdate: function (self) {
+                        var p = self.progress;
+                        if (fill) fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+                        if (index) {
+                            index.textContent = pad2(Math.min(panels.length, Math.floor(p * panels.length * 0.999) + 1));
+                        }
+                    }
+                }
+            });
+
+            return function () {
+                section.classList.remove('is-pinned');
+                if (tween.scrollTrigger) tween.scrollTrigger.kill(true);
+                tween.kill();
+                gsap.set(rail, { clearProps: 'transform' });
+                if (fill) fill.style.transform = '';
+                if (index) index.textContent = '01';
+            };
+        });
+    }
+
+    /* ---- Stratum 03: each era recedes as the next settles over it ---- */
+    function initEraDepth(mm) {
+        var timeline = document.getElementById('timeline');
+        if (!timeline) return;
+
+        mm.add('(min-width: 901px)', function () {
+            var items = Array.prototype.slice.call(timeline.children);
+            var tweens = [];
+            items.forEach(function (item, i) {
+                var next = items[i + 1];
+                var card = item.querySelector('.timeline-content');
+                if (!next || !card) return;
+                tweens.push(gsap.to(card, {
+                    scale: 0.955,
+                    /* a veil, not a fade: dropping opacity would let this era
+                       show through the card that is settling over it */
+                    '--era-veil': 0.66,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: next,
+                        start: 'top bottom',
+                        end: 'top top+=150',
+                        scrub: 0.8,
+                        invalidateOnRefresh: true
+                    }
+                }));
+            });
+            return function () {
+                tweens.forEach(function (t) {
+                    if (t.scrollTrigger) t.scrollTrigger.kill(true);
+                    t.kill();
+                });
+                gsap.set(timeline.querySelectorAll('.timeline-content'), { clearProps: 'transform,--era-veil' });
+            };
+        });
+    }
+
+    /* ---- Stratum 04: the record band counts up across ~80vh of scroll ---- */
+    function initCounters() {
+        var nums = document.querySelectorAll('[data-count]');
+        Array.prototype.forEach.call(nums, function (el) {
+            var target = parseFloat(el.getAttribute('data-count'));
+            if (!isFinite(target)) return;
+            var suffix = el.getAttribute('data-count-suffix') || '';
+            var box = { v: 0 };
+            var paint = function () {
+                el.textContent = Math.round(box.v).toLocaleString('en-US') + suffix;
+            };
+            gsap.to(box, {
+                v: target,
+                ease: 'none',
+                onUpdate: paint,
+                scrollTrigger: {
+                    trigger: el.closest('.record-band') || el,
+                    start: 'top bottom',
+                    end: 'top top+=22%',
+                    scrub: 0.8,
+                    invalidateOnRefresh: true
+                }
+            });
+        });
+    }
+
+    /* ---- expanding an era or the full history changes the page height ---- */
+    function watchLayoutChanges() {
+        ['toggleExpand', 'toggleFullExperience'].forEach(function (name) {
+            var original = window[name];
+            if (typeof original !== 'function') return;
+            window[name] = function () {
+                var out = original.apply(this, arguments);
+                setTimeout(function () { ScrollTrigger.refresh(); }, 80);
+                setTimeout(function () { ScrollTrigger.refresh(); }, 420);
+                return out;
+            };
+        });
+    }
+
+    function boot() {
+        if (reduced) return;
+        if (!window.gsap || !window.ScrollTrigger) return;   /* static fallback */
+        gsap.registerPlugin(ScrollTrigger);
+
+        var mm = gsap.matchMedia();
+        initCompetencies(mm);
+        initEraDepth(mm);
+        initCounters();
+        watchLayoutChanges();
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+        }
+        window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+    } else {
+        boot();
     }
 })();
