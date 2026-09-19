@@ -89,8 +89,14 @@ function typewrite() {
     setTimeout(typewrite, time);
 }
 
-// Start typewriter effect when page loads
+// Start typewriter effect when page loads (motion-sensitive visitors get the
+// first phrase as static text instead of a looping type-and-delete cycle)
 window.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const el = document.getElementById('typewriter');
+        if (el) el.textContent = phrases[0];
+        return;
+    }
     setTimeout(typewrite, 1000);
 });
 
@@ -98,7 +104,9 @@ window.addEventListener('DOMContentLoaded', () => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        // "#" alone is not a valid selector; those anchors are buttons in disguise.
+        const target = (href && href.length > 1) ? document.querySelector(href) : null;
         if (target) {
             const offsetTop = target.offsetTop - 80;
             window.scrollTo({
@@ -472,11 +480,11 @@ const statsObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe hero stats
+// Hero stats stay at their authored values: the cover is above the fold and
+// a count-up there only ever showed "0" during the first paint. The
+// scroll-linked counters live in the Stratum 04 record band instead.
 const heroStats = document.querySelector('.hero-stats');
-if (heroStats) {
-    statsObserver.observe(heroStats);
-}
+void heroStats; void statsObserver;
 
 // Add loading animation
 window.addEventListener('load', () => {
@@ -1150,69 +1158,388 @@ function openFutsalGallery() {
     carousel.open();
 }
 
-// Professional Photo Stack
+// =========================================================================
+// Hero portrait carousel — transform/opacity only, autoplay, swipe, keyboard
+// =========================================================================
 function initPhotoStack() {
-    const photoCards = document.querySelectorAll('.photo-card');
-    const indicators = document.querySelectorAll('.photo-indicator');
-    let currentPhoto = 0;
-    let autoRotateInterval;
-    
-    function showPhoto(index) {
-        photoCards.forEach((card, i) => {
-            card.classList.remove('active', 'photo-card-2', 'photo-card-3');
-            indicators[i].classList.remove('active');
+    var root = document.querySelector('[data-photo-carousel]');
+    if (!root) return;
+
+    var viewport   = root.querySelector('.photo-stack-container');
+    var cards      = Array.prototype.slice.call(root.querySelectorAll('.photo-card'));
+    var dots       = Array.prototype.slice.call(root.querySelectorAll('.photo-indicator'));
+    var toggle     = root.querySelector('[data-photo-playpause]');
+    var chips      = root.querySelector('.hero-chips');
+    var status     = root.querySelector('.photo-status');
+    if (!viewport || cards.length < 2) return;
+
+    var AUTOPLAY_MS = 6000;
+    var SLIDE_MS    = 680;
+
+    var index      = cards.findIndex(function (c) { return c.classList.contains('is-active'); });
+    if (index < 0) index = 0;
+    var timer      = null;
+    var leaveTimer = null;
+    var chipTimer  = null;
+    var visible    = true;
+    var hovered    = false;
+    var focused    = false;
+    var dragging   = false;
+    var paused     = false;   // explicit visitor choice, survives hover/scroll
+    var motionOverride = false; // visitor pressed play despite reduced motion
+
+    var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function reduced() { return motionQuery.matches; }
+
+    function caption(i) { return cards[i].getAttribute('data-caption') || ('Portrait ' + (i + 1)); }
+
+    function paint(next, dir) {
+        var prev = index;
+        if (next === prev) return;
+
+        viewport.style.setProperty('--dir', String(dir));
+
+        if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+        cards.forEach(function (c) { c.classList.remove('is-leaving'); });
+
+        cards[prev].classList.remove('is-active');
+        cards[prev].classList.add('is-leaving');
+        cards[next].classList.add('is-active');
+
+        var outgoing = cards[prev];
+        leaveTimer = setTimeout(function () {
+            outgoing.classList.remove('is-leaving');
+            leaveTimer = null;
+        }, reduced() ? 20 : SLIDE_MS + 40);
+
+        dots.forEach(function (d, i) {
+            var on = i === next;
+            d.classList.toggle('is-active', on);
+            if (on) { d.setAttribute('aria-current', 'true'); }
+            else    { d.removeAttribute('aria-current'); }
         });
-        
-        const nextIndex = (index + 1) % photoCards.length;
-        const nextNextIndex = (index + 2) % photoCards.length;
-        
-        photoCards[index].classList.add('active');
-        photoCards[nextIndex].classList.add('photo-card-2');
-        photoCards[nextNextIndex].classList.add('photo-card-3');
-        indicators[index].classList.add('active');
-        
-        currentPhoto = index;
+
+        if (status) { status.textContent = 'Portrait ' + (next + 1) + ' of ' + cards.length + ': ' + caption(next); }
+
+        // credential chips ripple with the slide (staggered, motion-safe)
+        if (chips && !reduced()) {
+            chips.classList.remove('is-flicking');
+            void chips.offsetWidth; // restart the stagger
+            chips.classList.add('is-flicking');
+            if (chipTimer) clearTimeout(chipTimer);
+            chipTimer = setTimeout(function () { chips.classList.remove('is-flicking'); }, 940);
+        }
+
+        index = next;
     }
-    
-    function nextPhoto() {
-        showPhoto((currentPhoto + 1) % photoCards.length);
+
+    function go(next, dir) {
+        var n = (next + cards.length) % cards.length;
+        if (typeof dir !== 'number') { dir = n === (index + 1) % cards.length ? 1 : -1; }
+        paint(n, dir);
     }
-    
-    function startAutoRotate() {
-        autoRotateInterval = setInterval(nextPhoto, 8000);
+
+    function next() { go(index + 1, 1); }
+    function prev() { go(index - 1, -1); }
+
+    // Reduced motion is a request to stop the movement, not just to shorten it,
+    // and an explicit pause outranks everything.
+    function wantsPlay() { return !paused && (!reduced() || motionOverride); }
+    function shouldPlay() {
+        return wantsPlay() && visible && !hovered && !focused && !dragging && !document.hidden;
     }
-    
-    function stopAutoRotate() {
-        clearInterval(autoRotateInterval);
+
+    function paintToggle() {
+        if (!toggle) return;
+        var playing = wantsPlay();
+        toggle.setAttribute('aria-pressed', playing ? 'false' : 'true');
+        toggle.setAttribute('aria-label', playing
+            ? 'Pause the portrait carousel'
+            : 'Play the portrait carousel');
+        var icon = toggle.querySelector('i');
+        if (icon) { icon.className = playing ? 'fas fa-pause' : 'fas fa-play'; }
+        var text = toggle.querySelector('.photo-playpause-text');
+        if (text) { text.textContent = playing ? 'Pause' : 'Play'; }
     }
-    
-    // Click handlers
-    photoCards.forEach((card, index) => {
-        card.addEventListener('click', () => {
-            stopAutoRotate();
-            showPhoto(index);
-            startAutoRotate();
+
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function play() {
+        stop();
+        if (!shouldPlay()) return;
+        timer = setInterval(function () {
+            if (!shouldPlay()) { stop(); return; }
+            next();
+        }, AUTOPLAY_MS);
+    }
+    function sync() { shouldPlay() ? play() : stop(); paintToggle(); }
+
+    // ---- dots ----
+    dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+            go(i, i > index ? 1 : -1);
+            play();
         });
     });
-    
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            stopAutoRotate();
-            showPhoto(index);
-            startAutoRotate();
+
+    // ---- pause / play ----
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            if (wantsPlay()) {
+                paused = true;
+                motionOverride = false;
+            } else {
+                // Pressing play under reduced motion is an informed opt-in.
+                // The slide transition stays at 0s either way.
+                paused = false;
+                motionOverride = reduced();
+            }
+            sync();
         });
-    });
-    
-    // Hover pause
-    const photoStack = document.querySelector('.photo-stack-container');
-    if (photoStack) {
-        photoStack.addEventListener('mouseenter', stopAutoRotate);
-        photoStack.addEventListener('mouseleave', startAutoRotate);
     }
-    
-    // Initialize
-    showPhoto(0);
-    startAutoRotate();
+
+    // ---- keyboard ----
+    viewport.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); next(); play(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); play(); }
+        else if (e.key === 'Home') { e.preventDefault(); go(0, -1); play(); }
+        else if (e.key === 'End') { e.preventDefault(); go(cards.length - 1, 1); play(); }
+    });
+
+    // ---- pause on hover / focus ----
+    viewport.addEventListener('pointerenter', function () { hovered = true; sync(); });
+    viewport.addEventListener('pointerleave', function () { hovered = false; sync(); });
+    // Focus inside the carousel pauses it, so a keyboard visitor is not read
+    // past. The play switch is the exception: focusing it must not undo the
+    // press that just started the rotation.
+    function fromToggle(e) { return !!(toggle && (e.target === toggle || toggle.contains(e.target))); }
+    root.addEventListener('focusin',  function (e) { if (fromToggle(e)) return; focused = true;  sync(); });
+    root.addEventListener('focusout', function (e) { if (fromToggle(e)) return; focused = false; sync(); });
+    document.addEventListener('visibilitychange', sync);
+
+    // ---- pause off-screen ----
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            sync();
+        }, { threshold: 0.25 }).observe(viewport);
+    }
+
+    // ---- swipe (pointer events) ----
+    var startX = 0, startY = 0, deltaX = 0, pointerId = null, axis = null;
+
+    viewport.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        pointerId = e.pointerId;
+        startX = e.clientX; startY = e.clientY;
+        deltaX = 0; axis = null;
+        dragging = true;
+        stop();
+    });
+
+    viewport.addEventListener('pointermove', function (e) {
+        if (pointerId === null || e.pointerId !== pointerId) return;
+        var dx = e.clientX - startX;
+        var dy = e.clientY - startY;
+        if (axis === null) {
+            if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+            axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+            if (axis === 'x') {
+                viewport.classList.add('is-dragging');
+                if (viewport.setPointerCapture) { try { viewport.setPointerCapture(pointerId); } catch (err) {} }
+            }
+        }
+        if (axis !== 'x') return;
+        e.preventDefault();
+        deltaX = dx;
+        var damp = deltaX * 0.32;
+        cards[index].style.transform = 'translate3d(' + damp.toFixed(2) + 'px, 0, 0) scale(1)';
+    });
+
+    function endDrag() {
+        if (pointerId === null) return;
+        viewport.classList.remove('is-dragging');
+        cards[index].style.transform = '';
+        var moved = deltaX;
+        pointerId = null; deltaX = 0; axis = null; dragging = false;
+        if (Math.abs(moved) > 46) { moved < 0 ? next() : prev(); }
+        play();
+    }
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    // ---- boot ----
+    viewport.style.setProperty('--dir', '1');
+    if (status) { status.textContent = 'Portrait ' + (index + 1) + ' of ' + cards.length + ': ' + caption(index); }
+    if (motionQuery.addEventListener) {
+        motionQuery.addEventListener('change', function () { motionOverride = false; sync(); });
+    }
+    sync();
+
+    window.heroCarousel = {
+        next: next, prev: prev, go: go,
+        get index() { return index; },
+        get playing() { return timer !== null; },
+        get paused() { return paused; }
+    };
+}
+
+// The floating support widget is third-party, pinned to the bottom-left, and
+// stacked above everything at z-index 99999999. The hero puts its body copy,
+// its stats, its buttons and its scroll cue in the same corner, and the core
+// rail lives up the left edge for the whole page. Solve for a resting place:
+// try the widget where it lands, then the smallest lift that clears whatever
+// it hit, optionally nudged right of the rail. Re-check every candidate
+// against every obstacle, because one lift can create a fresh collision. If
+// nothing clears, park the widget (it returns the moment the corner is free).
+function initCueClearance() {
+    var cue = document.querySelector('.cover-foot');
+
+    // A lift big enough to float the widget into the middle of a phone screen
+    // is worse than no widget at all, so past this it parks instead.
+    var MAX_LIFT = 120;
+    var GAP = 12;
+    var PAD = 6;
+    var queued = false;
+
+    // Anything the widget must not sit on: things you click, the hero's body
+    // copy, the hero stats, and the core-sample rail.
+    var OBSTACLES = '.hero-cta, .hero-description, .hero-chips, .stat-item, .stat-item-action,' +
+                    ' .photo-indicators, .photo-controls, .photo-stage, .cover-lockup, .rail';
+
+    function hit(a, b, pad) {
+        pad = pad || 0;
+        return !(a.right < b.left - pad || b.right < a.left - pad ||
+                 a.bottom < b.top - pad || b.bottom < a.top - pad);
+    }
+
+    // Ko-fi renders a desktop wrapper AND a mobile wrapper and hides one of
+    // them with display:none. querySelector would happily hand back the hidden
+    // one, which measures 0x0 and makes every collision test pass.
+    function liveWidget() {
+        var all = document.querySelectorAll('.floatingchat-container-wrap, .floatingchat-container-wrap-mobi');
+        for (var i = 0; i < all.length; i++) {
+            if (all[i].offsetWidth > 0 && all[i].offsetHeight > 0) return all[i];
+        }
+        return null;
+    }
+
+    function boxAt(natural, lift, shift) {
+        return { top: natural.top - lift, bottom: natural.bottom - lift,
+                 left: natural.left + shift, right: natural.right + shift };
+    }
+
+    function clears(box, obstacles) {
+        for (var i = 0; i < obstacles.length; i++) {
+            if (hit(box, obstacles[i], PAD)) return false;
+        }
+        return true;
+    }
+
+    function measure() {
+        queued = false;
+        var widget = liveWidget();
+        var lift = 0, shift = 0, inset = 0, parked = false;
+
+        if (widget) {
+            // Resting box derived from layout, so a running transition on the
+            // widget cannot skew what we measure.
+            var cs = getComputedStyle(widget);
+            var r = widget.getBoundingClientRect();
+            var off = parseFloat(cs.bottom);
+            var bottom = isNaN(off) ? r.bottom : window.innerHeight - off;
+            var w = widget.offsetWidth;
+            // Same reasoning on the x axis: read the CSS offset, and only fall
+            // back to the measured box (which carries the live transform) when
+            // the widget is not offset from the left edge.
+            var sideOff = parseFloat(cs.left);
+            var left = isNaN(sideOff)
+                ? r.left - (parseFloat(cs.getPropertyValue('--cue-shift')) || 0)
+                : sideOff;
+            var natural = { top: bottom - widget.offsetHeight, bottom: bottom,
+                            left: left, right: left + w };
+
+            var obstacles = [];
+            var railRight = 0;
+            Array.prototype.forEach.call(document.querySelectorAll(OBSTACLES), function (el) {
+                var t = el.getBoundingClientRect();
+                if (t.width <= 0 || t.height <= 0) return;
+                if (t.bottom <= 0 || t.top >= window.innerHeight) return;
+                obstacles.push(t);
+                if (el.classList.contains('rail')) { railRight = Math.max(railRight, t.right); }
+            });
+
+            // Candidate lifts: stay put, or rise just past the top edge of
+            // something we are currently sitting on.
+            var lifts = [0];
+            obstacles.forEach(function (t) {
+                var d = Math.ceil(natural.bottom - t.top) + GAP;
+                if (d > 0 && d <= MAX_LIFT) lifts.push(d);
+            });
+            lifts.sort(function (a, b) { return a - b; });
+
+            // Candidate side shifts: stay put, or step right of the rail.
+            var shifts = [0];
+            if (railRight > natural.left) { shifts.push(Math.ceil(railRight - natural.left) + GAP); }
+
+            // Cheapest candidate that clears everything wins. Lift is the
+            // primary cost so the widget prefers to stay near its corner.
+            var best = null;
+            shifts.forEach(function (sx) {
+                lifts.forEach(function (ly) {
+                    if (!clears(boxAt(natural, ly, sx), obstacles)) return;
+                    var cost = ly + sx * 0.6;
+                    if (!best || cost < best.cost) best = { lift: ly, shift: sx, cost: cost };
+                });
+            });
+
+            if (best) { lift = best.lift; shift = best.shift; }
+            else if (obstacles.length) { parked = true; }
+
+            widget.classList.toggle('is-cue-parked', parked);
+
+            if (cue) {
+                var c = cue.getBoundingClientRect();
+                var cueOnScreen = c.bottom > 0 && c.top < window.innerHeight;
+                var moved = boxAt(natural, lift, shift);
+                // The cue's box spans the shell, so padding shifts its text,
+                // not its edges.
+                if (!parked && cueOnScreen && hit(moved, c, 8) && moved.right > c.left) {
+                    inset = Math.ceil(moved.right - c.left) + 18;
+                }
+            }
+        }
+
+        var root = document.documentElement.style;
+        root.setProperty('--cue-lift', lift + 'px');
+        root.setProperty('--cue-shift', shift + 'px');
+        if (cue) cue.style.setProperty('--cue-inset', inset + 'px');
+    }
+
+    function schedule() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(measure);
+    }
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('orientationchange', schedule);
+    // The widget loads late and re-renders when the breakpoint flips; keep
+    // checking while it settles, and watch for it being swapped out.
+    var tries = 0;
+    var poll = setInterval(function () {
+        schedule();
+        if (++tries > 20) clearInterval(poll);
+    }, 500);
+    if (window.MutationObserver) {
+        new MutationObserver(schedule).observe(document.body, { childList: true, subtree: false });
+    }
+    schedule();
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCueClearance);
+} else {
+    initCueClearance();
 }
 
 // Initialize photo stack when DOM is loaded
@@ -1230,3 +1557,276 @@ window.openVideoModal = openVideoModal;
 window.openPianoModal = openPianoModal;
 window.openFutsalGallery = openFutsalGallery;
 window.createPlatformValueModal = createPlatformValueModal;
+/* =========================================================================
+   Progressive enhancement for the layered layout. Nothing here reveals or
+   hides content — the page is complete and legible without this block.
+   ========================================================================= */
+(function () {
+    'use strict';
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supportsSDA = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline', 'scroll(root)'));
+
+    /* ---- core-sample rail: mark the stratum in the reading band ---- */
+    var railLinks = Array.prototype.slice.call(document.querySelectorAll('.rail-list a[data-rail]'));
+    if (railLinks.length) {
+        var setCurrent = function (id) {
+            railLinks.forEach(function (a) {
+                var on = a.getAttribute('data-rail') === id;
+                a.classList.toggle('is-current', on);
+                if (on) { a.setAttribute('aria-current', 'true'); }
+                else { a.removeAttribute('aria-current'); }
+            });
+        };
+
+        var targets = railLinks
+            .map(function (a) { return document.getElementById(a.getAttribute('data-rail')); })
+            .filter(Boolean);
+
+        if ('IntersectionObserver' in window) {
+            var visible = {};
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    visible[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0;
+                });
+                var best = null, bestRatio = 0;
+                Object.keys(visible).forEach(function (id) {
+                    if (visible[id] > bestRatio) { bestRatio = visible[id]; best = id; }
+                });
+                if (best) setCurrent(best);
+            }, { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.01, 0.2, 0.5, 1] });
+            targets.forEach(function (t) { io.observe(t); });
+        }
+        setCurrent('home');
+    }
+
+    /* ---- rail progress fill for browsers without CSS scroll-driven animations ---- */
+    if (!supportsSDA && !reduced) {
+        var railFill = document.querySelector('.rail-fill');
+        if (railFill) {
+            var ticking = false;
+            var paint = function () {
+                var doc = document.documentElement;
+                var max = doc.scrollHeight - doc.clientHeight;
+                var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+                railFill.style.transform = 'scaleY(' + p + ')';
+                ticking = false;
+            };
+            window.addEventListener('scroll', function () {
+                if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+            }, { passive: true });
+            paint();
+        }
+    }
+
+    /* ---- hero stats: the count-up above can race its own restore timer and
+            drop the trailing "+". Re-assert the authored values. ---- */
+    var statEls = document.querySelectorAll('.hero-stats .stat-number');
+    if (statEls.length) {
+        var authored = Array.prototype.map.call(statEls, function (el) { return el.textContent.trim(); });
+        var restoreStats = function () {
+            Array.prototype.forEach.call(statEls, function (el, i) {
+                if (el.textContent.trim() !== authored[i]) el.textContent = authored[i];
+            });
+        };
+        [2300, 3200, 4200].forEach(function (t) { setTimeout(restoreStats, t); });
+        window.addEventListener('load', function () {
+            setTimeout(restoreStats, 2600);
+            setTimeout(restoreStats, 4400);
+        });
+    }
+
+    /* ---- hamburger: keep aria-expanded truthful, and allow Escape ---- */
+    var burger = document.querySelector('.hamburger');
+    var menu = document.querySelector('.nav-menu');
+    if (burger && menu) {
+        var sync = function () {
+            burger.setAttribute('aria-expanded', menu.classList.contains('active') ? 'true' : 'false');
+        };
+        burger.addEventListener('click', function () { requestAnimationFrame(sync); });
+        menu.addEventListener('click', function () { requestAnimationFrame(sync); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                burger.classList.remove('active');
+                sync();
+                burger.focus();
+            }
+        });
+        sync();
+    }
+})();
+
+/* =========================================================================
+   ScrollCraft — pinned competency rail, era depth and scroll-linked counters.
+   GSAP + ScrollTrigger are loaded with `defer` from cdnjs and are strictly
+   optional: without them (or with reduced motion) every panel, era and
+   number is already laid out and readable. Nothing here reveals content.
+   ========================================================================= */
+(function () {
+    'use strict';
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function pad2(n) { return ('0' + n).slice(-2); }
+
+    /* ---- Stratum 02: the competency rail, pinned and scrubbed sideways ---- */
+    function initCompetencies(mm) {
+        var section = document.querySelector('.competencies');
+        if (!section) return;
+        var pin      = section.querySelector('.comp-pin');
+        var viewport = section.querySelector('.comp-viewport');
+        var rail     = section.querySelector('.comp-rail');
+        var fill     = section.querySelector('.comp-progress-fill');
+        var index    = section.querySelector('.comp-index');
+        var stage    = section.querySelector('.comp-stage');
+        if (!pin || !rail || !viewport || !stage) return;
+
+        var panels = rail.querySelectorAll('.comp-panel');
+        if (panels.length < 2) return;
+
+        mm.add('(min-width: 1000px)', function () {
+            section.classList.add('is-pinned');
+
+            var distance = function () {
+                var last = panels[panels.length - 1];
+                return Math.max(0, last.offsetLeft + last.offsetWidth - viewport.clientWidth);
+            };
+
+            var tween = gsap.to(rail, {
+                x: function () { return -distance(); },
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: stage,
+                    start: 'top top',
+                    /* ~86vh of scroll per seam: slow enough to read, long
+                       enough that the sequence spans several scroll stops. */
+                    end: function () {
+                        return '+=' + Math.round((panels.length - 1) * 0.72 * window.innerHeight + window.innerHeight * 0.34);
+                    },
+                    pin: pin,
+                    pinSpacing: true,
+                    anticipatePin: 1,
+                    scrub: 0.8,
+                    invalidateOnRefresh: true,
+                    onUpdate: function (self) {
+                        var p = self.progress;
+                        if (fill) fill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+                        if (index) {
+                            index.textContent = pad2(Math.min(panels.length, Math.floor(p * panels.length * 0.999) + 1));
+                        }
+                    }
+                }
+            });
+
+            return function () {
+                section.classList.remove('is-pinned');
+                if (tween.scrollTrigger) tween.scrollTrigger.kill(true);
+                tween.kill();
+                gsap.set(rail, { clearProps: 'transform' });
+                if (fill) fill.style.transform = '';
+                if (index) index.textContent = '01';
+            };
+        });
+    }
+
+    /* ---- Stratum 03: each era recedes as the next settles over it ---- */
+    function initEraDepth(mm) {
+        var timeline = document.getElementById('timeline');
+        if (!timeline) return;
+
+        mm.add('(min-width: 901px)', function () {
+            var items = Array.prototype.slice.call(timeline.children);
+            var tweens = [];
+            items.forEach(function (item, i) {
+                var next = items[i + 1];
+                var card = item.querySelector('.timeline-content');
+                if (!next || !card) return;
+                tweens.push(gsap.to(card, {
+                    scale: 0.955,
+                    /* a veil, not a fade: dropping opacity would let this era
+                       show through the card that is settling over it */
+                    '--era-veil': 0.66,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: next,
+                        start: 'top bottom',
+                        end: 'top top+=150',
+                        scrub: 0.8,
+                        invalidateOnRefresh: true
+                    }
+                }));
+            });
+            return function () {
+                tweens.forEach(function (t) {
+                    if (t.scrollTrigger) t.scrollTrigger.kill(true);
+                    t.kill();
+                });
+                gsap.set(timeline.querySelectorAll('.timeline-content'), { clearProps: 'transform,--era-veil' });
+            };
+        });
+    }
+
+    /* ---- Stratum 04: the record band counts up across ~80vh of scroll ---- */
+    function initCounters() {
+        var nums = document.querySelectorAll('[data-count]');
+        Array.prototype.forEach.call(nums, function (el) {
+            var target = parseFloat(el.getAttribute('data-count'));
+            if (!isFinite(target)) return;
+            var suffix = el.getAttribute('data-count-suffix') || '';
+            var box = { v: 0 };
+            var paint = function () {
+                el.textContent = Math.round(box.v).toLocaleString('en-US') + suffix;
+            };
+            gsap.to(box, {
+                v: target,
+                ease: 'none',
+                onUpdate: paint,
+                scrollTrigger: {
+                    trigger: el.closest('.record-band') || el,
+                    start: 'top bottom',
+                    end: 'top top+=22%',
+                    scrub: 0.8,
+                    invalidateOnRefresh: true
+                }
+            });
+        });
+    }
+
+    /* ---- expanding an era or the full history changes the page height ---- */
+    function watchLayoutChanges() {
+        ['toggleExpand', 'toggleFullExperience'].forEach(function (name) {
+            var original = window[name];
+            if (typeof original !== 'function') return;
+            window[name] = function () {
+                var out = original.apply(this, arguments);
+                setTimeout(function () { ScrollTrigger.refresh(); }, 80);
+                setTimeout(function () { ScrollTrigger.refresh(); }, 420);
+                return out;
+            };
+        });
+    }
+
+    function boot() {
+        if (reduced) return;
+        if (!window.gsap || !window.ScrollTrigger) return;   /* static fallback */
+        gsap.registerPlugin(ScrollTrigger);
+
+        var mm = gsap.matchMedia();
+        initCompetencies(mm);
+        initEraDepth(mm);
+        initCounters();
+        watchLayoutChanges();
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+        }
+        window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+    } else {
+        boot();
+    }
+})();

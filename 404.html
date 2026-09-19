@@ -3,75 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found | Anton Abyzov</title>
+    <title>404 — Page Not Found | Anton Abyzov</title>
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#05070f">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --ink:        #05070f;
+            --paper:      #efeae1;
+            --paper-soft: #cfd6e0;
+            --muted:      #9aa6b8;
+            --muted-dim:  #7a8598;
+            --cyan:       #56dbe9;
+            --amber:      #edad5a;
+            --line:       rgba(150, 185, 215, 0.14);
+            --line-soft:  rgba(150, 185, 215, 0.08);
+            --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+            --font-body:    'Manrope', 'Helvetica Neue', Helvetica, sans-serif;
+            --font-mono:    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+            --ease:         cubic-bezier(0.22, 0.61, 0.36, 1);
         }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        * { margin: 0; padding: 0; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
-            color: #ffffff;
-            min-height: 100vh;
+            position: relative;
+            min-height: 100svh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
+            padding: 72px 16px;
+            background: var(--ink);
+            color: var(--paper);
+            font-family: var(--font-body);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 600px;
+
+        /* Layered field, same strata as the home page */
+        .field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .field-layer { position: absolute; inset: -20% -10%; }
+        .field-mesh {
+            background:
+                radial-gradient(60% 50% at 18% 12%, rgba(31, 143, 164, 0.30), transparent 70%),
+                radial-gradient(52% 44% at 88% 72%, rgba(185, 122, 36, 0.20), transparent 72%),
+                radial-gradient(70% 60% at 50% 110%, rgba(86, 219, 233, 0.12), transparent 70%);
+            filter: blur(6px);
         }
-        .error-code {
-            font-size: 120px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .field-grid {
+            background-image:
+                linear-gradient(rgba(150, 190, 220, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(150, 190, 220, 0.05) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(76% 62% at 50% 40%, #000 20%, transparent 82%);
+            -webkit-mask-image: radial-gradient(76% 62% at 50% 40%, #000 20%, transparent 82%);
+        }
+        .field-bands {
+            background: repeating-linear-gradient(
+                174deg,
+                rgba(255, 255, 255, 0.022) 0 2px,
+                transparent 2px 116px);
+        }
+
+        .shell {
+            position: relative;
+            z-index: 2;
+            width: min(760px, 100%);
+            margin-inline: auto;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--cyan);
             margin-bottom: 20px;
-            animation: pulse 2s infinite;
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .eyebrow .tick { width: 26px; height: 1px; background: var(--cyan); display: inline-block; }
+
+        .code {
+            font-family: var(--font-display);
+            font-size: clamp(5.5rem, 22vw, 13rem);
+            font-weight: 300;
+            line-height: 0.82;
+            letter-spacing: -0.04em;
+            color: transparent;
+            -webkit-text-stroke: 1.2px rgba(239, 234, 225, 0.55);
+            margin-bottom: 26px;
         }
+
         h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(2rem, 6vw, 3.4rem);
+            line-height: 1.04;
+            letter-spacing: -0.028em;
+            margin-bottom: 18px;
         }
+
         p {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 30px;
+            color: var(--paper-soft);
+            font-size: clamp(0.98rem, 1.2vw, 1.06rem);
+            max-width: 52ch;
+            margin-bottom: 34px;
         }
+
+        .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
         .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 26px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 0.82rem;
+            font-weight: 650;
+            letter-spacing: 0.06em;
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.32s var(--ease), border-color 0.32s var(--ease), color 0.32s var(--ease);
         }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.5);
+        .btn-primary {
+            background: linear-gradient(180deg, #f6f2ea, #d8d1c4);
+            color: #07101a;
+            box-shadow: 0 14px 34px -18px rgba(240, 236, 226, 0.7);
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-outline {
+            border-color: var(--line);
+            color: var(--paper);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .btn-outline:hover { border-color: rgba(86, 219, 233, 0.45); color: var(--cyan); transform: translateY(-2px); }
+
+        .strata-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line-soft);
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .strata-links a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.3s var(--ease);
+        }
+        .strata-links a:hover { color: var(--cyan); }
+        .strata-links b { color: var(--amber); font-weight: 500; margin-right: 6px; }
+
+        :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="error-code">404</div>
-        <h1>Page Not Found</h1>
-        <p>Oops! The page you're looking for doesn't exist. It might have been moved or deleted.</p>
-        <a href="/" class="btn">Return Home</a>
+    <div class="field" aria-hidden="true">
+        <div class="field-layer field-mesh"></div>
+        <div class="field-layer field-bands"></div>
+        <div class="field-layer field-grid"></div>
     </div>
+
+    <main class="shell">
+        <p class="eyebrow"><span class="tick"></span>Stratum — Not Found</p>
+        <div class="code" aria-hidden="true">404</div>
+        <h1>This layer isn't in the record</h1>
+        <p>The page you're looking for doesn't exist here. It may have been moved, renamed, or never deposited in the first place.</p>
+        <div class="actions">
+            <a href="/" class="btn btn-primary">Return Home</a>
+            <a href="/#contact" class="btn btn-outline">Get in Touch</a>
+        </div>
+        <nav class="strata-links" aria-label="Site sections">
+            <a href="/#about"><b>01</b>About</a>
+            <a href="/#experience"><b>02</b>Experience</a>
+            <a href="/#achievements"><b>03</b>Achievements</a>
+            <a href="/#publications"><b>04</b>Publications</a>
+            <a href="/#personal"><b>05</b>Personal</a>
+            <a href="https://football.antonabyzov.com" target="_blank" rel="noopener">football.antonabyzov.com</a>
+        </nav>
+    </main>
 </body>
 </html>
