@@ -350,15 +350,23 @@ ul { margin: 0; padding: 0; list-style: none; }
     transition: width 0.3s var(--ease), background 0.3s var(--ease);
 }
 .rail-list a b { font-weight: 500; font-size: 0.58rem; }
+/* The label expands on rail hover. max-width is a layout property, so
+   transitioning it reflows all eight items every frame; the width snaps
+   instead and only transform and opacity animate. */
 .rail-list a span {
     max-width: 0;
     overflow: hidden;
     white-space: nowrap;
     opacity: 0;
-    transition: max-width 0.4s var(--ease), opacity 0.3s var(--ease);
+    transform: translate3d(-6px, 0, 0);
+    transition: opacity 0.3s var(--ease), transform 0.36s var(--expo);
 }
 .rail:hover .rail-list a span,
-.rail-list a:focus-visible span { max-width: 160px; opacity: 1; }
+.rail-list a:focus-visible span {
+    max-width: 160px;
+    opacity: 1;
+    transform: none;
+}
 .rail-list a:hover { color: var(--paper); }
 .rail-list a.is-current { color: var(--cyan); }
 .rail-list a.is-current::before { width: 22px; background: var(--cyan); }
@@ -2069,17 +2077,25 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 1100px) {
     .cover-shell {
         grid-template-columns: minmax(0, 1fr);
+        /* The stacked cover runs two to three screens tall, so a cue parked at
+           its foot is itself below the fold. It reads just as well as a rule
+           under the name, and there it is visible at load. */
         grid-template-areas:
             "masthead"
             "lockup"
+            "foot"
             "portrait"
-            "body"
-            "foot";
+            "body";
         row-gap: clamp(16px, 2.6vw, 28px);
     }
     .cover-portrait { margin-top: 4px; max-width: 420px; }
     .hero-chips {
-        position: static;
+        /* Back into the flow, under the portrait. inset must be cleared or
+           the base rule's right/bottom offsets drag the list back over the
+           photo, where its clip swallows it. */
+        position: relative;
+        inset: auto;
+        z-index: 6;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: flex-start;
@@ -3088,6 +3104,10 @@ ul { margin: 0; padding: 0; list-style: none; }
     --slide-ms: 680ms;
 }
 
+/* The chips' positioning box. .photo-stack-container cannot hold them: it
+   clips its overflow so the slides stay inside its rounded corners. */
+.photo-stage { position: relative; }
+
 .photo-stack-container {
     position: relative;
     width: 100%;
@@ -3177,12 +3197,52 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ---------- dots: real buttons, 44px targets ---------- */
+/* Dots and the pause switch share one row, so the control costs no height. */
+.photo-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
 .photo-indicators {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2px;
-    margin-top: 6px;
+}
+
+/* WCAG 2.2.2: moving content over five seconds needs a stop that works
+   without a pointer and without a keyboard focus trick. */
+.photo-playpause {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(8, 12, 22, 0.72);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+            backdrop-filter: blur(10px) saturate(140%);
+    color: var(--paper-soft);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-appearance: none;
+            appearance: none;
+    transition: color 260ms var(--ease), border-color 260ms var(--ease),
+                background-color 260ms var(--ease), transform 260ms var(--expo);
+}
+.photo-playpause i { font-size: 0.62rem; line-height: 1; }
+.photo-playpause:hover { color: var(--paper); border-color: var(--cyan); transform: translateY(-1px); }
+.photo-playpause:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.photo-playpause[aria-pressed="true"] { color: var(--cyan); border-color: rgba(86, 219, 233, 0.55); }
+@media (forced-colors: active) {
+    .photo-playpause { border: 1px solid ButtonBorder; background: ButtonFace; color: ButtonText; }
 }
 .photo-indicator {
     width: 44px;
@@ -3245,7 +3305,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 1100px) {
     .professional-photo-stack { margin-inline: 0; max-width: 420px; }
     .photo-stack-container { max-height: none; aspect-ratio: 4 / 5; }
-    .hero-chips { position: static; max-width: 100%; pointer-events: auto; }
+    .hero-chips { position: relative; inset: auto; z-index: 6; max-width: 100%; pointer-events: auto; }
 }
 @media (max-width: 720px) {
     .professional-photo-stack { max-width: 100%; }
@@ -3261,12 +3321,37 @@ ul { margin: 0; padding: 0; list-style: none; }
    cue indents around whatever space is left. Both offsets come from script.js. */
 .floatingchat-container-wrap,
 .floatingchat-container-wrap-mobi {
-    transform: translateY(calc(var(--cue-lift, 0px) * -1));
-    transition: transform 280ms var(--ease);
+    transform: translate3d(var(--cue-shift, 0px), calc(var(--cue-lift, 0px) * -1), 0);
+    transition: transform 280ms var(--ease), opacity 200ms var(--ease);
+    will-change: transform;
+}
+/* No resting place clears the hero's copy, stats and rail at this size, so the
+   widget steps aside until the corner is free again. */
+.floatingchat-container-wrap.is-cue-parked,
+.floatingchat-container-wrap-mobi.is-cue-parked {
+    opacity: 0;
+    pointer-events: none;
 }
 .cover-foot {
     padding-left: var(--cue-inset, 0px);
     transition: padding-left 260ms var(--ease);
+}
+
+/* On the stacked layout the cover is two to three screens tall, so a scroll
+   cue parked at its foot is itself below the fold. Stick it to the bottom of
+   the viewport while the cover is in view: the affordance is on screen at
+   load, it is decorative and never takes a tap, and it fades out on scroll
+   with the rest of the cover furniture. */
+/* On a wide cover the row can still land a few pixels under the fold. Sticky
+   only engages when the natural position is below the sticky edge, so this is
+   inert whenever the cue already sits on screen. */
+@media (min-width: 1101px) {
+    .cover-foot {
+        position: sticky;
+        bottom: clamp(10px, 2.2vh, 18px);
+        z-index: 7;
+        pointer-events: none;
+    }
 }
 @media (prefers-reduced-motion: reduce) {
     .cover-foot,

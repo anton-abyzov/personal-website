@@ -99,7 +99,7 @@
     <link rel="preconnect" href="https://storage.ko-fi.com">
 
     <link rel="preload" as="image" href="assets/images/profile.jpg" fetchpriority="high">
-    <link rel="stylesheet" href="style.css?v=2026-09-19b">
+    <link rel="stylesheet" href="style.css?v=2026-09-19c">
 
     <!-- The legacy site script expects AOS to exist; this page reveals with CSS instead. -->
     <script>window.AOS={init:function(){},refresh:function(){},refreshHard:function(){}};</script>
@@ -216,7 +216,11 @@
         <!-- plane 3 — portrait carousel -->
         <div class="cover-portrait">
             <div class="professional-photo-stack" data-photo-carousel>
-                <div class="photo-stack-container"
+                <!-- The stage is the positioning box for the credential chips.
+                     They must live OUTSIDE .photo-stack-container, which clips
+                     its overflow to keep the slides inside its rounded box. -->
+                <div class="photo-stage">
+                    <div class="photo-stack-container"
                      id="hero-carousel"
                      role="group"
                      aria-roledescription="carousel"
@@ -250,18 +254,26 @@
                         <div class="photo-overlay"><span class="photo-label">Building EasyChamp</span></div>
                     </div>
 
-                    <!-- plane 5 — cover lines -->
-                    <ul class="hero-chips" aria-label="Credentials">
-                        <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
-                        <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
-                        <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
-                    </ul>
                 </div>
 
-                <div class="photo-indicators" role="group" aria-label="Choose a portrait" aria-controls="hero-carousel">
-                    <button type="button" class="photo-indicator is-active" data-index="0" aria-label="Show portrait 1 of 3: Technology Leader" aria-current="true"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
-                    <button type="button" class="photo-indicator" data-index="1" aria-label="Show portrait 2 of 3: Business Executive"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
-                    <button type="button" class="photo-indicator" data-index="2" aria-label="Show portrait 3 of 3: Building EasyChamp"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                <!-- plane 5 — cover lines -->
+                <ul class="hero-chips" aria-label="Credentials">
+                    <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
+                    <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
+                    <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
+                </ul>
+                </div>
+
+                <div class="photo-controls">
+                    <div class="photo-indicators" role="group" aria-label="Choose a portrait" aria-controls="hero-carousel">
+                        <button type="button" class="photo-indicator is-active" data-index="0" aria-label="Show portrait 1 of 3: Technology Leader" aria-current="true"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                        <button type="button" class="photo-indicator" data-index="1" aria-label="Show portrait 2 of 3: Business Executive"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                        <button type="button" class="photo-indicator" data-index="2" aria-label="Show portrait 3 of 3: Building EasyChamp"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                    </div>
+                    <button type="button" class="photo-playpause" data-photo-playpause aria-pressed="false" aria-label="Pause the portrait carousel" aria-controls="hero-carousel">
+                        <i class="fas fa-pause" aria-hidden="true"></i>
+                        <span class="photo-playpause-text">Pause</span>
+                    </button>
                 </div>
 
                 <p class="photo-status sr-only" role="status" aria-live="polite">Portrait 1 of 3: Technology Leader</p>
@@ -292,8 +304,8 @@
                 <h3 class="block-title">Core Achievements</h3>
                 <ul class="achievement-list">
                     <li class="record-line">Selected for <strong>Anthropic's "Built with Opus 4.7" Hackathon</strong> — 1 of 500 builders chosen from <strong>22K+ applications (top ~2%)</strong>, Apr 2026</li>
-                    <li class="record-line">Creator of <strong>SpecWeave</strong> (<span data-stars="specweave">…</span>★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
-                    <li class="record-line">Founder of <strong>verified-skill.com</strong> (<span data-stars="vskill">…</span>★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
+                    <li class="record-line">Creator of <strong>SpecWeave</strong> (<span data-stars="specweave">163</span>★ OSS) — spec-driven dev framework for Claude Code, distributed as 100+ Agent Skills</li>
+                    <li class="record-line">Founder of <strong>verified-skill.com</strong> (<span data-stars="vskill">45</span>★ OSS) — security scanner for AI agent skills (52 patterns, 39 platform adapters)</li>
                     <li class="record-line">Led $100M+ in platform value delivery across Fortune 500 enterprises (Carnival, Olympus, MUFG)</li>
                     <li class="record-line">Softgreat: Scaled from 0 to $7.3M revenue, 66 employees, serving Fortune 500 clients</li>
                     <li class="record-line">Forbes Technology Council Member (invitation-only senior executives)</li>
@@ -334,7 +346,7 @@
                     <article class="comp-panel">
                         <span class="comp-panel-num" aria-hidden="true">01</span>
                         <div class="comp-panel-head">
-                            <div class="skill-icon-img"><img src="assets/images/badges/icon-cloud.png" alt="" loading="lazy"></div>
+                            <div class="skill-icon-img"><img decoding="async" width="160" height="160" src="assets/images/badges/icon-cloud.webp" alt="" loading="lazy"></div>
                             <div>
                                 <h3>Cloud Architecture</h3>
                                 <p class="comp-panel-lede">Azure, AWS, GCP Multi-cloud Expert</p>
@@ -353,7 +365,7 @@
                     <article class="comp-panel">
                         <span class="comp-panel-num" aria-hidden="true">02</span>
                         <div class="comp-panel-head">
-                            <div class="skill-icon-img"><img src="assets/images/badges/icon-ai.png" alt="" loading="lazy"></div>
+                            <div class="skill-icon-img"><img decoding="async" width="160" height="160" src="assets/images/badges/icon-ai.webp" alt="" loading="lazy"></div>
                             <div>
                                 <h3>AI / Agent Skills</h3>
                                 <p class="comp-panel-lede">Claude Code, Opus 4.7, MCP, LangChain, Vector DBs</p>
@@ -372,7 +384,7 @@
                     <article class="comp-panel">
                         <span class="comp-panel-num" aria-hidden="true">03</span>
                         <div class="comp-panel-head">
-                            <div class="skill-icon-img"><img src="assets/images/badges/icon-fullstack.png" alt="" loading="lazy"></div>
+                            <div class="skill-icon-img"><img decoding="async" width="160" height="160" src="assets/images/badges/icon-fullstack.webp" alt="" loading="lazy"></div>
                             <div>
                                 <h3>Full-Stack Development</h3>
                                 <p class="comp-panel-lede">.NET 9, React, TypeScript, Python</p>
@@ -391,7 +403,7 @@
                     <article class="comp-panel">
                         <span class="comp-panel-num" aria-hidden="true">04</span>
                         <div class="comp-panel-head">
-                            <div class="skill-icon-img"><img src="assets/images/badges/icon-devops.png" alt="" loading="lazy"></div>
+                            <div class="skill-icon-img"><img decoding="async" width="160" height="160" src="assets/images/badges/icon-devops.webp" alt="" loading="lazy"></div>
                             <div>
                                 <h3>DevOps Excellence</h3>
                                 <p class="comp-panel-lede">Kubernetes, GitOps, CI/CD, IaC</p>
@@ -571,7 +583,7 @@
         <div class="achievements-grid">
             <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
-                    <img src="assets/images/badges/opus47-badge.png" alt="Built with Opus 4.7 — Anthropic Hackathon">
+                    <img decoding="async" loading="lazy" width="320" height="320" src="assets/images/badges/opus47-badge.webp" alt="Built with Opus 4.7 — Anthropic Hackathon">
                 </div>
                 <h3>Built with Opus 4.7 — Anthropic Hackathon</h3>
                 <p>Selected as <strong>1 of 500 builders</strong> from <strong>22K+ applications</strong> (top ~2%) for Anthropic &amp; Cerebral Valley's flagship Claude Code hackathon (Apr 21–28, 2026). Submitted <strong>Skill Studio</strong> — a web UI for evaluating and iterating on Claude Code Agent Skills.</p>
@@ -580,38 +592,38 @@
 
             <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
-                    <img src="assets/images/badges/specweave-badge.png" alt="SpecWeave — open-source spec-driven development framework">
+                    <img decoding="async" loading="lazy" width="320" height="320" src="assets/images/badges/specweave-badge.webp" alt="SpecWeave — open-source spec-driven development framework">
                 </div>
-                <h3>SpecWeave <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star" aria-hidden="true"></i> <span data-stars="specweave">…</span></span></h3>
+                <h3>SpecWeave <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star" aria-hidden="true"></i> <span data-stars="specweave">163</span></span></h3>
                 <p>Creator &amp; maintainer of the open-source <strong>spec-driven development framework</strong> for Claude Code. Plans features, generates specs, and syncs increments bidirectionally with GitHub, JIRA, and Azure DevOps. Distributed as 100+ <code>sw:*</code> Agent Skills.</p>
                 <a href="https://github.com/anton-abyzov/specweave" target="_blank" rel="noopener" class="achievement-link">View on GitHub →</a>
             </article>
 
             <article class="achievement-card achievement-card-featured rise layer">
                 <div class="achievement-badge">
-                    <img src="assets/images/badges/vskill-badge.png" alt="vskill / verified-skill.com — secure AI skill registry &amp; scanner">
+                    <img decoding="async" loading="lazy" width="320" height="320" src="assets/images/badges/vskill-badge.webp" alt="vskill / verified-skill.com — secure AI skill registry &amp; scanner">
                 </div>
-                <h3>verified-skill.com <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star" aria-hidden="true"></i> <span data-stars="vskill">…</span></span></h3>
+                <h3>verified-skill.com <span class="badge-stars" title="GitHub stars (live)"><i class="fas fa-star" aria-hidden="true"></i> <span data-stars="vskill">45</span></span></h3>
                 <p>Founder of the <strong>trusted registry &amp; security scanner for AI agent skills</strong>. 52 scan patterns across 39 platform adapters detect malicious prompts, exfiltration, and over-privileged tools in <code>SKILL.md</code> files. Distributed on npm.</p>
                 <a href="https://verified-skill.com" target="_blank" rel="noopener" class="achievement-link">verified-skill.com →</a>
             </article>
 
             <article class="achievement-card rise layer">
-                <div class="achievement-icon-img"><img src="assets/images/icons/ach-forbes.png" alt=""></div>
+                <div class="achievement-icon-img"><img decoding="async" loading="lazy" width="224" height="224" src="assets/images/icons/ach-forbes.webp" alt=""></div>
                 <h3>Forbes Technology Council</h3>
                 <p>Invitation-only membership for senior technology executives. Published thought leader on digital transformation and sports-tech innovation.</p>
                 <a href="https://www.forbes.com/councils/forbestechcouncil/people/antonabyzov/" target="_blank" rel="noopener" class="achievement-link">View Forbes Profile →</a>
             </article>
 
             <article class="achievement-card rise layer">
-                <div class="achievement-icon-img"><img src="assets/images/icons/ach-ai-collab.png" alt=""></div>
+                <div class="achievement-icon-img"><img decoding="async" loading="lazy" width="224" height="224" src="assets/images/icons/ach-ai-collab.webp" alt=""></div>
                 <h3>AI Innovation with Hugging Face</h3>
                 <p>Participated in AI hackathon with Clement Delangue (CEO) — our innovative solution received notable recognition.</p>
                 <a href="https://www.instagram.com/p/DLYaJptxeaV/" target="_blank" rel="noopener" class="achievement-link">View Photo →</a>
             </article>
 
             <article class="achievement-card rise layer">
-                <div class="achievement-icon-img"><img src="assets/images/icons/ach-trophy.png" alt=""></div>
+                <div class="achievement-icon-img"><img decoding="async" loading="lazy" width="224" height="224" src="assets/images/icons/ach-trophy.webp" alt=""></div>
                 <h3>Business Excellence Award 2020</h3>
                 <p>Recognized for innovation and digital transformation across enterprise platforms.</p>
                 <a href="https://www.instagram.com/p/CrKdd8FMrrT/" target="_blank" rel="noopener" class="achievement-link">View Award →</a>
@@ -704,7 +716,7 @@
 
         <div class="hobbies-grid">
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/futsal.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/futsal.webp" alt=""></div>
                 <h3>Futsal Excellence</h3>
                 <ul>
                     <li>Master of Sport in Belarus</li>
@@ -717,7 +729,7 @@
                 </button>
             </article>
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/coach.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/coach.webp" alt=""></div>
                 <h3>Soccer Coach</h3>
                 <ul>
                     <li>2024 USSL Championship Winner - FC Miami Dade County</li>
@@ -730,7 +742,7 @@
                 </button>
             </article>
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/crossfit.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/crossfit.webp" alt=""></div>
                 <h3>CrossFit Athlete</h3>
                 <ul>
                     <li>5+ Years Training Experience</li>
@@ -743,7 +755,7 @@
                 </button>
             </article>
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/piano.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/piano.webp" alt=""></div>
                 <h3>Piano Mastery</h3>
                 <ul>
                     <li>15+ Years Classical Training</li>
@@ -756,7 +768,7 @@
                 </button>
             </article>
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/marathon.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/marathon.webp" alt=""></div>
                 <h3>Marathon Runner</h3>
                 <ul>
                     <li>2019 Minsk Half-Marathon Finisher</li>
@@ -769,7 +781,7 @@
                 </button>
             </article>
             <article class="hobby-card rise layer">
-                <div class="hobby-icon-img"><img src="assets/images/icons/hobby/recognition.png" alt=""></div>
+                <div class="hobby-icon-img"><img decoding="async" loading="lazy" width="192" height="192" src="assets/images/icons/hobby/recognition.webp" alt=""></div>
                 <h3>US Recognition</h3>
                 <ul>
                     <li>Extraordinary Ability (EB-1A)</li>
@@ -847,7 +859,7 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <!-- Shared site logic: navigation, typewriter, counters, modals, galleries, photo stack -->
-<script src="script.js?v=2026-09-19b"></script>
+<script src="script.js?v=2026-09-19c"></script>
 
 <!-- Live GitHub stars: stale-while-revalidate (paint cache instantly, refresh in background, 1h TTL) -->
 <script>
@@ -856,6 +868,9 @@
         specweave: 'anton-abyzov/specweave',
         vskill: 'anton-abyzov/vskill'
     };
+    // The markup ships a real count for each repo. Unauthenticated calls to
+    // api.github.com are rate limited per IP, so a first-time visitor behind
+    // CGNAT or a shared office IP gets a 403 and keeps the baked number.
     const CACHE_KEY = 'gh-stars-v1';
     const TTL_MS = 60 * 60 * 1000; // 1h freshness window
 

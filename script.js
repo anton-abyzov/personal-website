@@ -1168,6 +1168,7 @@ function initPhotoStack() {
     var viewport   = root.querySelector('.photo-stack-container');
     var cards      = Array.prototype.slice.call(root.querySelectorAll('.photo-card'));
     var dots       = Array.prototype.slice.call(root.querySelectorAll('.photo-indicator'));
+    var toggle     = root.querySelector('[data-photo-playpause]');
     var chips      = root.querySelector('.hero-chips');
     var status     = root.querySelector('.photo-status');
     if (!viewport || cards.length < 2) return;
@@ -1184,6 +1185,8 @@ function initPhotoStack() {
     var hovered    = false;
     var focused    = false;
     var dragging   = false;
+    var paused     = false;   // explicit visitor choice, survives hover/scroll
+    var motionOverride = false; // visitor pressed play despite reduced motion
 
     var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     function reduced() { return motionQuery.matches; }
@@ -1239,7 +1242,25 @@ function initPhotoStack() {
     function next() { go(index + 1, 1); }
     function prev() { go(index - 1, -1); }
 
-    function shouldPlay() { return visible && !hovered && !focused && !dragging && !document.hidden; }
+    // Reduced motion is a request to stop the movement, not just to shorten it,
+    // and an explicit pause outranks everything.
+    function wantsPlay() { return !paused && (!reduced() || motionOverride); }
+    function shouldPlay() {
+        return wantsPlay() && visible && !hovered && !focused && !dragging && !document.hidden;
+    }
+
+    function paintToggle() {
+        if (!toggle) return;
+        var playing = wantsPlay();
+        toggle.setAttribute('aria-pressed', playing ? 'false' : 'true');
+        toggle.setAttribute('aria-label', playing
+            ? 'Pause the portrait carousel'
+            : 'Play the portrait carousel');
+        var icon = toggle.querySelector('i');
+        if (icon) { icon.className = playing ? 'fas fa-pause' : 'fas fa-play'; }
+        var text = toggle.querySelector('.photo-playpause-text');
+        if (text) { text.textContent = playing ? 'Pause' : 'Play'; }
+    }
 
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
     function play() {
@@ -1250,7 +1271,7 @@ function initPhotoStack() {
             next();
         }, AUTOPLAY_MS);
     }
-    function sync() { shouldPlay() ? play() : stop(); }
+    function sync() { shouldPlay() ? play() : stop(); paintToggle(); }
 
     // ---- dots ----
     dots.forEach(function (dot, i) {
@@ -1259,6 +1280,22 @@ function initPhotoStack() {
             play();
         });
     });
+
+    // ---- pause / play ----
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            if (wantsPlay()) {
+                paused = true;
+                motionOverride = false;
+            } else {
+                // Pressing play under reduced motion is an informed opt-in.
+                // The slide transition stays at 0s either way.
+                paused = false;
+                motionOverride = reduced();
+            }
+            sync();
+        });
+    }
 
     // ---- keyboard ----
     viewport.addEventListener('keydown', function (e) {
@@ -1271,8 +1308,12 @@ function initPhotoStack() {
     // ---- pause on hover / focus ----
     viewport.addEventListener('pointerenter', function () { hovered = true; sync(); });
     viewport.addEventListener('pointerleave', function () { hovered = false; sync(); });
-    root.addEventListener('focusin',  function () { focused = true; sync(); });
-    root.addEventListener('focusout', function () { focused = false; sync(); });
+    // Focus inside the carousel pauses it, so a keyboard visitor is not read
+    // past. The play switch is the exception: focusing it must not undo the
+    // press that just started the rotation.
+    function fromToggle(e) { return !!(toggle && (e.target === toggle || toggle.contains(e.target))); }
+    root.addEventListener('focusin',  function (e) { if (fromToggle(e)) return; focused = true;  sync(); });
+    root.addEventListener('focusout', function (e) { if (fromToggle(e)) return; focused = false; sync(); });
     document.addEventListener('visibilitychange', sync);
 
     // ---- pause off-screen ----
@@ -1329,22 +1370,41 @@ function initPhotoStack() {
     // ---- boot ----
     viewport.style.setProperty('--dir', '1');
     if (status) { status.textContent = 'Portrait ' + (index + 1) + ' of ' + cards.length + ': ' + caption(index); }
-    if (motionQuery.addEventListener) { motionQuery.addEventListener('change', sync); }
+    if (motionQuery.addEventListener) {
+        motionQuery.addEventListener('change', function () { motionOverride = false; sync(); });
+    }
     sync();
 
-    window.heroCarousel = { next: next, prev: prev, go: go, get index() { return index; } };
+    window.heroCarousel = {
+        next: next, prev: prev, go: go,
+        get index() { return index; },
+        get playing() { return timer !== null; },
+        get paused() { return paused; }
+    };
 }
 
-// The floating support widget is third-party and pinned to the bottom-left
-// corner, where the hero also puts its buttons and its scroll cue. Measure all
-// three: lift the widget just clear of anything clickable, then let the cue
-// indent around whatever is left.
+// The floating support widget is third-party, pinned to the bottom-left, and
+// stacked above everything at z-index 99999999. The hero puts its body copy,
+// its stats, its buttons and its scroll cue in the same corner, and the core
+// rail lives up the left edge for the whole page. Solve for a resting place:
+// try the widget where it lands, then the smallest lift that clears whatever
+// it hit, optionally nudged right of the rail. Re-check every candidate
+// against every obstacle, because one lift can create a fresh collision. If
+// nothing clears, park the widget (it returns the moment the corner is free).
 function initCueClearance() {
     var cue = document.querySelector('.cover-foot');
-    if (!cue) return;
 
-    var MAX_LIFT = 260;
+    // A lift big enough to float the widget into the middle of a phone screen
+    // is worse than no widget at all, so past this it parks instead.
+    var MAX_LIFT = 120;
+    var GAP = 12;
+    var PAD = 6;
     var queued = false;
+
+    // Anything the widget must not sit on: things you click, the hero's body
+    // copy, the hero stats, and the core-sample rail.
+    var OBSTACLES = '.hero-cta, .hero-description, .hero-chips, .stat-item, .stat-item-action,' +
+                    ' .photo-indicators, .photo-controls, .photo-stage, .cover-lockup, .rail';
 
     function hit(a, b, pad) {
         pad = pad || 0;
@@ -1352,42 +1412,107 @@ function initCueClearance() {
                  a.bottom < b.top - pad || b.bottom < a.top - pad);
     }
 
+    // Ko-fi renders a desktop wrapper AND a mobile wrapper and hides one of
+    // them with display:none. querySelector would happily hand back the hidden
+    // one, which measures 0x0 and makes every collision test pass.
+    function liveWidget() {
+        var all = document.querySelectorAll('.floatingchat-container-wrap, .floatingchat-container-wrap-mobi');
+        for (var i = 0; i < all.length; i++) {
+            if (all[i].offsetWidth > 0 && all[i].offsetHeight > 0) return all[i];
+        }
+        return null;
+    }
+
+    function boxAt(natural, lift, shift) {
+        return { top: natural.top - lift, bottom: natural.bottom - lift,
+                 left: natural.left + shift, right: natural.right + shift };
+    }
+
+    function clears(box, obstacles) {
+        for (var i = 0; i < obstacles.length; i++) {
+            if (hit(box, obstacles[i], PAD)) return false;
+        }
+        return true;
+    }
+
     function measure() {
         queued = false;
-        var widget = document.querySelector('.floatingchat-container-wrap, .floatingchat-container-wrap-mobi');
-        var c = cue.getBoundingClientRect();
-        var cueOnScreen = c.bottom > 0 && c.top < window.innerHeight;
-        var lift = 0, inset = 0;
+        var widget = liveWidget();
+        var lift = 0, shift = 0, inset = 0, parked = false;
 
         if (widget) {
-            // resting box, derived from layout so a running transition cannot skew it
+            // Resting box derived from layout, so a running transition on the
+            // widget cannot skew what we measure.
             var cs = getComputedStyle(widget);
             var r = widget.getBoundingClientRect();
             var off = parseFloat(cs.bottom);
             var bottom = isNaN(off) ? r.bottom : window.innerHeight - off;
-            var natural = { top: bottom - widget.offsetHeight, bottom: bottom, left: r.left, right: r.right };
+            var w = widget.offsetWidth;
+            // Same reasoning on the x axis: read the CSS offset, and only fall
+            // back to the measured box (which carries the live transform) when
+            // the widget is not offset from the left edge.
+            var sideOff = parseFloat(cs.left);
+            var left = isNaN(sideOff)
+                ? r.left - (parseFloat(cs.getPropertyValue('--cue-shift')) || 0)
+                : sideOff;
+            var natural = { top: bottom - widget.offsetHeight, bottom: bottom,
+                            left: left, right: left + w };
 
-            // never sit on top of something the visitor is meant to click
-            var targets = document.querySelectorAll('.hero-cta, .stat-item-action, .photo-indicators');
-            Array.prototype.forEach.call(targets, function (el) {
+            var obstacles = [];
+            var railRight = 0;
+            Array.prototype.forEach.call(document.querySelectorAll(OBSTACLES), function (el) {
                 var t = el.getBoundingClientRect();
-                var visible = t.width > 0 && t.bottom > 0 && t.top < window.innerHeight;
-                if (visible && hit(natural, t, 6)) {
-                    lift = Math.max(lift, Math.ceil(natural.bottom - t.top) + 12);
-                }
+                if (t.width <= 0 || t.height <= 0) return;
+                if (t.bottom <= 0 || t.top >= window.innerHeight) return;
+                obstacles.push(t);
+                if (el.classList.contains('rail')) { railRight = Math.max(railRight, t.right); }
             });
-            if (lift > MAX_LIFT) lift = 0;
 
-            var moved = { top: natural.top - lift, bottom: natural.bottom - lift,
-                          left: natural.left, right: natural.right };
-            // the cue's box spans the shell, so padding shifts its text, not its edges
-            if (cueOnScreen && hit(moved, c, 8) && moved.right > c.left) {
-                inset = Math.ceil(moved.right - c.left) + 18;
+            // Candidate lifts: stay put, or rise just past the top edge of
+            // something we are currently sitting on.
+            var lifts = [0];
+            obstacles.forEach(function (t) {
+                var d = Math.ceil(natural.bottom - t.top) + GAP;
+                if (d > 0 && d <= MAX_LIFT) lifts.push(d);
+            });
+            lifts.sort(function (a, b) { return a - b; });
+
+            // Candidate side shifts: stay put, or step right of the rail.
+            var shifts = [0];
+            if (railRight > natural.left) { shifts.push(Math.ceil(railRight - natural.left) + GAP); }
+
+            // Cheapest candidate that clears everything wins. Lift is the
+            // primary cost so the widget prefers to stay near its corner.
+            var best = null;
+            shifts.forEach(function (sx) {
+                lifts.forEach(function (ly) {
+                    if (!clears(boxAt(natural, ly, sx), obstacles)) return;
+                    var cost = ly + sx * 0.6;
+                    if (!best || cost < best.cost) best = { lift: ly, shift: sx, cost: cost };
+                });
+            });
+
+            if (best) { lift = best.lift; shift = best.shift; }
+            else if (obstacles.length) { parked = true; }
+
+            widget.classList.toggle('is-cue-parked', parked);
+
+            if (cue) {
+                var c = cue.getBoundingClientRect();
+                var cueOnScreen = c.bottom > 0 && c.top < window.innerHeight;
+                var moved = boxAt(natural, lift, shift);
+                // The cue's box spans the shell, so padding shifts its text,
+                // not its edges.
+                if (!parked && cueOnScreen && hit(moved, c, 8) && moved.right > c.left) {
+                    inset = Math.ceil(moved.right - c.left) + 18;
+                }
             }
         }
 
-        document.documentElement.style.setProperty('--cue-lift', lift + 'px');
-        cue.style.setProperty('--cue-inset', inset + 'px');
+        var root = document.documentElement.style;
+        root.setProperty('--cue-lift', lift + 'px');
+        root.setProperty('--cue-shift', shift + 'px');
+        if (cue) cue.style.setProperty('--cue-inset', inset + 'px');
     }
 
     function schedule() {
@@ -1398,12 +1523,17 @@ function initCueClearance() {
 
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
-    // the widget loads late; keep checking while it settles
+    window.addEventListener('orientationchange', schedule);
+    // The widget loads late and re-renders when the breakpoint flips; keep
+    // checking while it settles, and watch for it being swapped out.
     var tries = 0;
     var poll = setInterval(function () {
         schedule();
-        if (++tries > 12) clearInterval(poll);
-    }, 600);
+        if (++tries > 20) clearInterval(poll);
+    }, 500);
+    if (window.MutationObserver) {
+        new MutationObserver(schedule).observe(document.body, { childList: true, subtree: false });
+    }
     schedule();
 }
 if (document.readyState === 'loading') {
