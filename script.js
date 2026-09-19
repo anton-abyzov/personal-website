@@ -1158,69 +1158,258 @@ function openFutsalGallery() {
     carousel.open();
 }
 
-// Professional Photo Stack
+// =========================================================================
+// Hero portrait carousel — transform/opacity only, autoplay, swipe, keyboard
+// =========================================================================
 function initPhotoStack() {
-    const photoCards = document.querySelectorAll('.photo-card');
-    const indicators = document.querySelectorAll('.photo-indicator');
-    let currentPhoto = 0;
-    let autoRotateInterval;
-    
-    function showPhoto(index) {
-        photoCards.forEach((card, i) => {
-            card.classList.remove('active', 'photo-card-2', 'photo-card-3');
-            indicators[i].classList.remove('active');
+    var root = document.querySelector('[data-photo-carousel]');
+    if (!root) return;
+
+    var viewport   = root.querySelector('.photo-stack-container');
+    var cards      = Array.prototype.slice.call(root.querySelectorAll('.photo-card'));
+    var dots       = Array.prototype.slice.call(root.querySelectorAll('.photo-indicator'));
+    var chips      = root.querySelector('.hero-chips');
+    var status     = root.querySelector('.photo-status');
+    if (!viewport || cards.length < 2) return;
+
+    var AUTOPLAY_MS = 6000;
+    var SLIDE_MS    = 680;
+
+    var index      = cards.findIndex(function (c) { return c.classList.contains('is-active'); });
+    if (index < 0) index = 0;
+    var timer      = null;
+    var leaveTimer = null;
+    var chipTimer  = null;
+    var visible    = true;
+    var hovered    = false;
+    var focused    = false;
+    var dragging   = false;
+
+    var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function reduced() { return motionQuery.matches; }
+
+    function caption(i) { return cards[i].getAttribute('data-caption') || ('Portrait ' + (i + 1)); }
+
+    function paint(next, dir) {
+        var prev = index;
+        if (next === prev) return;
+
+        viewport.style.setProperty('--dir', String(dir));
+
+        if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+        cards.forEach(function (c) { c.classList.remove('is-leaving'); });
+
+        cards[prev].classList.remove('is-active');
+        cards[prev].classList.add('is-leaving');
+        cards[next].classList.add('is-active');
+
+        var outgoing = cards[prev];
+        leaveTimer = setTimeout(function () {
+            outgoing.classList.remove('is-leaving');
+            leaveTimer = null;
+        }, reduced() ? 20 : SLIDE_MS + 40);
+
+        dots.forEach(function (d, i) {
+            var on = i === next;
+            d.classList.toggle('is-active', on);
+            if (on) { d.setAttribute('aria-current', 'true'); }
+            else    { d.removeAttribute('aria-current'); }
         });
-        
-        const nextIndex = (index + 1) % photoCards.length;
-        const nextNextIndex = (index + 2) % photoCards.length;
-        
-        photoCards[index].classList.add('active');
-        photoCards[nextIndex].classList.add('photo-card-2');
-        photoCards[nextNextIndex].classList.add('photo-card-3');
-        indicators[index].classList.add('active');
-        
-        currentPhoto = index;
+
+        if (status) { status.textContent = 'Portrait ' + (next + 1) + ' of ' + cards.length + ': ' + caption(next); }
+
+        // credential chips ripple with the slide (staggered, motion-safe)
+        if (chips && !reduced()) {
+            chips.classList.remove('is-flicking');
+            void chips.offsetWidth; // restart the stagger
+            chips.classList.add('is-flicking');
+            if (chipTimer) clearTimeout(chipTimer);
+            chipTimer = setTimeout(function () { chips.classList.remove('is-flicking'); }, 940);
+        }
+
+        index = next;
     }
-    
-    function nextPhoto() {
-        showPhoto((currentPhoto + 1) % photoCards.length);
+
+    function go(next, dir) {
+        var n = (next + cards.length) % cards.length;
+        if (typeof dir !== 'number') { dir = n === (index + 1) % cards.length ? 1 : -1; }
+        paint(n, dir);
     }
-    
-    function startAutoRotate() {
-        autoRotateInterval = setInterval(nextPhoto, 8000);
+
+    function next() { go(index + 1, 1); }
+    function prev() { go(index - 1, -1); }
+
+    function shouldPlay() { return visible && !hovered && !focused && !dragging && !document.hidden; }
+
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function play() {
+        stop();
+        if (!shouldPlay()) return;
+        timer = setInterval(function () {
+            if (!shouldPlay()) { stop(); return; }
+            next();
+        }, AUTOPLAY_MS);
     }
-    
-    function stopAutoRotate() {
-        clearInterval(autoRotateInterval);
-    }
-    
-    // Click handlers
-    photoCards.forEach((card, index) => {
-        card.addEventListener('click', () => {
-            stopAutoRotate();
-            showPhoto(index);
-            startAutoRotate();
+    function sync() { shouldPlay() ? play() : stop(); }
+
+    // ---- dots ----
+    dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () {
+            go(i, i > index ? 1 : -1);
+            play();
         });
     });
-    
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            stopAutoRotate();
-            showPhoto(index);
-            startAutoRotate();
-        });
+
+    // ---- keyboard ----
+    viewport.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); next(); play(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); play(); }
+        else if (e.key === 'Home') { e.preventDefault(); go(0, -1); play(); }
+        else if (e.key === 'End') { e.preventDefault(); go(cards.length - 1, 1); play(); }
     });
-    
-    // Hover pause
-    const photoStack = document.querySelector('.photo-stack-container');
-    if (photoStack) {
-        photoStack.addEventListener('mouseenter', stopAutoRotate);
-        photoStack.addEventListener('mouseleave', startAutoRotate);
+
+    // ---- pause on hover / focus ----
+    viewport.addEventListener('pointerenter', function () { hovered = true; sync(); });
+    viewport.addEventListener('pointerleave', function () { hovered = false; sync(); });
+    root.addEventListener('focusin',  function () { focused = true; sync(); });
+    root.addEventListener('focusout', function () { focused = false; sync(); });
+    document.addEventListener('visibilitychange', sync);
+
+    // ---- pause off-screen ----
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+            visible = entries[0].isIntersecting;
+            sync();
+        }, { threshold: 0.25 }).observe(viewport);
     }
-    
-    // Initialize
-    showPhoto(0);
-    startAutoRotate();
+
+    // ---- swipe (pointer events) ----
+    var startX = 0, startY = 0, deltaX = 0, pointerId = null, axis = null;
+
+    viewport.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        pointerId = e.pointerId;
+        startX = e.clientX; startY = e.clientY;
+        deltaX = 0; axis = null;
+        dragging = true;
+        stop();
+    });
+
+    viewport.addEventListener('pointermove', function (e) {
+        if (pointerId === null || e.pointerId !== pointerId) return;
+        var dx = e.clientX - startX;
+        var dy = e.clientY - startY;
+        if (axis === null) {
+            if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+            axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+            if (axis === 'x') {
+                viewport.classList.add('is-dragging');
+                if (viewport.setPointerCapture) { try { viewport.setPointerCapture(pointerId); } catch (err) {} }
+            }
+        }
+        if (axis !== 'x') return;
+        e.preventDefault();
+        deltaX = dx;
+        var damp = deltaX * 0.32;
+        cards[index].style.transform = 'translate3d(' + damp.toFixed(2) + 'px, 0, 0) scale(1)';
+    });
+
+    function endDrag() {
+        if (pointerId === null) return;
+        viewport.classList.remove('is-dragging');
+        cards[index].style.transform = '';
+        var moved = deltaX;
+        pointerId = null; deltaX = 0; axis = null; dragging = false;
+        if (Math.abs(moved) > 46) { moved < 0 ? next() : prev(); }
+        play();
+    }
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    // ---- boot ----
+    viewport.style.setProperty('--dir', '1');
+    if (status) { status.textContent = 'Portrait ' + (index + 1) + ' of ' + cards.length + ': ' + caption(index); }
+    if (motionQuery.addEventListener) { motionQuery.addEventListener('change', sync); }
+    sync();
+
+    window.heroCarousel = { next: next, prev: prev, go: go, get index() { return index; } };
+}
+
+// The floating support widget is third-party and pinned to the bottom-left
+// corner, where the hero also puts its buttons and its scroll cue. Measure all
+// three: lift the widget just clear of anything clickable, then let the cue
+// indent around whatever is left.
+function initCueClearance() {
+    var cue = document.querySelector('.cover-foot');
+    if (!cue) return;
+
+    var MAX_LIFT = 260;
+    var queued = false;
+
+    function hit(a, b, pad) {
+        pad = pad || 0;
+        return !(a.right < b.left - pad || b.right < a.left - pad ||
+                 a.bottom < b.top - pad || b.bottom < a.top - pad);
+    }
+
+    function measure() {
+        queued = false;
+        var widget = document.querySelector('.floatingchat-container-wrap, .floatingchat-container-wrap-mobi');
+        var c = cue.getBoundingClientRect();
+        var cueOnScreen = c.bottom > 0 && c.top < window.innerHeight;
+        var lift = 0, inset = 0;
+
+        if (widget) {
+            // resting box, derived from layout so a running transition cannot skew it
+            var cs = getComputedStyle(widget);
+            var r = widget.getBoundingClientRect();
+            var off = parseFloat(cs.bottom);
+            var bottom = isNaN(off) ? r.bottom : window.innerHeight - off;
+            var natural = { top: bottom - widget.offsetHeight, bottom: bottom, left: r.left, right: r.right };
+
+            // never sit on top of something the visitor is meant to click
+            var targets = document.querySelectorAll('.hero-cta, .stat-item-action, .photo-indicators');
+            Array.prototype.forEach.call(targets, function (el) {
+                var t = el.getBoundingClientRect();
+                var visible = t.width > 0 && t.bottom > 0 && t.top < window.innerHeight;
+                if (visible && hit(natural, t, 6)) {
+                    lift = Math.max(lift, Math.ceil(natural.bottom - t.top) + 12);
+                }
+            });
+            if (lift > MAX_LIFT) lift = 0;
+
+            var moved = { top: natural.top - lift, bottom: natural.bottom - lift,
+                          left: natural.left, right: natural.right };
+            // the cue's box spans the shell, so padding shifts its text, not its edges
+            if (cueOnScreen && hit(moved, c, 8) && moved.right > c.left) {
+                inset = Math.ceil(moved.right - c.left) + 18;
+            }
+        }
+
+        document.documentElement.style.setProperty('--cue-lift', lift + 'px');
+        cue.style.setProperty('--cue-inset', inset + 'px');
+    }
+
+    function schedule() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(measure);
+    }
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    // the widget loads late; keep checking while it settles
+    var tries = 0;
+    var poll = setInterval(function () {
+        schedule();
+        if (++tries > 12) clearInterval(poll);
+    }, 600);
+    schedule();
+}
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCueClearance);
+} else {
+    initCueClearance();
 }
 
 // Initialize photo stack when DOM is loaded

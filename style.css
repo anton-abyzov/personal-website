@@ -524,7 +524,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     display: flex;
     align-items: center;
     padding-top: calc(var(--nav-h) + clamp(10px, 2.2vw, 26px));
-    padding-bottom: clamp(56px, 5vw, 76px);
+    /* room under the cue for the floating support widget at the bottom-left */
+    padding-bottom: clamp(84px, 6.6vw, 100px);
     overflow-x: clip;
     isolation: isolate;
 }
@@ -575,7 +576,8 @@ ul { margin: 0; padding: 0; list-style: none; }
     grid-template-areas:
         "masthead masthead"
         "lockup   lockup"
-        "body     portrait";
+        "body     portrait"
+        "foot     foot";
     column-gap: clamp(24px, 3.4vw, 64px);
     row-gap: clamp(10px, 1.3vw, 18px);
     align-items: start;
@@ -767,13 +769,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- plane 5 — cover lines ---------- */
 .hero-chips {
-    grid-row: 3;
-    grid-column: 2;
-    align-self: end;
-    justify-self: stretch;
-    position: relative;
+    position: absolute;
+    right: 10px;
+    bottom: 58px;
     z-index: 6;
-    margin: 0 0 clamp(68px, 6vw, 92px);
+    pointer-events: none;
+    max-width: min(74%, 266px);
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -808,13 +810,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- cover foot ---------- */
 .cover-foot {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: clamp(72px, 7vw, 84px);
+    grid-area: foot;
+    position: relative;
     z-index: 6;
-    width: min(var(--shell), calc(100% - (var(--gutter) * 2)));
-    margin-inline: auto;
+    width: 100%;
+    margin-top: clamp(16px, 2.2vw, 30px);
+    padding-top: clamp(12px, 1.4vw, 18px);
+    border-top: 1px solid var(--line-soft);
     display: flex;
     align-items: center;
     gap: clamp(12px, 1.6vw, 20px);
@@ -2071,22 +2073,19 @@ ul { margin: 0; padding: 0; list-style: none; }
             "masthead"
             "lockup"
             "portrait"
-            "chips"
-            "body";
+            "body"
+            "foot";
         row-gap: clamp(16px, 2.6vw, 28px);
     }
     .cover-portrait { margin-top: 4px; max-width: 420px; }
     .hero-chips {
-        grid-row: auto;
-        grid-column: 1;
-        grid-area: chips;
-        align-self: start;
-        justify-self: start;
+        position: static;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: flex-start;
-        margin: 0;
+        justify-content: flex-start;
         max-width: 100%;
+        margin: 14px 0 0;
     }
     .cover-body::before { display: none; }
     .achievements-grid,
@@ -2900,144 +2899,6 @@ ul { margin: 0; padding: 0; list-style: none; }
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
 }
-/* Professional Photo Stack */
-.professional-photo-stack {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.photo-stack-container {
-    position: relative;
-    width: 100%;
-    height: 550px;
-    perspective: 1200px;
-}
-
-.photo-card {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 102, 255, 0.05));
-    border: 2px solid rgba(0, 212, 255, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 102, 255, 0.4);
-    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(30px) rotateY(-20deg) scale(0.9);
-}
-
-.photo-card.active {
-    opacity: 1;
-    transform: translateY(0) rotateY(0) scale(1);
-    z-index: 3;
-}
-
-.photo-card.photo-card-2 {
-    transform: translateX(20px) translateY(15px) rotateY(-10deg) scale(0.95);
-    opacity: 0.7;
-    z-index: 2;
-}
-
-.photo-card.photo-card-3 {
-    transform: translateX(40px) translateY(30px) rotateY(-20deg) scale(0.9);
-    opacity: 0.5;
-    z-index: 1;
-}
-
-.photo-card:hover {
-    transform: translateY(-10px) rotateY(0) scale(1.02);
-    box-shadow: 0 30px 80px rgba(0, 212, 255, 0.5);
-}
-
-.photo-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-}
-
-.photo-card:hover img {
-    transform: scale(1.05);
-}
-
-.photo-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(to top, rgba(28, 35, 49, 0.95), transparent);
-    padding: 30px 20px 20px;
-    transform: translateY(100%);
-    transition: transform 0.4s ease;
-}
-
-.photo-card:hover .photo-overlay,
-.photo-card.active .photo-overlay {
-    transform: translateY(0);
-}
-
-.photo-label {
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.photo-label::before {
-    content: '✨';
-    font-size: 1.2rem;
-}
-
-.photo-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 30px;
-}
-
-.photo-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(0, 212, 255, 0.3);
-    border: 2px solid rgba(0, 212, 255, 0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.photo-indicator.active {
-    width: 32px;
-    border-radius: 6px;
-    background: linear-gradient(90deg, #00d4ff, #0066ff);
-}
-
-.photo-indicator:hover {
-    background: rgba(0, 212, 255, 0.6);
-    transform: scale(1.2);
-}
-
-/* Photo Stack Mobile Responsive */
-@media (max-width: 768px) {
-    .photo-stack-container {
-        height: 400px;
-    }
-    
-    .photo-card.photo-card-2 {
-        transform: translateX(10px) translateY(10px) rotateY(-5deg) scale(0.95);
-    }
-    
-    .photo-card.photo-card-3 {
-        transform: translateX(20px) translateY(20px) rotateY(-10deg) scale(0.9);
-    }
-}
-
 /* Carousel Responsive Improvements */
 @media (max-width: 1200px) {
     .carousel-container {
@@ -3175,33 +3036,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .platform-value-company { font-family: var(--font-body); }
 .piano-modal-title { font-family: var(--font-display); }
 
-/* Hero photo stack, re-tuned */
-.professional-photo-stack { max-width: 460px; margin-inline: auto 0; }
-.photo-stack-container { height: clamp(340px, 42vw, 470px); }
-@media (max-width: 720px) { .photo-stack-container { height: clamp(300px, 82vw, 380px); } }
-.photo-card {
-    border-radius: 20px;
-    border: 1px solid rgba(86, 219, 233, 0.26);
-    background: linear-gradient(140deg, rgba(86, 219, 233, 0.10), rgba(8, 12, 22, 0.6));
-    box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
-}
-.photo-card:hover { box-shadow: 0 46px 100px -40px rgba(86, 219, 233, 0.45); }
-.photo-overlay { background: linear-gradient(to top, rgba(4, 7, 14, 0.94), transparent); }
-.photo-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
-.photo-label::before { content: ""; width: 18px; height: 1px; background: var(--cyan); display: inline-block; }
-.photo-indicator { background: rgba(86, 219, 233, 0.22); border-color: rgba(86, 219, 233, 0.4); }
-.photo-indicator.active { background: linear-gradient(90deg, var(--cyan), var(--cyan-deep)); }
-
-@media (max-width: 1100px) {
-    .professional-photo-stack { margin-inline: 0; }
-}
-
 /* Column flex items in the scrollable breakdown were shrinking below their
    content and getting clipped by the card's own overflow; pin their size. */
 .platform-value-breakdown > .platform-value-item { flex: 0 0 auto; }
@@ -3230,3 +3064,392 @@ ul { margin: 0; padding: 0; list-style: none; }
     border-radius: 10px;
 }
 .experience-details li:hover { background: rgba(86, 219, 233, 0.07); }
+
+/* =========================================================================
+   Hero portrait carousel — transform + opacity only, compositor friendly
+   ========================================================================= */
+.sr-only {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.professional-photo-stack {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    margin-inline: auto 0;
+    --expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --slide-ms: 680ms;
+}
+
+.photo-stack-container {
+    position: relative;
+    width: 100%;
+    /* fixed aspect box — the slides can never shift the page */
+    aspect-ratio: 4 / 5;
+    max-height: min(46svh, 470px);
+    min-height: 260px;
+    border-radius: 20px;
+    border: 1px solid rgba(86, 219, 233, 0.26);
+    background: linear-gradient(140deg, rgba(86, 219, 233, 0.10), rgba(8, 12, 22, 0.65));
+    box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.95),
+                0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    overflow: hidden;
+    isolation: isolate;
+    touch-action: pan-y;
+    -webkit-user-select: none;
+            user-select: none;
+    cursor: grab;
+}
+.photo-stack-container:active { cursor: grabbing; }
+.photo-stack-container:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+
+.photo-card {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    /* resting (off-stage) pose — incoming slides animate away from this */
+    transform: translate3d(calc(var(--dir, 1) * 6%), 0, 0) scale(1.045);
+    transition: opacity var(--slide-ms) var(--expo),
+                transform var(--slide-ms) var(--expo);
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    pointer-events: none;
+}
+.photo-card.is-active {
+    z-index: 3;
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    pointer-events: auto;
+}
+.photo-card.is-leaving {
+    z-index: 2;
+    opacity: 0;
+    transform: translate3d(calc(var(--dir, 1) * -4%), 0, 0) scale(0.985);
+}
+.photo-stack-container.is-dragging .photo-card { transition: none; }
+
+.photo-card img,
+.photo-card .profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    display: block;
+    -webkit-user-drag: none;
+}
+
+.photo-overlay {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    padding: 46px 18px 16px;
+    background: linear-gradient(to top, rgba(4, 7, 14, 0.96) 12%, rgba(4, 7, 14, 0.72) 48%, transparent);
+    transform: none;
+}
+
+.photo-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.75);
+}
+.photo-label::before {
+    content: "";
+    flex: 0 0 auto;
+    width: 18px;
+    height: 2px;
+    background: var(--cyan);
+    display: inline-block;
+}
+
+/* ---------- dots: real buttons, 44px targets ---------- */
+.photo-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin-top: 6px;
+}
+.photo-indicator {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    -webkit-appearance: none;
+            appearance: none;
+}
+.photo-indicator-dot {
+    display: block;
+    width: 11px;
+    height: 11px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1.5px solid rgba(207, 214, 224, 0.55);
+    transition: width 420ms var(--expo),
+                background-color 320ms var(--expo),
+                border-color 320ms var(--expo);
+}
+.photo-indicator:hover .photo-indicator-dot { border-color: var(--paper); }
+.photo-indicator.is-active .photo-indicator-dot {
+    /* state reads without colour: wider, filled, outlined */
+    width: 30px;
+    background: var(--paper);
+    border-color: var(--paper);
+    box-shadow: 0 0 0 1px rgba(5, 7, 15, 0.9), 0 0 0 2.5px rgba(86, 219, 233, 0.8);
+}
+.photo-indicator:focus-visible { outline: 2px solid var(--cyan); outline-offset: -4px; border-radius: 8px; }
+
+@media (prefers-reduced-motion: no-preference) {
+    .photo-card.is-active .photo-label {
+        animation: captionIn 620ms var(--expo) both;
+    }
+    @keyframes captionIn {
+        from { opacity: 0; transform: translate3d(0, 12px, 0); }
+        to   { opacity: 1; transform: none; }
+    }
+    .hero-chips.is-flicking .chip { animation: chipFlick 640ms var(--expo) both; }
+    .hero-chips.is-flicking .chip:nth-child(1) { animation-delay: 60ms; }
+    .hero-chips.is-flicking .chip:nth-child(2) { animation-delay: 140ms; }
+    .hero-chips.is-flicking .chip:nth-child(3) { animation-delay: 220ms; }
+    @keyframes chipFlick {
+        0%   { opacity: 1; transform: none; }
+        34%  { opacity: 0.25; transform: translate3d(10px, 0, 0); }
+        100% { opacity: 1; transform: none; }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .photo-card { transition: none !important; }
+}
+
+/* ---------- portrait, per width ---------- */
+@media (max-width: 1100px) {
+    .professional-photo-stack { margin-inline: 0; max-width: 420px; }
+    .photo-stack-container { max-height: none; aspect-ratio: 4 / 5; }
+    .hero-chips { position: static; max-width: 100%; pointer-events: auto; }
+}
+@media (max-width: 720px) {
+    .professional-photo-stack { max-width: 100%; }
+    .photo-stack-container { aspect-ratio: 5 / 6; max-height: 62svh; }
+    .photo-overlay { padding: 40px 14px 14px; }
+}
+@media (max-width: 900px) and (orientation: landscape) {
+    .photo-stack-container { aspect-ratio: auto; height: 46svh; min-height: 200px; }
+}
+
+/* The floating support widget shares the bottom-left corner with the hero's
+   buttons and its scroll cue: the widget lifts off anything clickable, and the
+   cue indents around whatever space is left. Both offsets come from script.js. */
+.floatingchat-container-wrap,
+.floatingchat-container-wrap-mobi {
+    transform: translateY(calc(var(--cue-lift, 0px) * -1));
+    transition: transform 280ms var(--ease);
+}
+.cover-foot {
+    padding-left: var(--cue-inset, 0px);
+    transition: padding-left 260ms var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+    .cover-foot,
+    .floatingchat-container-wrap,
+    .floatingchat-container-wrap-mobi { transition: none; }
+}
+
+/* =========================================================================
+   Black-and-white readability
+   The palette is deliberately low-chroma, so nothing may depend on hue:
+   every active state also carries weight, an underline, a rule or an outline.
+   ========================================================================= */
+
+/* faint separators that vanish once colour is removed */
+.footer-meta .footer-dot,
+.footer-dot { color: rgba(186, 202, 220, 0.62); }
+
+/* rail: the current stratum reads by weight and tick length, not colour */
+.rail-list a.is-current {
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+.rail-list a.is-current span { text-decoration: underline; text-underline-offset: 3px; }
+
+/* nav: .active already draws a full-width underline — keep it heavier too */
+.nav-link.active { font-weight: 700; }
+
+/* the light-lines stay light-on-dark in greyscale: they are near-white values */
+.cover-foot-track,
+.rail-track { background: rgba(190, 206, 224, 0.20); }
+
+/* the outlined display numerals need a stroke that survives desaturation */
+.name-b { -webkit-text-stroke-color: rgba(239, 234, 225, 0.78); }
+
+/* buttons must differ by fill and border, not by hue */
+.btn-outline { border-width: 1.5px; }
+.btn-primary { border: 1.5px solid transparent; }
+
+/* ---------- Windows High Contrast / forced colours ---------- */
+@media (forced-colors: active) {
+    .field, .cover-air, .field-layer, .stratum-mark { display: none !important; }
+
+    body { background: Canvas; color: CanvasText; }
+    a { color: LinkText; }
+    a:hover { text-decoration: underline; }
+
+    .photo-stack-container,
+    .chip,
+    .cert-badge,
+    .btn,
+    .achievement-card,
+    .hobby-card,
+    .comp-panel,
+    .timeline-content,
+    .publication-card,
+    .stat-item,
+    .modal-content,
+    .experience-details {
+        border: 1px solid CanvasText;
+        background: Canvas;
+        color: CanvasText;
+    }
+    .btn-primary {
+        background: ButtonFace;
+        color: ButtonText;
+        border: 2px solid ButtonText;
+    }
+    .btn-outline { border: 1px solid ButtonText; color: ButtonText; }
+
+    .photo-indicator-dot {
+        border: 1px solid ButtonText;
+        background: Canvas;
+        forced-color-adjust: none;
+    }
+    .photo-indicator.is-active .photo-indicator-dot {
+        background: Highlight;
+        border-color: Highlight;
+        box-shadow: none;
+    }
+    .photo-overlay { background: Canvas; border-top: 1px solid CanvasText; }
+    .photo-label { color: CanvasText; }
+    .photo-label::before { background: CanvasText; }
+
+    .nav-link.active,
+    .rail-list a.is-current {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .cover-foot-fill,
+    .rail-fill,
+    .comp-progress-fill {
+        background: Highlight;
+        forced-color-adjust: none;
+    }
+    .cover-foot-track,
+    .rail-track,
+    .comp-progress { border-top: 1px solid CanvasText; background: Canvas; }
+
+    :focus-visible { outline: 3px solid Highlight; outline-offset: 2px; }
+    .hero-description .sep,
+    .footer-dot { color: CanvasText; }
+}
+
+/* ---------- print: pure black on white ---------- */
+@media print {
+    html { filter: none !important; }
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 11pt;
+    }
+    h1, h2, h3, h4, h5,
+    p, li, span, strong, em, a { color: #000 !important; }
+    .hero { min-height: 0 !important; padding: 0 0 18pt !important; }
+    .cover-shell { display: block !important; }
+    .name-b { -webkit-text-stroke: 0 !important; color: #000 !important; }
+    .photo-stack-container {
+        aspect-ratio: auto !important;
+        height: 78mm !important;
+        max-height: 78mm !important;
+        border: 1pt solid #000 !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+    .photo-card { position: static !important; display: none !important; }
+    .photo-card.is-active { display: block !important; height: 100% !important; }
+    .photo-indicators, .photo-status, .kofi-widget-overlay,
+    .floatingchat-container-wrap, .floatingchat-container-wrap-mobi { display: none !important; }
+    .photo-overlay { position: static !important; background: none !important; padding: 4pt 0 0 !important; }
+    .photo-label { color: #000 !important; text-shadow: none !important; }
+    .chip, .cert-badge {
+        border: 0.5pt solid #000 !important;
+        background: none !important;
+        color: #000 !important;
+        -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
+    }
+    .hero-chips { position: static !important; flex-direction: row !important; flex-wrap: wrap !important; }
+    .btn { border: 1pt solid #000 !important; background: none !important; color: #000 !important; }
+    .achievement-card, .hobby-card, .publication-card, .comp-panel, .timeline-content {
+        border: 0.5pt solid #555 !important;
+        background: none !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .section, .stratum { padding-block: 10pt !important; }
+    a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        word-break: break-all;
+    }
+}
+
+/* =========================================================================
+   Tap targets — every standalone control clears 44px in both axes.
+   (Links set inside a sentence keep the WCAG inline exception.)
+   ========================================================================= */
+.achievement-link,
+.publication-link,
+.via-company,
+.expand-btn,
+.nav-logo,
+.achievement-gallery-btn,
+.rail-list a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+.achievement-link,
+.publication-link { gap: 6px; }
+.expand-btn { min-width: 44px; justify-content: center; }
+.nav-logo { min-width: 44px; }
+.via-company { gap: 8px; }
+.hamburger {
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+.rail-list a { gap: 10px; }
+@media (max-width: 900px) {
+    .nav-link { min-height: 44px; display: flex; align-items: center; }
+}

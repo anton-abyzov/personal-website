@@ -213,43 +213,67 @@
             </div>
         </div>
 
-        <!-- plane 3 — portrait, scroll-linked zoom -->
+        <!-- plane 3 — portrait carousel -->
         <div class="cover-portrait">
-            <div class="professional-photo-stack">
-                <div class="photo-stack-container">
-                    <div class="photo-card photo-card-1 active">
-                        <img src="assets/images/profile.jpg" alt="Anton Abyzov - Technology Leader" class="profile-img" fetchpriority="high">
+            <div class="professional-photo-stack" data-photo-carousel>
+                <div class="photo-stack-container"
+                     id="hero-carousel"
+                     role="group"
+                     aria-roledescription="carousel"
+                     aria-label="Portraits of Anton Abyzov"
+                     tabindex="0">
+                    <div class="photo-card is-active" role="group" aria-roledescription="slide" aria-label="Slide 1 of 3: Technology Leader" data-caption="Technology Leader">
+                        <img src="assets/images/profile.jpg"
+                             srcset="assets/images/profile.jpg 1280w"
+                             sizes="(min-width: 1101px) 400px, (min-width: 721px) 420px, 92vw"
+                             width="1280" height="853"
+                             alt="Anton Abyzov, technology leader, photographed by the Miami waterfront"
+                             class="profile-img" fetchpriority="high" decoding="async">
                         <div class="photo-overlay"><span class="photo-label">Technology Leader</span></div>
                     </div>
-                    <div class="photo-card photo-card-2">
-                        <img src="assets/images/anton_suit2.jpeg" alt="Anton Abyzov - Business Executive" class="profile-img" loading="lazy">
+                    <div class="photo-card" role="group" aria-roledescription="slide" aria-label="Slide 2 of 3: Business Executive" data-caption="Business Executive">
+                        <img src="assets/images/anton_suit2.jpeg"
+                             srcset="assets/images/anton_suit2.jpeg 768w"
+                             sizes="(min-width: 1101px) 400px, (min-width: 721px) 420px, 92vw"
+                             width="768" height="1024"
+                             alt="Anton Abyzov in a suit, business executive portrait"
+                             class="profile-img" decoding="async">
                         <div class="photo-overlay"><span class="photo-label">Business Executive</span></div>
                     </div>
-                    <div class="photo-card photo-card-3">
-                        <img src="assets/images/anton_easychamp_lower.jpeg" alt="Anton Abyzov - Vegas Innovation" class="profile-img" loading="lazy">
-                        <div class="photo-overlay"><span class="photo-label">Vegas Innovation</span></div>
+                    <div class="photo-card" role="group" aria-roledescription="slide" aria-label="Slide 3 of 3: Building EasyChamp" data-caption="Building EasyChamp">
+                        <img src="assets/images/anton_easychamp_lower.jpeg"
+                             srcset="assets/images/anton_easychamp_lower.jpeg 1170w"
+                             sizes="(min-width: 1101px) 400px, (min-width: 721px) 420px, 92vw"
+                             width="1170" height="1520"
+                             alt="Anton Abyzov presenting EasyChamp"
+                             class="profile-img" decoding="async">
+                        <div class="photo-overlay"><span class="photo-label">Building EasyChamp</span></div>
                     </div>
+
+                    <!-- plane 5 — cover lines -->
+                    <ul class="hero-chips" aria-label="Credentials">
+                        <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
+                        <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
+                        <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
+                    </ul>
                 </div>
-                <div class="photo-indicators">
-                    <button class="photo-indicator active" data-index="0" aria-label="Show photo 1"></button>
-                    <button class="photo-indicator" data-index="1" aria-label="Show photo 2"></button>
-                    <button class="photo-indicator" data-index="2" aria-label="Show photo 3"></button>
+
+                <div class="photo-indicators" role="group" aria-label="Choose a portrait" aria-controls="hero-carousel">
+                    <button type="button" class="photo-indicator is-active" data-index="0" aria-label="Show portrait 1 of 3: Technology Leader" aria-current="true"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                    <button type="button" class="photo-indicator" data-index="1" aria-label="Show portrait 2 of 3: Business Executive"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
+                    <button type="button" class="photo-indicator" data-index="2" aria-label="Show portrait 3 of 3: Building EasyChamp"><span class="photo-indicator-dot" aria-hidden="true"></span></button>
                 </div>
+
+                <p class="photo-status sr-only" role="status" aria-live="polite">Portrait 1 of 3: Technology Leader</p>
             </div>
         </div>
 
-        <!-- plane 5 — cover lines, the fastest layer -->
-        <ul class="hero-chips" aria-label="Credentials">
-            <li class="chip chip-gold"><i class="fas fa-award" aria-hidden="true"></i> IEEE Senior Member</li>
-            <li class="chip chip-cyan"><i class="fas fa-feather" aria-hidden="true"></i> Forbes Tech Council</li>
-            <li class="chip chip-amber"><i class="fas fa-passport" aria-hidden="true"></i> EB-1A Extraordinary Ability</li>
-        </ul>
-    </div>
-
-    <div class="cover-foot" aria-hidden="true">
-        <span class="cover-foot-label">Scroll — dig down</span>
-        <span class="cover-foot-track"><i class="cover-foot-fill"></i></span>
-        <span class="cover-foot-label cover-foot-label-end">Seven strata</span>
+        <!-- scroll cue — own row, spans the full shell -->
+        <div class="cover-foot" aria-hidden="true">
+            <span class="cover-foot-label">Scroll · dig down</span>
+            <span class="cover-foot-track"><i class="cover-foot-fill"></i></span>
+            <span class="cover-foot-label cover-foot-label-end">Seven strata</span>
+        </div>
     </div>
 </section>
 
