@@ -2077,16 +2077,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 1100px) {
     .cover-shell {
         grid-template-columns: minmax(0, 1fr);
-        /* The stacked cover runs two to three screens tall, so a cue parked at
-           its foot is itself below the fold. It reads just as well as a rule
-           under the name, and there it is visible at load. */
+        /* The cue is a scroll affordance, so it sits at the foot of the first
+           screen, under the calls to action. Pitch, stats and both buttons are
+           compacted to fit above the fold (see the phone block below); the
+           portrait follows, which is where a reader looks next anyway. Parking
+           the cue under the name instead put a "keep scrolling" rule in the
+           middle of the type lockup. */
         grid-template-areas:
             "masthead"
             "lockup"
+            "body"
             "foot"
-            "portrait"
-            "body";
-        row-gap: clamp(16px, 2.6vw, 28px);
+            "portrait";
+        row-gap: clamp(14px, 2.2vw, 24px);
     }
     .cover-portrait { margin-top: 4px; max-width: 420px; }
     .hero-chips {
@@ -2144,8 +2147,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 @media (max-width: 720px) {
-    .hero { padding-top: calc(var(--nav-h) + 22px); }
-    .hero-stats { grid-template-columns: 1fr; }
+    .hero { padding-top: calc(var(--nav-h) + 18px); }
+    /* Three stacked stat rows cost 255px and pushed the buttons (and the cue
+       under them) a screen and a half down. Keep the row, shrink the type. */
+    .hero-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+    .stat-number { font-size: 1.28rem; letter-spacing: -0.03em; }
+    .stat-label { font-size: 0.5rem; letter-spacing: 0.1em; line-height: 1.35; }
+    .stat-hint { display: none; }
+    .hero-description p { font-size: 0.86rem; line-height: 1.62; }
     .cover-masthead { font-size: 0.5rem; letter-spacing: 0.16em; gap: 8px; }
     .masthead-title { display: none; }
     .comp-panel-num { font-size: 2.6rem; right: 16px; }
@@ -2153,12 +2162,13 @@ ul { margin: 0; padding: 0; list-style: none; }
     .record-band { padding-block: 16px; }
     .record-label { font-size: 0.54rem; }
     .stat-item {
-        border-left: 0;
-        border-top: 1px solid var(--line-soft);
-        padding: 16px 0;
+        gap: 3px;
+        padding: 11px 8px 10px 0;
+        border-left: 1px solid var(--line-soft);
+        border-top: 0;
     }
-    .stat-item:first-child { border-top: 0; }
-    .stat-item:not(:first-child) { padding-left: 0; }
+    .stat-item:first-child { border-left: 0; }
+    .stat-item:not(:first-child) { padding-left: 8px; }
 
     .achievements-grid,
     .publications-grid,
@@ -3537,4 +3547,154 @@ ul { margin: 0; padding: 0; list-style: none; }
 .rail-list a { gap: 10px; }
 @media (max-width: 900px) {
     .nav-link { min-height: 44px; display: flex; align-items: center; }
+}
+
+/* =========================================================================
+   Gallery, video and breakdown modals — the last of the old design
+   The close control, the gold "watch" panel and the modal box were carried
+   over from the pre-strata site. This block puts them on the strata palette,
+   gives the close control a 44px target it can actually be seen on, and makes
+   a gallery fit a 1440x900 viewport without an inner scroll to reach the CTA.
+   ========================================================================= */
+:root { --modal-pad: clamp(10px, 2.2vh, 26px); }
+
+.modal { overflow: hidden; }
+.modal.active { padding: var(--modal-pad); }
+
+/* ---------- close control ----------
+   The component-layer override had left a --paper-soft glyph (#cfd6e0) on the
+   legacy near-white chip: about 1.2:1, effectively invisible. Dark chip, paper
+   glyph (15:1), 44px in both axes, and no hover spin that shifts the target. */
+.modal-close {
+    top: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: var(--ink-solid);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+    border: 1px solid var(--line-lit);
+    border-radius: 50%;
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    transition: background 0.24s var(--ease), color 0.24s var(--ease),
+                border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
+}
+.modal-close:hover,
+.modal-close:focus-visible {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--ink);
+    transform: none;
+    box-shadow: 0 8px 22px rgba(86, 219, 233, 0.34);
+}
+.modal-close:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+/* ---------- gallery box: fits the viewport, scrolls nothing ---------- */
+.gallery-modal-content {
+    display: flex;
+    flex-direction: column;
+    width: min(1180px, calc(100vw - 2 * var(--modal-pad)));
+    max-width: calc(100vw - 2 * var(--modal-pad));
+    max-height: calc(100vh - 2 * var(--modal-pad));
+    max-height: calc(100svh - 2 * var(--modal-pad));
+    padding: clamp(12px, 1.6vh, 20px) clamp(12px, 1.6vw, 22px);
+    border-radius: 16px;
+    overflow: hidden;
+}
+.gallery-modal-content .carousel-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    max-width: none;
+}
+.gallery-modal-content .carousel-indicators,
+.gallery-modal-content .carousel-caption { flex: 0 0 auto; }
+.gallery-modal-content .carousel-indicators { padding: 2px 52px 10px; }
+.gallery-modal-content .carousel-caption {
+    padding: 0 52px 10px;
+    font-size: 0.94rem;
+}
+.gallery-modal-content .carousel-slides { flex: 1 1 auto; min-height: 0; }
+/* flex-basis must be the track width, not the content: with max-height in
+   percent there is no aspect-ratio-transferred width cap any more, so a
+   content-sized slide grew to the photo's 4320px natural width and carried the
+   image off-screen. A definite basis pins each slide to one viewport again. */
+.gallery-modal-content .carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+.gallery-modal-content .carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
+}
+.gallery-modal-content .gallery-cta { flex: 0 0 auto; }
+
+/* ---------- the "watch" panel ---------- */
+.gallery-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    margin-top: clamp(10px, 1.4vh, 16px);
+    padding: clamp(11px, 1.5vh, 16px) clamp(14px, 2vw, 22px);
+    text-align: center;
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--cyan-deep);
+    border-radius: 12px;
+    background: rgba(86, 219, 233, 0.055);
+}
+.gallery-cta-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--paper);
+}
+.gallery-cta-note {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--paper-soft);
+}
+.gallery-cta .achievement-gallery-btn {
+    width: auto;
+    min-width: min(300px, 100%);
+    margin: 3px 0 0;
+    text-decoration: none;
+}
+@media (max-width: 720px) {
+    .gallery-modal-content .carousel-indicators { padding: 2px 48px 8px; }
+    .gallery-modal-content .carousel-caption { padding: 0 48px 8px; font-size: 0.84rem; }
+    .gallery-cta { gap: 6px; }
+    .gallery-cta-note { font-size: 0.8rem; }
+}
+@media (max-height: 560px) {
+    .gallery-cta { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .gallery-cta-note { display: none; }
+    .gallery-modal-content .carousel-caption { display: none; }
+}
+
+/* The mobile cue rides directly under the calls to action, so keep its gap
+   tight: at 1024x768 the extra 22px pushed it a few pixels under the fold. */
+@media (max-width: 1100px) {
+    .cover-foot {
+        margin-top: clamp(6px, 1.1vw, 12px);
+        padding-top: clamp(10px, 1.2vw, 14px);
+    }
 }

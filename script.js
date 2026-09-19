@@ -117,27 +117,27 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Active nav link based on scroll position
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-link');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (scrollY >= (sectionTop - 100)) {
-            current = section.getAttribute('id');
-        }
+// Active nav link based on scroll position.
+// Single source of truth: markCurrentStratum() below drives BOTH the top nav
+// and the core-sample rail off one IntersectionObserver, so the two can never
+// disagree about which stratum is being read. (The old offsetTop-minus-100
+// scroll handler lagged the rail by a whole section.)
+window.markCurrentStratum = function (id) {
+    if (!id) return;
+    document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const on = href.slice(1) === id;
+        link.classList.toggle('active', on);
+        if (on) { link.setAttribute('aria-current', 'true'); }
+        else { link.removeAttribute('aria-current'); }
     });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').slice(1) === current) {
-            link.classList.add('active');
-        }
+    document.querySelectorAll('.rail-list a[data-rail]').forEach(a => {
+        const on = a.getAttribute('data-rail') === id;
+        a.classList.toggle('is-current', on);
+        if (on) { a.setAttribute('aria-current', 'true'); }
+        else { a.removeAttribute('aria-current'); }
     });
-});
+};
 
 // Toggle expand/collapse for experience details
 function toggleExpand(button) {
@@ -512,11 +512,13 @@ class ImageCarousel {
         this.modal.className = 'modal';
         
         const modalContent = document.createElement('div');
-        modalContent.className = 'modal-content';
-        
-        const closeBtn = document.createElement('span');
+        modalContent.className = 'modal-content gallery-modal-content';
+
+        const closeBtn = document.createElement('button');
         closeBtn.className = 'modal-close';
-        closeBtn.innerHTML = '&times;';
+        closeBtn.type = 'button';
+        closeBtn.setAttribute('aria-label', 'Close gallery');
+        closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
         closeBtn.onclick = () => this.close();
         
         // Create carousel
@@ -708,8 +710,9 @@ function createPlatformValueModal() {
     
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
-    closeBtn.innerHTML = '&times;';
+    closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
     closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close breakdown');
     closeBtn.onclick = (e) => {
         e.stopPropagation();
         closePlatformValueModal(modal);
@@ -865,24 +868,17 @@ function openCrossFitGallery() {
     carousel.create = function() {
         originalCreate();
         
-        // Add video button after carousel (same style as futsal gallery)
+        // Add the footer panel after the carousel (strata styling, shared class)
         const videoButton = document.createElement('div');
-        videoButton.style.cssText = `
-            text-align: center; 
-            margin-top: 20px; 
-            padding: 20px; 
-            background: rgba(255, 215, 0, 0.1); 
-            border-radius: 15px; 
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        `;
+        videoButton.className = 'gallery-cta';
         videoButton.innerHTML = `
-            <h3 style="color: #ffd700; margin-bottom: 15px;">Argument Competition 2024 - Winner</h3>
-            <p style="margin-bottom: 15px; color: #aaa;">High-intensity functional fitness competition performance</p>
-            <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024 - Winner')">
-                <i class="fab fa-youtube"></i> Watch Competition Video
+            <h3 class="gallery-cta-title">Argument Competition 2024, Winner</h3>
+            <p class="gallery-cta-note">High-intensity functional fitness competition performance</p>
+            <button type="button" class="achievement-gallery-btn" onclick="openVideoModal('https://www.youtube.com/embed/BKab-1SjT4A', 'Argument Competition 2024, Winner')">
+                <i class="fab fa-youtube" aria-hidden="true"></i> Watch Competition Video
             </button>
         `;
-        
+
         this.modal.querySelector('.modal-content').appendChild(videoButton);
     };
     
@@ -897,9 +893,11 @@ function openVideoModal(videoUrl, title) {
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content video-modal-content';
     
-    const closeBtn = document.createElement('span');
+    const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
-    closeBtn.innerHTML = '&times;';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close video');
+    closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
     closeBtn.onclick = () => closeVideoModal(modal);
     
     const videoTitle = document.createElement('h3');
@@ -974,7 +972,8 @@ function openPianoModal() {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.type = 'button';
-    closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Close piano performances');
+    closeBtn.innerHTML = '<span aria-hidden="true">&times;</span>';
     closeBtn.onclick = (e) => {
         e.stopPropagation();
         closePianoModal(modal);
@@ -1134,24 +1133,17 @@ function openFutsalGallery() {
             }
         });
         
-        // Add video button after carousel
+        // Add the footer panel after the carousel (strata styling, shared class)
         const videoButton = document.createElement('div');
-        videoButton.style.cssText = `
-            text-align: center; 
-            margin-top: 20px; 
-            padding: 20px; 
-            background: rgba(255, 215, 0, 0.1); 
-            border-radius: 15px; 
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        `;
+        videoButton.className = 'gallery-cta';
         videoButton.innerHTML = `
-            <h3 style="color: #ffd700; margin-bottom: 15px;">Goal in Belarusian Top League</h3>
-            <p style="margin-bottom: 15px; color: #aaa;">Scoring against Lidselmash in the top Belarus futsal league</p>
-            <button class="achievement-gallery-btn" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;" onclick="openVideoModal('https://www.youtube.com/embed/MyMOJP1nuic?t=76', 'Goal vs Lidselmash - Top Belarus League')">
-                <i class="fas fa-play"></i> Watch Goal Video
-            </button>
+            <h3 class="gallery-cta-title">Goal in the Belarusian top league</h3>
+            <p class="gallery-cta-note">Scoring against Lidselmash in the top Belarus futsal league</p>
+            <a class="achievement-gallery-btn" href="https://football.antonabyzov.com/highlights/" target="_blank" rel="noopener">
+                <i class="fas fa-play" aria-hidden="true"></i> Watch goal video
+            </a>
         `;
-        
+
         this.modal.querySelector('.modal-content').appendChild(videoButton);
     };
     
@@ -1401,10 +1393,18 @@ function initCueClearance() {
     var PAD = 6;
     var queued = false;
 
-    // Anything the widget must not sit on: things you click, the hero's body
-    // copy, the hero stats, and the core-sample rail.
-    var OBSTACLES = '.hero-cta, .hero-description, .hero-chips, .stat-item, .stat-item-action,' +
-                    ' .photo-indicators, .photo-controls, .photo-stage, .cover-lockup, .rail';
+    // Anything the widget must not sit on: the hero's body copy, stats and
+    // controls, the core-sample rail, and anything clickable anywhere on the
+    // page. Below 900px the reading column runs the full width, so running copy
+    // counts too: a 180px pill parked on a 343px line hides half a sentence.
+    // Ko-fi is still reachable from the permanent Support button in Contact.
+    var OBSTACLES_ANY = '.hero-cta, .hero-description, .hero-chips, .stat-item, .stat-item-action,' +
+                        ' .photo-indicators, .photo-controls, .photo-stage, .cover-lockup, .rail,' +
+                        ' a[href], button, .btn';
+    var OBSTACLES_COPY = ', .shell p, .shell li, .shell h1, .shell h2, .shell h3, .shell h4';
+    function obstacleSelector() {
+        return window.innerWidth <= 900 ? OBSTACLES_ANY + OBSTACLES_COPY : OBSTACLES_ANY;
+    }
 
     function hit(a, b, pad) {
         pad = pad || 0;
@@ -1460,7 +1460,7 @@ function initCueClearance() {
 
             var obstacles = [];
             var railRight = 0;
-            Array.prototype.forEach.call(document.querySelectorAll(OBSTACLES), function (el) {
+            Array.prototype.forEach.call(document.querySelectorAll(obstacleSelector()), function (el) {
                 var t = el.getBoundingClientRect();
                 if (t.width <= 0 || t.height <= 0) return;
                 if (t.bottom <= 0 || t.top >= window.innerHeight) return;
@@ -1570,14 +1570,8 @@ window.createPlatformValueModal = createPlatformValueModal;
     /* ---- core-sample rail: mark the stratum in the reading band ---- */
     var railLinks = Array.prototype.slice.call(document.querySelectorAll('.rail-list a[data-rail]'));
     if (railLinks.length) {
-        var setCurrent = function (id) {
-            railLinks.forEach(function (a) {
-                var on = a.getAttribute('data-rail') === id;
-                a.classList.toggle('is-current', on);
-                if (on) { a.setAttribute('aria-current', 'true'); }
-                else { a.removeAttribute('aria-current'); }
-            });
-        };
+        /* one setter for the rail AND the top nav: same observer, same band */
+        var setCurrent = window.markCurrentStratum || function () {};
 
         var targets = railLinks
             .map(function (a) { return document.getElementById(a.getAttribute('data-rail')); })
@@ -1767,31 +1761,12 @@ window.createPlatformValueModal = createPlatformValueModal;
         });
     }
 
-    /* ---- Stratum 04: the record band counts up across ~80vh of scroll ---- */
-    function initCounters() {
-        var nums = document.querySelectorAll('[data-count]');
-        Array.prototype.forEach.call(nums, function (el) {
-            var target = parseFloat(el.getAttribute('data-count'));
-            if (!isFinite(target)) return;
-            var suffix = el.getAttribute('data-count-suffix') || '';
-            var box = { v: 0 };
-            var paint = function () {
-                el.textContent = Math.round(box.v).toLocaleString('en-US') + suffix;
-            };
-            gsap.to(box, {
-                v: target,
-                ease: 'none',
-                onUpdate: paint,
-                scrollTrigger: {
-                    trigger: el.closest('.record-band') || el,
-                    start: 'top bottom',
-                    end: 'top top+=22%',
-                    scrub: 0.8,
-                    invalidateOnRefresh: true
-                }
-            });
-        });
-    }
+    /* ---- Stratum 04: the record band shows its figures, it does not count ----
+       The band used to scrub 0 -> target across ~80vh of scroll. Park the page
+       mid-scrub and the tiles read "201 builders" / "8,838 applications", which
+       contradicts the hero's 1-of-500-from-22K+ and invents numbers that were
+       never true of any event. These are facts, not odometers: they render at
+       their authored values on first paint. (Same call the hero stats made.) */
 
     /* ---- expanding an era or the full history changes the page height ---- */
     function watchLayoutChanges() {
@@ -1815,7 +1790,6 @@ window.createPlatformValueModal = createPlatformValueModal;
         var mm = gsap.matchMedia();
         initCompetencies(mm);
         initEraDepth(mm);
-        initCounters();
         watchLayoutChanges();
 
         if (document.fonts && document.fonts.ready) {
