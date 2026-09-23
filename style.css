@@ -3698,3 +3698,5 @@ ul { margin: 0; padding: 0; list-style: none; }
         padding-top: clamp(10px, 1.2vw, 14px);
     }
 }
+
+a.achievement-gallery-btn { text-decoration: none; box-sizing: border-box; }
