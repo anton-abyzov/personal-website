@@ -34,6 +34,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Typewriter effect
 const phrases = [
+    'Founder of SpecWithCode',
     'Platform Technology Lead',
     'AI Agent Skills Pioneer',
     'Open Source Maintainer',
